@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -299,19 +299,19 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>This is utilized for GenerateThumbnail method, stored here since we cache it and avoid the call multiple times.</remarks>
 		Public ReadOnly Property AvatarCoreFile() As FileInfo
 			Get
-				If ProfileAvatar IsNot Nothing Then
-					Try
-						Dim FileID As Integer = CInt(ProfileAvatar.Trim())
-						Dim objController As New FileController()
+                If Not String.IsNullOrEmpty(ProfileAvatar.Trim()) Then
+                    Try
+                        Dim FileID As Integer = CInt(ProfileAvatar.Trim())
+                        Dim objController As New FileController()
 
-						Return objController.GetFileById(FileID, PortalID)
-					Catch ex As Exception
-						LogException(ex)
-						Return Nothing
-					End Try
-				Else
-					Return Nothing
-				End If
+                        Return objController.GetFileById(FileID, PortalID)
+                    Catch ex As Exception
+                        LogException(ex)
+                        Return Nothing
+                    End Try
+                Else
+                    Return Nothing
+                End If
 			End Get
 		End Property
 

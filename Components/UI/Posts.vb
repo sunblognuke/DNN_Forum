@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -1993,15 +1993,17 @@ Namespace DotNetNuke.Modules.Forum
             If objConfig.EnableProfileUserFolders Then
                 ' The link click below (duplicated from core profile page) presents some serious issues under volume. 
                 'imgUserProfileAvatar.ImageUrl = DotNetNuke.Common.Globals.LinkClick("fileid=" & author.AvatarFile.FileId.ToString(), PortalSettings.ActiveTab.TabID, Null.NullInteger)
+                Dim avatar_url As String = String.Empty
+                Dim imgUserProfileAvatar As New Image
                 If author.AvatarCoreFile IsNot Nothing Then
-                    Dim imgUserProfileAvatar As New Image
-
-                    imgUserProfileAvatar.ImageUrl = author.AvatarComplete
+                    avatar_url = author.AvatarComplete
                     DotNetNuke.Web.UI.Utilities.CreateThumbnail(author.AvatarCoreFile, imgUserProfileAvatar, objConfig.UserAvatarWidth, objConfig.UserAvatarHeight)
-
-                    imgUserProfileAvatar.RenderControl(wr)
-                    imgUserProfileAvatar.Visible = True
+                Else
+                    avatar_url = ResolveUrl("~/images/no_avatar.gif")
                 End If
+                imgUserProfileAvatar.ImageUrl = avatar_url
+                imgUserProfileAvatar.RenderControl(wr)
+                imgUserProfileAvatar.Visible = True
             Else
                 ' If we are here, file stored as name and not id (in UserProfile table).
                 'CP: NOTE: Telerik conversion
