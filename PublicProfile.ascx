@@ -1,0 +1,1 @@
+<%@ Control Language="vb" AutoEventWireup="false" Codebehind="PublicProfile.ascx.vb" Inherits="DotNetNuke.Modules.Forum.PublicProfile" %>

@@ -1,0 +1,1155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{86D23405-06B4-4018-867A-CDB3162F12D5}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>DotNetNuke.Modules.Forum</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CountryListBox">
+      <HintPath>..\..\bin\CountryListBox.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>..\..\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls">
+      <HintPath>..\..\bin\DotNetNuke.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility">
+      <HintPath>..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="DotNetNuke" />
+    <Import Include="DotNetNuke.Common" />
+    <Import Include="DotNetNuke.Common.Utilities" />
+    <Import Include="DotNetNuke.Data" />
+    <Import Include="DotNetNuke.Entities" />
+    <Import Include="DotNetNuke.Entities.Tabs" />
+    <Import Include="DotNetNuke.Framework" />
+    <Import Include="DotNetNuke.Modules" />
+    <Import Include="DotNetNuke.Security" />
+    <Import Include="DotNetNuke.Services" />
+    <Import Include="DotNetNuke.Services.Exceptions" />
+    <Import Include="DotNetNuke.Services.Localization" />
+    <Import Include="DotNetNuke.UI" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACP.ascx.designer.vb">
+      <DependentUpon>ACP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\BaseControl\BaseControl.vb" />
+    <Compile Include="Components\BaseControl\ModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Configuration\Configuration.vb" />
+    <Compile Include="Components\Configuration\Constants.vb" />
+    <Compile Include="Components\BaseControl\DNNForum.vb" />
+    <Compile Include="Components\BaseObject\BaseObject.vb" />
+    <Compile Include="Components\BaseObject\ForumObject.vb" />
+    <Compile Include="Components\Bookmark\ForumBookmark.vb" />
+    <Compile Include="Components\Configuration\Enums.vb" />
+    <Compile Include="Components\Configuration\ForumPreConfig.vb" />
+    <Compile Include="Components\Content\PostConnector.vb" />
+    <Compile Include="Components\Content\Terms.vb" />
+    <Compile Include="Components\Controllers\AdvertController.vb" />
+    <Compile Include="Components\Controllers\AnswerController.vb" />
+    <Compile Include="Components\Controllers\AttachmentController.vb" />
+    <Compile Include="Components\Controllers\EmailTemplateController.vb" />
+    <Compile Include="Components\Controllers\ForumController.vb" />
+    <Compile Include="Components\Controllers\GroupController.vb" />
+    <Compile Include="Components\Controllers\KeywordController.vb" />
+    <Compile Include="Components\Controllers\PollController.vb" />
+    <Compile Include="Components\Controllers\PostController.vb" />
+    <Compile Include="Components\Controllers\PostModerationController.vb" />
+    <Compile Include="Components\Controllers\PostReportedController.vb" />
+    <Compile Include="Components\Controllers\RoleAvatarController.vb" />
+    <Compile Include="Components\Controllers\SearchController.vb" />
+    <Compile Include="Components\Controllers\TemplateController.vb" />
+    <Compile Include="Components\Controllers\ThreadController.vb" />
+    <Compile Include="Components\Controllers\UserAnswerController.vb" />
+    <Compile Include="Components\Controllers\UserController.vb" />
+    <Compile Include="Components\Controllers\UserForumController.vb" />
+    <Compile Include="Components\Controllers\UserThreadController.vb" />
+    <Compile Include="Components\Controllers\WordFilterController.vb" />
+    <Compile Include="Components\Content\Content.vb" />
+    <Compile Include="Components\Email\ForumEmail.vb" />
+    <Compile Include="Components\Email\ForumEmailDistribution.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\Email\Queue\IEmailQueueableSendTask.vb" />
+    <Compile Include="Components\Email\Queue\EmailQueueTaskEmails.vb" />
+    <Compile Include="Components\Email\Queue\EmailQueueTask.vb" />
+    <Compile Include="Components\Email\Queue\IEmailQueueable.vb" />
+    <Compile Include="Components\Email\Queue\IEmailQueueableCleanupTask.vb" />
+    <Compile Include="Components\Entities\AdvertInfo.vb" />
+    <Compile Include="Components\Entities\AnswerInfo.vb" />
+    <Compile Include="Components\Entities\AttachmentInfo.vb" />
+    <Compile Include="Components\Entities\EmailTemplateInfo.vb" />
+    <Compile Include="Components\Entities\FilterWordInfo.vb" />
+    <Compile Include="Components\Entities\ForumInfo.vb" />
+    <Compile Include="Components\Entities\GroupInfo.vb" />
+    <Compile Include="Components\Entities\KeywordInfo.vb" />
+    <Compile Include="Components\Entities\PollInfo.vb" />
+    <Compile Include="Components\Entities\PostInfo.vb" />
+    <Compile Include="Components\Entities\PostReportedInfo.vb" />
+    <Compile Include="Components\Entities\PostSearchInfo.vb" />
+    <Compile Include="Components\Entities\RoleAvatarInfo.vb" />
+    <Compile Include="Components\Entities\TemplateInfo.vb" />
+    <Compile Include="Components\Entities\ThreadInfo.vb" />
+    <Compile Include="Components\Entities\ThreadRateInfo.vb" />
+    <Compile Include="Components\Entities\ThreadSearchInfo.vb" />
+    <Compile Include="Components\Entities\UserAnswerInfo.vb" />
+    <Compile Include="Components\Entities\UserForumInfo.vb" />
+    <Compile Include="Components\Entities\UserInfo.vb" />
+    <Compile Include="Components\Entities\UserThreadInfo.vb" />
+    <Compile Include="Components\Portals\ForumPortalSettings.vb" />
+    <Compile Include="Components\Security\MockSecurity.vb" />
+    <Compile Include="Components\Tracking\UserTracking.vb" />
+    <Compile Include="Components\UI\Groups.vb" />
+    <Compile Include="Components\UI\Posts.vb" />
+    <Compile Include="Components\Providers\Data\ForumDataProvider.vb" />
+    <Compile Include="Components\RSS\ForumRss.vb" />
+    <Compile Include="Components\UI\ModuleSearch.vb" />
+    <Compile Include="Components\Security\ForumPermissions\ForumPermissionCollection.vb" />
+    <Compile Include="Components\Security\ForumPermissions\ForumPermissionController.vb" />
+    <Compile Include="Components\Security\ForumPermissions\ForumPermissionInfo.vb" />
+    <Compile Include="Components\Security\ForumPermissions\PermissionInfo.vb" />
+    <Compile Include="Components\Security\ModuleSecurity.vb" />
+    <Compile Include="Components\UI\Threads.vb" />
+    <Compile Include="Components\Tracking\ForumTracking.vb" />
+    <Compile Include="Components\Treeview\ForumTreeview.vb" />
+    <Compile Include="Components\UI\Unread.vb" />
+    <Compile Include="Components\Utilities\AjaxLoader.vb" />
+    <Compile Include="Components\Utilities\Caching.vb" />
+    <Compile Include="Components\Utilities\PostContent.vb" />
+    <Compile Include="Components\Utilities\ForumUtils.vb" />
+    <Compile Include="Components\Utilities\Links.vb" />
+    <Compile Include="Components\Utilities\SearchHelper.vb" />
+    <Compile Include="Components\WordFilter\ForumFilterWordCollection.vb" />
+    <Compile Include="Controls\ACP_Advertisement.ascx.designer.vb">
+      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Advertisement.ascx.vb">
+      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_ForumEdit.ascx.designer.vb">
+      <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_ForumEdit.ascx.vb">
+      <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_RoleAvatar.ascx.designer.vb">
+      <DependentUpon>ACP_RoleAvatar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_RoleAvatar.ascx.vb">
+      <DependentUpon>ACP_RoleAvatar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_UI.ascx.designer.vb">
+      <DependentUpon>ACP_UI.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_UI.ascx.vb">
+      <DependentUpon>ACP_UI.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_User.ascx.designer.vb">
+      <DependentUpon>ACP_User.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_UserSettings.ascx.designer.vb">
+      <DependentUpon>ACP_UserSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_UserSettings.ascx.vb">
+      <DependentUpon>ACP_UserSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Community.ascx.designer.vb">
+      <DependentUpon>ACP_Community.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Community.ascx.vb">
+      <DependentUpon>ACP_Community.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Attachment.ascx.designer.vb">
+      <DependentUpon>ACP_Attachment.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Attachment.ascx.vb">
+      <DependentUpon>ACP_Attachment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_RSS.ascx.designer.vb">
+      <DependentUpon>ACP_RSS.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_RSS.ascx.vb">
+      <DependentUpon>ACP_RSS.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_SEO.ascx.designer.vb">
+      <DependentUpon>ACP_SEO.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_SEO.ascx.vb">
+      <DependentUpon>ACP_SEO.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\AttachmentControl.ascx.designer.vb">
+      <DependentUpon>AttachmentControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AttachmentControl.ascx.vb">
+      <DependentUpon>AttachmentControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\AvatarControl.ascx.designer.vb">
+      <DependentUpon>AvatarControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AvatarControl.ascx.vb">
+      <DependentUpon>AvatarControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueueTaskDetail.ascx.designer.vb">
+      <DependentUpon>ACP_EmailQueueTaskDetail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueueTaskDetail.ascx.vb">
+      <DependentUpon>ACP_EmailQueueTaskDetail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailSubscribers.ascx.designer.vb">
+      <DependentUpon>ACP_EmailSubscribers.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailSubscribers.ascx.vb">
+      <DependentUpon>ACP_EmailSubscribers.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_ReportedUsers.ascx.designer.vb">
+      <DependentUpon>MCP_ReportedUsers.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_ReportedUsers.ascx.vb">
+      <DependentUpon>MCP_ReportedUsers.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_BannedUsers.ascx.designer.vb">
+      <DependentUpon>MCP_BannedUsers.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_BannedUsers.ascx.vb">
+      <DependentUpon>MCP_BannedUsers.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_ReportedPost.ascx.designer.vb">
+      <DependentUpon>MCP_ReportedPost.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_ReportedPost.ascx.vb">
+      <DependentUpon>MCP_ReportedPost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_ModQueue.ascx.designer.vb">
+      <DependentUpon>MCP_ModQueue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_ModQueue.ascx.vb">
+      <DependentUpon>MCP_ModQueue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_Main.ascx.designer.vb">
+      <DependentUpon>MCP_Main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_Main.ascx.vb">
+      <DependentUpon>MCP_Main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MCP_Menu.ascx.designer.vb">
+      <DependentUpon>MCP_Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MCP_Menu.ascx.vb">
+      <DependentUpon>MCP_Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Menu.ascx.designer.vb">
+      <DependentUpon>ACP_Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Menu.ascx.vb">
+      <DependentUpon>ACP_Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Main.ascx.designer.vb">
+      <DependentUpon>ACP_Main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Main.ascx.vb">
+      <DependentUpon>ACP_Main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_FilterWord.ascx.designer.vb">
+      <DependentUpon>ACP_FilterWord.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_FilterWord.ascx.vb">
+      <DependentUpon>ACP_FilterWord.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Ranking.ascx.designer.vb">
+      <DependentUpon>ACP_Ranking.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Ranking.ascx.vb">
+      <DependentUpon>ACP_Ranking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_PopStatus.ascx.designer.vb">
+      <DependentUpon>ACP_PopStatus.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_PopStatus.ascx.vb">
+      <DependentUpon>ACP_PopStatus.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGrid\ForumPermissionsGrid.vb" />
+    <Compile Include="Controls\DataGrid\PermissionsGrid.vb" />
+    <Compile Include="Controls\Paging\AjaxPager.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Paging\PagingControl.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Avatar.ascx.designer.vb">
+      <DependentUpon>UCP_Avatar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Avatar.ascx.vb">
+      <DependentUpon>UCP_Avatar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Bookmark.ascx.designer.vb">
+      <DependentUpon>UCP_Bookmark.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Bookmark.ascx.vb">
+      <DependentUpon>UCP_Bookmark.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Profile.ascx.designer.vb">
+      <DependentUpon>UCP_Profile.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Signature.ascx.designer.vb">
+      <DependentUpon>UCP_Signature.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Signature.ascx.vb">
+      <DependentUpon>UCP_Signature.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Tracking.ascx.designer.vb">
+      <DependentUpon>UCP_Tracking.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Tracking.ascx.vb">
+      <DependentUpon>UCP_Tracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_PostEdit.ascx.designer.vb">
+      <DependentUpon>Forum_PostEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MCP.ascx.designer.vb">
+      <DependentUpon>MCP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MCP.ascx.vb">
+      <DependentUpon>MCP.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Providers\Sitemap\ThreadSitemap.vb" />
+    <Compile Include="PublicProfile.ascx.designer.vb">
+      <DependentUpon>PublicProfile.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PublicProfile.ascx.vb">
+      <DependentUpon>PublicProfile.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UCP.ascx.designer.vb">
+      <DependentUpon>UCP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UCP.ascx.vb">
+      <DependentUpon>UCP.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Main.ascx.designer.vb">
+      <DependentUpon>UCP_Main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Main.ascx.vb">
+      <DependentUpon>UCP_Main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Settings.ascx.designer.vb">
+      <DependentUpon>UCP_Settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Settings.ascx.vb">
+      <DependentUpon>UCP_Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Profile.ascx.vb">
+      <DependentUpon>UCP_Profile.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueue.ascx.designer.vb">
+      <DependentUpon>ACP_EmailQueue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueue.ascx.vb">
+      <DependentUpon>ACP_EmailQueue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Avatar.ascx.designer.vb">
+      <DependentUpon>ACP_Avatar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Filter.ascx.designer.vb">
+      <DependentUpon>ACP_Filter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_Container.ascx.designer.vb">
+      <DependentUpon>Forum_Container.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_ContentRemoved.ascx.designer.vb">
+      <DependentUpon>Forum_ContentRemoved.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Email.ascx.designer.vb">
+      <DependentUpon>ACP_Email.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailTemplate.ascx.designer.vb">
+      <DependentUpon>ACP_EmailTemplate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_ForumManage.ascx.designer.vb">
+      <DependentUpon>ACP_ForumManage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_ModuleSettings.ascx.designer.vb">
+      <DependentUpon>Forum_ModuleSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_PostDelete.ascx.designer.vb">
+      <DependentUpon>Forum_PostDelete.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_PostModerate.ascx.designer.vb">
+      <DependentUpon>Forum_PostModerate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_PostReport.ascx.designer.vb">
+      <DependentUpon>Forum_PostReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_PostReport.ascx.vb">
+      <DependentUpon>Forum_PostReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_Rss.aspx.designer.vb">
+      <DependentUpon>Forum_Rss.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_Search.ascx.designer.vb">
+      <DependentUpon>Forum_Search.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_General.ascx.designer.vb">
+      <DependentUpon>ACP_General.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Rating.ascx.designer.vb">
+      <DependentUpon>ACP_Rating.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_ThreadMove.ascx.designer.vb">
+      <DependentUpon>Forum_ThreadMove.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_ThreadSplit.ascx.designer.vb">
+      <DependentUpon>Forum_ThreadSplit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Forum_ThreadSplit.ascx.vb">
+      <DependentUpon>Forum_ThreadSplit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ACP.ascx.vb">
+      <DependentUpon>ACP.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Filter.ascx.vb">
+      <DependentUpon>ACP_Filter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_Container.ascx.vb">
+      <DependentUpon>Forum_Container.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_ContentRemoved.ascx.vb">
+      <DependentUpon>Forum_ContentRemoved.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Email.ascx.vb">
+      <DependentUpon>ACP_Email.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailTemplate.ascx.vb">
+      <DependentUpon>ACP_EmailTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_ForumManage.ascx.vb">
+      <DependentUpon>ACP_ForumManage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Avatar.ascx.vb">
+      <DependentUpon>ACP_Avatar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_ModuleSettings.ascx.vb">
+      <DependentUpon>Forum_ModuleSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_PostDelete.ascx.vb">
+      <DependentUpon>Forum_PostDelete.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_PostEdit.ascx.vb">
+      <DependentUpon>Forum_PostEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_PostModerate.ascx.vb">
+      <DependentUpon>Forum_PostModerate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_Rss.aspx.vb">
+      <DependentUpon>Forum_Rss.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_Search.ascx.vb">
+      <DependentUpon>Forum_Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_General.ascx.vb">
+      <DependentUpon>ACP_General.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_Rating.ascx.vb">
+      <DependentUpon>ACP_Rating.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forum_ThreadMove.ascx.vb">
+      <DependentUpon>Forum_ThreadMove.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UCP_Menu.ascx.designer.vb">
+      <DependentUpon>UCP_Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UCP_Menu.ascx.vb">
+      <DependentUpon>UCP_Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_User.ascx.vb">
+      <DependentUpon>ACP_User.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotNetNuke.Forums.build" />
+    <None Include="Forum.dnn">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\ForumClassDiagram.cd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.04.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.04.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.06.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.07.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.09.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <None Include="Themes\FlatBlue\images\forum_moderated.png.bak" />
+    <None Include="Themes\FlatBlue\images\forum_unmoderated.png.bak" />
+    <None Include="Themes\FlatBlue\images\forum_unmoderated_new.png.bak" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="05.00.03.txt" />
+    <Content Include="App_LocalResources\ACP.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\ACP_Advertisement.ascx" />
+    <Content Include="Controls\App_LocalResources\ACP_Filter.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_Container.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_ContentRemoved.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Email.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_EmailTemplate.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_ForumManage.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_ModuleSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_PostDelete.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_PostEdit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_PostModerate.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_Search.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_General.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_PopStatus.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_ThreadMove.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_User.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\UCP.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Forum_PostReport.ascx" />
+    <Content Include="Forum_ThreadSplit.ascx" />
+    <Content Include="Documentation\License.txt" />
+    <Content Include="ACP.ascx" />
+    <Content Include="Controls\ACP_Filter.ascx" />
+    <Content Include="Forum_Container.ascx" />
+    <Content Include="Forum_ContentRemoved.ascx" />
+    <Content Include="Controls\ACP_Email.ascx" />
+    <Content Include="Controls\ACP_EmailTemplate.ascx" />
+    <Content Include="Controls\ACP_ForumManage.ascx" />
+    <Content Include="Controls\ACP_Avatar.ascx" />
+    <Content Include="Forum_ModuleSettings.ascx" />
+    <Content Include="Forum_PostDelete.ascx" />
+    <Content Include="Forum_PostEdit.ascx" />
+    <Content Include="Forum_PostModerate.ascx" />
+    <Content Include="Forum_Rss.aspx" />
+    <Content Include="Forum_Search.ascx" />
+    <Content Include="Controls\ACP_General.ascx" />
+    <Content Include="Controls\ACP_Rating.ascx" />
+    <Content Include="Forum_ThreadMove.ascx" />
+    <Content Include="Controls\ACP_User.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Forum_PostReport.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Forum_ThreadSplit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\ACP_Avatar.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\ACP_EmailQueue.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\ACP_EmailQueue.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\ACP_ForumEdit.ascx" />
+    <Content Include="Controls\ACP_RoleAvatar.ascx" />
+    <Content Include="Controls\App_LocalResources\UCP_Menu.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\ACP_Menu.ascx" />
+    <Content Include="Controls\ACP_Main.ascx" />
+    <Content Include="Controls\ACP_FilterWord.ascx" />
+    <Content Include="Controls\ACP_Ranking.ascx" />
+    <Content Include="Controls\ACP_PopStatus.ascx" />
+    <Content Include="Controls\ACP_UI.ascx" />
+    <Content Include="Controls\ACP_UserSettings.ascx" />
+    <Content Include="Controls\ACP_Community.ascx" />
+    <Content Include="Controls\ACP_Attachment.ascx" />
+    <Content Include="Controls\ACP_RSS.ascx" />
+    <Content Include="Controls\ACP_SEO.ascx" />
+    <Content Include="Controls\AttachmentControl.ascx" />
+    <Content Include="Controls\AvatarControl.ascx" />
+    <Content Include="Controls\ACP_EmailQueueTaskDetail.ascx" />
+    <Content Include="Controls\ACP_EmailSubscribers.ascx" />
+    <Content Include="Controls\MCP_ReportedUsers.ascx" />
+    <Content Include="Controls\MCP_BannedUsers.ascx" />
+    <Content Include="Controls\MCP_ReportedPost.ascx" />
+    <Content Include="Controls\MCP_ModQueue.ascx" />
+    <Content Include="Controls\MCP_Main.ascx" />
+    <Content Include="Controls\MCP_Menu.ascx" />
+    <Content Include="Controls\UCP_Avatar.ascx" />
+    <Content Include="Controls\UCP_Bookmark.ascx" />
+    <Content Include="Controls\UCP_Signature.ascx" />
+    <Content Include="Controls\UCP_Tracking.ascx" />
+    <Content Include="Documentation\ReleaseNotes.txt" />
+    <Content Include="MCP.ascx" />
+    <Content Include="PublicProfile.ascx" />
+    <Content Include="Themes\Blue\Blue.css" />
+    <Content Include="Themes\Blue\images\alt_header_bg.gif" />
+    <Content Include="Themes\Blue\images\alt_header_bg.jpg" />
+    <Content Include="Themes\Blue\images\alt_headfoot_height.gif" />
+    <Content Include="Themes\Blue\images\Breadcrumb.png" />
+    <Content Include="Themes\Blue\images\checked.png" />
+    <Content Include="Themes\Blue\images\curpage.gif" />
+    <Content Include="Themes\Blue\images\curpage.png" />
+    <Content Include="Themes\Blue\images\footer_bg.jpg" />
+    <Content Include="Themes\Blue\images\footer_cap_left.gif" />
+    <Content Include="Themes\Blue\images\footer_cap_left.jpg" />
+    <Content Include="Themes\Blue\images\footer_cap_right.jpg" />
+    <Content Include="Themes\Blue\images\footer_cap_right.png" />
+    <Content Include="Themes\Blue\images\forum_aggregate.png" />
+    <Content Include="Themes\Blue\images\forum_bookmark.png" />
+    <Content Include="Themes\Blue\images\forum_linktype.png" />
+    <Content Include="Themes\Blue\images\forum_moderated.png" />
+    <Content Include="Themes\Blue\images\forum_moderated_new.png" />
+    <Content Include="Themes\Blue\images\forum_nobookmark.png" />
+    <Content Include="Themes\Blue\images\forum_parent.png" />
+    <Content Include="Themes\Blue\images\forum_parent_new.png" />
+    <Content Include="Themes\Blue\images\forum_private.png" />
+    <Content Include="Themes\Blue\images\forum_private_moderated.png" />
+    <Content Include="Themes\Blue\images\forum_private_moderated_new.png" />
+    <Content Include="Themes\Blue\images\forum_private_new.png" />
+    <Content Include="Themes\Blue\images\forum_unmoderated.png" />
+    <Content Include="Themes\Blue\images\forum_unmoderated_new.png" />
+    <Content Include="Themes\Blue\images\header_bg.gif" />
+    <Content Include="Themes\Blue\images\header_bg.jpg" />
+    <Content Include="Themes\Blue\images\header_cap_left.gif" />
+    <Content Include="Themes\Blue\images\header_cap_left.jpg" />
+    <Content Include="Themes\Blue\images\header_cap_left.png" />
+    <Content Include="Themes\Blue\images\header_cap_right.gif" />
+    <Content Include="Themes\Blue\images\header_cap_right.jpg" />
+    <Content Include="Themes\Blue\images\header_cap_right.png" />
+    <Content Include="Themes\Blue\images\headfoot_height.gif" />
+    <Content Include="Themes\Blue\images\headfoot_height_post.gif" />
+    <Content Include="Themes\Blue\images\height_spacer.gif" />
+    <Content Include="Themes\Blue\images\home.png" />
+    <Content Include="Themes\Blue\images\ib_admin.png" />
+    <Content Include="Themes\Blue\images\ib_admin_hover.png" />
+    <Content Include="Themes\Blue\images\ib_aggregate.png" />
+    <Content Include="Themes\Blue\images\ib_aggregate_hover.png" />
+    <Content Include="Themes\Blue\images\ib_forumhome.gif" />
+    <Content Include="Themes\Blue\images\ib_forumhome.png" />
+    <Content Include="Themes\Blue\images\ib_forumhome_hover.png" />
+    <Content Include="Themes\Blue\images\ib_forumhome_on.gif" />
+    <Content Include="Themes\Blue\images\ib_moderate.png" />
+    <Content Include="Themes\Blue\images\ib_moderate_hover.png" />
+    <Content Include="Themes\Blue\images\ib_myposts.png" />
+    <Content Include="Themes\Blue\images\ib_myposts_hover.png" />
+    <Content Include="Themes\Blue\images\ib_mysettings.png" />
+    <Content Include="Themes\Blue\images\ib_mysettings_hover.png" />
+    <Content Include="Themes\Blue\images\ib_mythreads.png" />
+    <Content Include="Themes\Blue\images\ib_mythreads_hover.png" />
+    <Content Include="Themes\Blue\images\ib_search.gif" />
+    <Content Include="Themes\Blue\images\ib_search.png" />
+    <Content Include="Themes\Blue\images\ib_search_hover.png" />
+    <Content Include="Themes\Blue\images\ib_search_on.gif" />
+    <Content Include="Themes\Blue\images\ib_spacer.gif" />
+    <Content Include="Themes\Blue\images\pb_AltHead.jpg" />
+    <Content Include="Themes\Blue\images\pb_AltHead.png" />
+    <Content Include="Themes\Blue\images\pb_AltHead_l.jpg" />
+    <Content Include="Themes\Blue\images\pb_AltHead_r.jpg" />
+    <Content Include="Themes\Blue\images\pb_avatarAlt_bg.jpg" />
+    <Content Include="Themes\Blue\images\pb_button_bg.jpg" />
+    <Content Include="Themes\Blue\images\pb_button_bg_hover.jpg" />
+    <Content Include="Themes\Blue\images\pb_footer_bg.gif" />
+    <Content Include="Themes\Blue\images\pb_footer_bg.jpg" />
+    <Content Include="Themes\Blue\images\pb_footer_spacer_bg.jpg" />
+    <Content Include="Themes\Blue\images\pb_foot_bg.gif" />
+    <Content Include="Themes\Blue\images\pb_head_bg.gif" />
+    <Content Include="Themes\Blue\images\pb_row_l_bg.jpg" />
+    <Content Include="Themes\Blue\images\pb_row_r_bg.jpg" />
+    <Content Include="Themes\Blue\images\poll_bar.png" />
+    <Content Include="Themes\Blue\images\poll_capleft.png" />
+    <Content Include="Themes\Blue\images\poll_capright.png" />
+    <Content Include="Themes\Blue\images\Rank_0.png" />
+    <Content Include="Themes\Blue\images\Rank_1.png" />
+    <Content Include="Themes\Blue\images\Rank_10.png" />
+    <Content Include="Themes\Blue\images\Rank_2.png" />
+    <Content Include="Themes\Blue\images\Rank_3.png" />
+    <Content Include="Themes\Blue\images\Rank_4.png" />
+    <Content Include="Themes\Blue\images\Rank_5.png" />
+    <Content Include="Themes\Blue\images\Rank_6.png" />
+    <Content Include="Themes\Blue\images\Rank_7.png" />
+    <Content Include="Themes\Blue\images\Rank_8.png" />
+    <Content Include="Themes\Blue\images\Rank_9.png" />
+    <Content Include="Themes\Blue\images\row_spacer.gif" />
+    <Content Include="Themes\Blue\images\spacer.gif" />
+    <Content Include="Themes\Blue\images\status_answered.png" />
+    <Content Include="Themes\Blue\images\status_info.png" />
+    <Content Include="Themes\Blue\images\status_poll.png" />
+    <Content Include="Themes\Blue\images\status_spacer.gif" />
+    <Content Include="Themes\Blue\images\status_unanswered.png" />
+    <Content Include="Themes\Blue\images\sublevel.png" />
+    <Content Include="Themes\Blue\images\s_add.png" />
+    <Content Include="Themes\Blue\images\s_attachment.png" />
+    <Content Include="Themes\Blue\images\s_cancel.png" />
+    <Content Include="Themes\Blue\images\s_delete.png" />
+    <Content Include="Themes\Blue\images\s_down.png" />
+    <Content Include="Themes\Blue\images\s_edit.png" />
+    <Content Include="Themes\Blue\images\s_folder.png" />
+    <Content Include="Themes\Blue\images\s_folderopen.png" />
+    <Content Include="Themes\Blue\images\s_lookup.png" />
+    <Content Include="Themes\Blue\images\s_minus.png" />
+    <Content Include="Themes\Blue\images\s_new.png" />
+    <Content Include="Themes\Blue\images\s_offline.png" />
+    <Content Include="Themes\Blue\images\s_old.png" />
+    <Content Include="Themes\Blue\images\s_online.png" />
+    <Content Include="Themes\Blue\images\s_plus.png" />
+    <Content Include="Themes\Blue\images\s_postabuse.png" />
+    <Content Include="Themes\Blue\images\s_postlockedpinnedreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postlockedpinnedunreadplu.png" />
+    <Content Include="Themes\Blue\images\s_postlockedread.png" />
+    <Content Include="Themes\Blue\images\s_postlockedreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postlockedunread.png" />
+    <Content Include="Themes\Blue\images\s_postlockedunreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedlockedread.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedlockedreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedlockedunread.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedlockedunreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedread.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedunread.png" />
+    <Content Include="Themes\Blue\images\s_postpinnedunreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postread.png" />
+    <Content Include="Themes\Blue\images\s_postreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postunread.png" />
+    <Content Include="Themes\Blue\images\s_postunreadplus.png" />
+    <Content Include="Themes\Blue\images\s_postuunreadplus.png" />
+    <Content Include="Themes\Blue\images\s_rss.png" />
+    <Content Include="Themes\Blue\images\s_spacer.png" />
+    <Content Include="Themes\Blue\images\s_up.png" />
+    <Content Include="Themes\Blue\images\s_update.png" />
+    <Content Include="Themes\Blue\images\thread_newest.png" />
+    <Content Include="Themes\Blue\images\unchecked.png" />
+    <Content Include="Themes\FlatBlue\FlatBlue.css" />
+    <Content Include="Themes\FlatBlue\images\alt_header_bg.gif" />
+    <Content Include="Themes\FlatBlue\images\alt_header_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\alt_headfoot_height.gif" />
+    <Content Include="Themes\FlatBlue\images\Breadcrumb.png" />
+    <Content Include="Themes\FlatBlue\images\checked.png" />
+    <Content Include="Themes\FlatBlue\images\curpage.gif" />
+    <Content Include="Themes\FlatBlue\images\curpage.png" />
+    <Content Include="Themes\FlatBlue\images\footer_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\footer_cap_left.gif" />
+    <Content Include="Themes\FlatBlue\images\footer_cap_left.jpg" />
+    <Content Include="Themes\FlatBlue\images\footer_cap_right.jpg" />
+    <Content Include="Themes\FlatBlue\images\footer_cap_right.png" />
+    <Content Include="Themes\FlatBlue\images\forum_aggregate.png" />
+    <Content Include="Themes\FlatBlue\images\forum_bookmark.png" />
+    <Content Include="Themes\FlatBlue\images\forum_linktype.png" />
+    <Content Include="Themes\FlatBlue\images\forum_moderated.png" />
+    <Content Include="Themes\FlatBlue\images\forum_moderated_new.png" />
+    <Content Include="Themes\FlatBlue\images\forum_nobookmark.png" />
+    <Content Include="Themes\FlatBlue\images\forum_parent.png" />
+    <Content Include="Themes\FlatBlue\images\forum_parent_new.png" />
+    <Content Include="Themes\FlatBlue\images\forum_private.png" />
+    <Content Include="Themes\FlatBlue\images\forum_private_moderated.png" />
+    <Content Include="Themes\FlatBlue\images\forum_private_moderated_new.png" />
+    <Content Include="Themes\FlatBlue\images\forum_private_new.png" />
+    <Content Include="Themes\FlatBlue\images\forum_unmoderated.png" />
+    <Content Include="Themes\FlatBlue\images\forum_unmoderated_new.png" />
+    <Content Include="Themes\FlatBlue\images\header_bg.gif" />
+    <Content Include="Themes\FlatBlue\images\header_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\header_cap_left.gif" />
+    <Content Include="Themes\FlatBlue\images\header_cap_left.jpg" />
+    <Content Include="Themes\FlatBlue\images\header_cap_left.png" />
+    <Content Include="Themes\FlatBlue\images\header_cap_right.gif" />
+    <Content Include="Themes\FlatBlue\images\header_cap_right.jpg" />
+    <Content Include="Themes\FlatBlue\images\header_cap_right.png" />
+    <Content Include="Themes\FlatBlue\images\headfoot_height.gif" />
+    <Content Include="Themes\FlatBlue\images\headfoot_height_post.gif" />
+    <Content Include="Themes\FlatBlue\images\height_spacer.gif" />
+    <Content Include="Themes\FlatBlue\images\home.png" />
+    <Content Include="Themes\FlatBlue\images\ib_admin.png" />
+    <Content Include="Themes\FlatBlue\images\ib_admin_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_aggregate.png" />
+    <Content Include="Themes\FlatBlue\images\ib_aggregate_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_forumhome.gif" />
+    <Content Include="Themes\FlatBlue\images\ib_forumhome.png" />
+    <Content Include="Themes\FlatBlue\images\ib_forumhome_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_forumhome_on.gif" />
+    <Content Include="Themes\FlatBlue\images\ib_moderate.png" />
+    <Content Include="Themes\FlatBlue\images\ib_moderate_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_myposts.png" />
+    <Content Include="Themes\FlatBlue\images\ib_myposts_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_mysettings.png" />
+    <Content Include="Themes\FlatBlue\images\ib_mysettings_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_mythreads.png" />
+    <Content Include="Themes\FlatBlue\images\ib_mythreads_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_search.gif" />
+    <Content Include="Themes\FlatBlue\images\ib_search.png" />
+    <Content Include="Themes\FlatBlue\images\ib_search_hover.png" />
+    <Content Include="Themes\FlatBlue\images\ib_search_on.gif" />
+    <Content Include="Themes\FlatBlue\images\ib_spacer.gif" />
+    <Content Include="Themes\FlatBlue\images\pb_AltHead.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_AltHead.png" />
+    <Content Include="Themes\FlatBlue\images\pb_AltHead_l.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_AltHead_r.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_avatarAlt_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_button_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_button_bg_hover.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_footer_bg.gif" />
+    <Content Include="Themes\FlatBlue\images\pb_footer_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_footer_spacer_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_foot_bg.gif" />
+    <Content Include="Themes\FlatBlue\images\pb_head_bg.gif" />
+    <Content Include="Themes\FlatBlue\images\pb_row_l_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\pb_row_r_bg.jpg" />
+    <Content Include="Themes\FlatBlue\images\poll_bar.png" />
+    <Content Include="Themes\FlatBlue\images\poll_capleft.png" />
+    <Content Include="Themes\FlatBlue\images\poll_capright.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_0.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_1.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_10.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_2.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_3.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_4.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_5.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_6.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_7.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_8.png" />
+    <Content Include="Themes\FlatBlue\images\Rank_9.png" />
+    <Content Include="Themes\FlatBlue\images\row_spacer.gif" />
+    <Content Include="Themes\FlatBlue\images\spacer.gif" />
+    <Content Include="Themes\FlatBlue\images\status_answered.png" />
+    <Content Include="Themes\FlatBlue\images\status_info.png" />
+    <Content Include="Themes\FlatBlue\images\status_poll.png" />
+    <Content Include="Themes\FlatBlue\images\status_spacer.gif" />
+    <Content Include="Themes\FlatBlue\images\status_unanswered.png" />
+    <Content Include="Themes\FlatBlue\images\sublevel.png" />
+    <Content Include="Themes\FlatBlue\images\s_add.png" />
+    <Content Include="Themes\FlatBlue\images\s_attachment.png" />
+    <Content Include="Themes\FlatBlue\images\s_cancel.png" />
+    <Content Include="Themes\FlatBlue\images\s_delete.png" />
+    <Content Include="Themes\FlatBlue\images\s_down.png" />
+    <Content Include="Themes\FlatBlue\images\s_edit.png" />
+    <Content Include="Themes\FlatBlue\images\s_folder.png" />
+    <Content Include="Themes\FlatBlue\images\s_folderopen.png" />
+    <Content Include="Themes\FlatBlue\images\s_lookup.png" />
+    <Content Include="Themes\FlatBlue\images\s_minus.png" />
+    <Content Include="Themes\FlatBlue\images\s_new.png" />
+    <Content Include="Themes\FlatBlue\images\s_offline.png" />
+    <Content Include="Themes\FlatBlue\images\s_old.png" />
+    <Content Include="Themes\FlatBlue\images\s_online.png" />
+    <Content Include="Themes\FlatBlue\images\s_plus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postabuse.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedpinnedreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedpinnedunreadplu.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedunread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postlockedunreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedlockedread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedlockedreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedlockedunread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedlockedunreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedunread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postpinnedunreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postunread.png" />
+    <Content Include="Themes\FlatBlue\images\s_postunreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_postuunreadplus.png" />
+    <Content Include="Themes\FlatBlue\images\s_rss.png" />
+    <Content Include="Themes\FlatBlue\images\s_spacer.png" />
+    <Content Include="Themes\FlatBlue\images\s_up.png" />
+    <Content Include="Themes\FlatBlue\images\s_update.png" />
+    <Content Include="Themes\FlatBlue\images\thread_newest.png" />
+    <Content Include="Themes\FlatBlue\images\unchecked.png" />
+    <Content Include="UCP.ascx" />
+    <Content Include="Controls\UCP_Main.ascx" />
+    <Content Include="Controls\UCP_Settings.ascx" />
+    <Content Include="Controls\UCP_Profile.ascx" />
+    <Content Include="Controls\UCP_Menu.ascx" />
+    <Content Include="Controls\App_LocalResources\UCP_Profile.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\UCP_Settings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\UCP_Main.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\UCP_Bookmark.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\UCP_Signature.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\UCP_Tracking.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\UCP_Avatar.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\ACP_Main.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Menu.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_FilterWord.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Ranking.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Rating.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_UI.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_UserSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Community.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Attachment.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_SEO.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_RSS.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\AvatarControl.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\ACP_ForumEdit.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\MCP_Main.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\MCP_Menu.ascx.resx" />
+    <Content Include="App_LocalResources\MCP.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\MCP_ModQueue.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\MCP_ReportedPost.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\MCP_BannedUsers.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\MCP_ReportedUsers.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\ACP_RoleAvatar.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\AttachmentControl.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\ACP_EmailQueueTaskDetail.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_EmailSubscribers.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Advertisement.ascx.resx" />
+    <EmbeddedResource Include="js\forum.js" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '9.0'" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
