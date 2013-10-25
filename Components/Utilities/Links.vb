@@ -323,7 +323,18 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			url = NavigateURL(TabId, "", params)
 
 			Return url
-		End Function
+        End Function
+
+        Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer, ByVal lastPostID As Integer) As String
+            Dim url As String
+            Dim params As String()
+
+            params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
+            url = NavigateURL(TabId, "", params)
+            url = url + "#" + lastPostID.ToString()
+
+            Return url
+        End Function
 
 		''' <summary>
 		''' Navigates user to list of unread posts.

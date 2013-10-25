@@ -38,7 +38,7 @@ Namespace DotNetNuke.Modules.Forum
         Private _ThreadID As Integer
         Private _PostCollection As List(Of PostInfo)
         Private _objThread As ThreadInfo
-        Private _PostPage As Integer = 0
+        Private _PageIndex As Integer = 0
         Private _TrackedForum As Boolean = False
         Private _TrackedThread As Boolean = False
 
@@ -145,21 +145,28 @@ Namespace DotNetNuke.Modules.Forum
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Property PostPage() As Integer
+        Private Property PageIndex() As Integer
             Get
-                Return _PostPage
+                Return _PageIndex
             End Get
             Set(ByVal Value As Integer)
-                _PostPage = Value
+                _PageIndex = Value
             End Set
+        End Property
+
+        ''' <summary>
+        ''' The page size being rendered (of the thread).
+        ''' </summary>
+        Private ReadOnly Property PageSize() As Integer
+            Get
+                Return objConfig.PostsPerPage
+                'Return CurrentForumUser.PostsPerPage
+            End Get
         End Property
 
         ''' <summary>
         ''' If the user is tracking the containing forum (email notifications). 
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Property TrackedForum() As Boolean
             Get
                 Return _TrackedForum
@@ -308,7 +315,7 @@ Namespace DotNetNuke.Modules.Forum
             ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
             Dim ctlPost As New PostController
-            PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
+            PostCollection = ctlPost.PostGetAll(ThreadID, PageIndex, PageSize, ForumControl.Descending, PortalID)
 
             If CurrentForumUser.UserID > 0 Then
                 Dim ctlForumUser As New ForumUserController
@@ -392,7 +399,7 @@ Namespace DotNetNuke.Modules.Forum
                 'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
 
                 Dim ctlPost As New PostController
-                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
+                PostCollection = ctlPost.PostGetAll(ThreadID, PageIndex, PageSize, ForumControl.Descending, PortalID)
                 ' we need to redirect the user here to make sure the page is redrawn.
             Else
                 ' there is no quick reply message entered, yet they clicked submit. Show end user. 
@@ -446,35 +453,46 @@ Namespace DotNetNuke.Modules.Forum
             If PostID > 0 Then
                 Dim objPostCnt As New PostController
                 Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
-                ThreadID = objPost.ThreadID
+                Dim correctUrl As String = Utilities.Links.ContainerViewThreadLink(TabID, objPost.ForumID, objPost.ThreadID, PostID)
+                '301 Redirect to the correct format for the page
+                HttpContext.Current.Response.Status = "301 Moved Permanently"
+                HttpContext.Current.Response.AddHeader("Location", correctUrl)
+                HttpContext.Current.Response.AddHeader("X-Blog-Redirect-Reason", "No match for requested Url (" + HttpContext.Current.Request.RawUrl + ").  Correct url is " + correctUrl)
+                'Fixed issue where url not redirect to permalink but just only blog home page due to "response -> Property evaluation failed"
+                'And solution link is: http://support.microsoft.com/kb/312629/EN-US/
+                HttpContext.Current.ApplicationInstance.CompleteRequest()
 
-                ' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
-                Dim cntThread As New ThreadController()
-                objThread = cntThread.GetThread(ThreadID)
+                MyBase.BasePage.Response.Redirect(correctUrl, True)
 
-                ' we need to see if there is a content item for the thread, if not create one.
-                If objThread.ContentItemId < 1 Then
-                    Dim cntContent As New Content
-                    objThread.ModuleID = ModuleID
-                    objThread.TabID = TabID
-                    objThread.SitemapInclude = objPost.ParentThread.ContainingForum.EnableSitemap
+                'ThreadID = objPost.ThreadID
 
-                    cntContent.CreateContentItem(objThread, TabID)
+                '' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
+                'Dim cntThread As New ThreadController()
+                'objThread = cntThread.GetThread(ThreadID)
 
-                    DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-                    objThread = cntThread.GetThread(ThreadID)
-                End If
+                '' we need to see if there is a content item for the thread, if not create one.
+                'If objThread.ContentItemId < 1 Then
+                '    Dim cntContent As New Content
+                '    objThread.ModuleID = ModuleID
+                '    objThread.TabID = TabID
+                '    objThread.SitemapInclude = objPost.ParentThread.ContainingForum.EnableSitemap
 
-                Dim TotalPosts As Integer = objThread.Replies + 1
-                Dim TotalPages As Integer = (CInt(TotalPosts / CurrentForumUser.PostsPerPage))
-                Dim ThreadPageToShow As Integer = 1
+                '    cntContent.CreateContentItem(objThread, TabID)
 
-                If user.ViewDescending Then
-                    ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsAfter + 1) / CurrentForumUser.PostsPerPage))
-                Else
-                    ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsBefore + 1) / CurrentForumUser.PostsPerPage))
-                End If
-                PostPage = ThreadPageToShow
+                '    DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
+                '    objThread = cntThread.GetThread(ThreadID)
+                'End If
+
+                'Dim TotalPosts As Integer = objThread.Replies + 1
+                'Dim TotalPages As Integer = (CInt(TotalPosts / PageSize))
+                'Dim ThreadPageToShow As Integer = 1
+
+                'If user.ViewDescending Then
+                '    ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsAfter + 1) / PageSize))
+                'Else
+                '    ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsBefore + 1) / PageSize))
+                'End If
+                'PageIndex = ThreadPageToShow
             Else
                 If ThreadID > 0 Then
                     Dim cntThread As New ThreadController()
@@ -493,24 +511,24 @@ Namespace DotNetNuke.Modules.Forum
                         objThread = cntThread.GetThread(ThreadID)
                     End If
 
-                    ' We need to make sure the user's thread pagesize can handle this 
-                    '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
-                    If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-                        Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-                        Dim TotalPosts As Integer = objThread.Replies + 1
+                    '' We need to make sure the user's thread pagesize can handle this 
+                    ''(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
+                    'If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
+                    '    Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
+                    '    Dim TotalPosts As Integer = objThread.Replies + 1
 
-                        Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
-                        Dim ThreadPageToShow As Integer
+                    '    Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / PageSize))
+                    '    Dim ThreadPageToShow As Integer
 
-                        ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
-                        If TotalPages >= urlThreadPage Then
-                            ThreadPageToShow = urlThreadPage
-                        Else
-                            ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
-                            ThreadPageToShow = 0
-                        End If
-                        PostPage = ThreadPageToShow
-                    End If
+                    '    ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
+                    '    If TotalPages >= urlThreadPage Then
+                    '        ThreadPageToShow = urlThreadPage
+                    '    Else
+                    '        ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
+                    '        ThreadPageToShow = 0
+                    '    End If
+                    '    PageIndex = ThreadPageToShow
+                    'End If
                 End If
             End If
 
@@ -567,13 +585,15 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If objConfig.OverrideDescription Then
-                Dim Description As String
+                Dim Description As String = Utilities.ForumUtils.StripHTML(HttpUtility.HtmlDecode(objThread.Body))
+                Description = New PortalSecurity().InputFilter(Description, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoSQL)
+                Description = HtmlUtils.Shorten(Description, Constants.SEO_DESCRIPTION_LIMIT, String.Empty)
 
-                If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
-                    Description = objThread.Subject
-                Else
-                    Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
-                End If
+                'If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
+                '    Description = objThread.Subject
+                'Else
+                'Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
+                'End If
 
                 MyBase.BasePage.Description = Description
             End If
@@ -609,10 +629,10 @@ Namespace DotNetNuke.Modules.Forum
                 MyBase.BasePage.KeyWords = KeyWords
             End If
 
-            If PostPage > 0 Then
-                PostPage = PostPage - 1
+            If PageIndex > 0 Then
+                PageIndex = PageIndex - 1
             Else
-                PostPage = 0
+                PageIndex = 0
             End If
         End Sub
 
@@ -1023,7 +1043,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
 
-                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
+                PostCollection = ctlPost.PostGetAll(ThreadID, PageIndex, PageSize, ForumControl.Descending, PortalID)
             Catch exc As Exception
                 LogException(exc)
             End Try
@@ -2432,11 +2452,11 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks>
         ''' </remarks>
         Private Sub RenderFooter(ByVal wr As HtmlTextWriter)
-            Dim pageCount As Integer = CInt(Math.Floor((objThread.Replies) / CurrentForumUser.PostsPerPage)) + 1
+            Dim pageCount As Integer = CInt(Math.Floor((objThread.Replies) / PageSize)) + 1
             Dim pageCountInfo As New StringBuilder
 
             pageCountInfo.Append(ForumControl.LocalizedText("PageCountInfo"))
-            pageCountInfo.Replace("[PageNumber]", (PostPage + 1).ToString)
+            pageCountInfo.Replace("[PageNumber]", (PageIndex + 1).ToString)
             pageCountInfo.Replace("[PageCount]", pageCount.ToString)
 
             ' Start the footer row
@@ -3019,17 +3039,17 @@ Namespace DotNetNuke.Modules.Forum
             Dim forwards As Boolean
             Dim url As String = String.Empty
 
-            If PostPage <> 0 Then
+            If PageIndex <> 0 Then
                 backwards = True
             End If
 
-            If PostPage <> PageCount - 1 Then
+            If PageIndex <> PageCount - 1 Then
                 forwards = True
             End If
 
             If (backwards) Then
                 ' < Previous 
-                url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, ThreadID, PostPage)
+                url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, ThreadID, PageIndex)
                 wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
                 wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_FooterText")
                 wr.RenderBeginTag(HtmlTextWriterTag.A) '<a>
@@ -3044,7 +3064,7 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             ' If thread spans several pages, then display text like (Page 1, 2, 3, ..., 5)
-            Dim displayPage As Integer = PostPage + 1
+            Dim displayPage As Integer = PageIndex + 1
             Dim startCap As Integer = Math.Max(4, displayPage - 1)
             Dim endCap As Integer = Math.Min(PageCount - 1, displayPage + 1)
             Dim sepStart As Boolean = False
@@ -3124,7 +3144,7 @@ Namespace DotNetNuke.Modules.Forum
 
             If (forwards) Then
                 ' Next >
-                url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, ThreadID, PostPage + 2)
+                url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, ThreadID, PageIndex + 2)
                 wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
                 wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_FooterText")
                 wr.RenderBeginTag(HtmlTextWriterTag.A) '<a>

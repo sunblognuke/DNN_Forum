@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -47,7 +47,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _PopularThreadDays As Integer = 7
 
 		Dim _ThreadsPerPage As Integer = 10
-		Dim _PostsPerPage As Integer = 5
+        Dim _PostsPerPage As Integer = 10
 		Dim _PostPagesCount As Integer = 3
 		Dim _MaxPostImageWidth As Integer = 500
 		Dim _DisplayPosterLocation As Integer = ShowPosterLocation.None
@@ -461,9 +461,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The number of posts per page to display.</returns>
 		''' <remarks>Registered users have their own value.</remarks>
 		Public ReadOnly Property PostsPerPage() As Integer
-			Get
-				Return _PostsPerPage
-			End Get
+            Get
+                Return _PostsPerPage
+            End Get
 		End Property
 
 		''' <summary>
