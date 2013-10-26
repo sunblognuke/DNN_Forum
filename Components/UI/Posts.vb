@@ -555,6 +555,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             End If
 
+            Dim security As PortalSecurity = New PortalSecurity()
             If objConfig.OverrideTitle Then
                 Dim Title As String
                 Dim Subject As String
@@ -585,8 +586,9 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If objConfig.OverrideDescription Then
-                Dim Description As String = Utilities.ForumUtils.StripHTML(HttpUtility.HtmlDecode(objThread.Body))
-                Description = New PortalSecurity().InputFilter(Description, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoSQL)
+                Dim Description As String = Utilities.ForumUtils.RemoveHtmlWhitespace(HttpUtility.HtmlDecode(objThread.Body))
+                Description = Utilities.ForumUtils.StripHtml(Description)
+                Description = security.InputFilter(Description, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoSQL)
                 Description = HtmlUtils.Shorten(Description, Constants.SEO_DESCRIPTION_LIMIT, String.Empty)
 
                 'If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
@@ -2672,6 +2674,9 @@ Namespace DotNetNuke.Modules.Forum
 
             If PreviousEnabled Then
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
+
+                ' Add paging meta
+                AddGenericLink("prev", String.Empty, url)
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
                 wr.Write(ForumControl.LocalizedText("Previous"))
@@ -2710,6 +2715,9 @@ Namespace DotNetNuke.Modules.Forum
             If NextEnabled Then
                 url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
+
+                ' Add paging meta
+                AddGenericLink("next", String.Empty, url)
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
                 wr.Write(ForumControl.LocalizedText("Next"))

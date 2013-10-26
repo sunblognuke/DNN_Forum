@@ -192,7 +192,7 @@ This is also the links used in the module actions, new thread, moderate buttons 
 A.Forum_Link:Hover{color: #c60001;text-decoration: none;}
 /* Only seen if option is disabled to show icons for toolbar */
 TD.Active{} 
-.Forum_ToolbarLink, a.Forum_ToolbarLink:link, a.Forum_ToolbarLink:visited, a.Forum_ToolbarLink:hover{font-family: Helvetica, Arial, San-Serif;display:block;float:left;padding:5px 8px;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;margin:0 2px;font-weight:bold;}
+.Forum_ToolbarLink, a.Forum_ToolbarLink:link, a.Forum_ToolbarLink:visited, a.Forum_ToolbarLink:hover{font-family: Helvetica, Arial, San-Serif;display:block;float:left;padding:9px 12px;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;margin:0 5px 0 0;font-weight:bold;}
 a.Forum_ToolbarLink:hover{background:#5C7992;color:#fff;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;-moz-border-radius:3px;-webkit-border-radius:3px;text-decoration:none;}
 /*Profile link, used above posts avatar area (user alias) */
 .Forum_Profile, a.Forum_Profile:link, a.Forum_Profile:visited, a.Forum_Profile:active, a.Forum_Profile:hover{font-family:Helvetica, Arial, San-Serif;font-size:11px;color:#0088CE;font-weight:bold;}

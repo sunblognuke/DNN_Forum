@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -166,6 +166,27 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             End Get
         End Property
+
+        ''' <summary>
+        ''' Adds the generic link to the header.
+        ''' </summary>
+        Protected Overridable Sub AddGenericLink(ByVal type As String, ByVal relation As String, ByVal title As String, ByVal href As String)
+            Dim link As New HtmlLink()
+            If Not String.IsNullOrEmpty(type) Then
+                link.Attributes.Add("type", type)
+            End If
+            link.Attributes.Add("rel", relation)
+            If Not String.IsNullOrEmpty(title) Then
+                link.Attributes.Add("title", title)
+            End If
+            link.Attributes.Add("href", href)
+
+            BasePage.Header.Controls.Add(link)
+        End Sub
+
+        Protected Overridable Sub AddGenericLink(ByVal relation As String, ByVal title As String, ByVal href As String)
+            AddGenericLink(String.Empty, relation, title, href)
+        End Sub
 
     End Class
 

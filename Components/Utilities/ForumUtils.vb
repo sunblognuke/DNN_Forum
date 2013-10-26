@@ -684,18 +684,61 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 		End Function
 
-		''' <summary>
-		''' Strips HTML from text passed into function using regex. 
-		''' </summary>
-		''' <param name="strHTMLToStrip">The text to remove HTML from.</param>
-		''' <returns>A string of HTML w/ the majority of HTML removed.</returns>
-		''' <remarks>All HTML Should be filtered prior to being passed here.</remarks>
-		Shared Function StripHTML(ByVal strHTMLToStrip As String) As String
-			Dim cleanText As String = strHTMLToStrip
-			Dim cleanPattern As String = "<(.|\n)*?>" ' "(\<link[^\>]+\>)"  
-			cleanText = Regex.Replace(cleanText, cleanPattern, String.Empty)
-			Return cleanText
-		End Function
+        ' ''' <summary>
+        ' ''' Strips HTML from text passed into function using regex. 
+        ' ''' </summary>
+        ' ''' <param name="strHTMLToStrip">The text to remove HTML from.</param>
+        ' ''' <returns>A string of HTML w/ the majority of HTML removed.</returns>
+        ' ''' <remarks>All HTML Should be filtered prior to being passed here.</remarks>
+        'Shared Function StripHTML(ByVal strHTMLToStrip As String) As String
+        '	Dim cleanText As String = strHTMLToStrip
+        '	Dim cleanPattern As String = "<(.|\n)*?>" ' "(\<link[^\>]+\>)"  
+        '	cleanText = Regex.Replace(cleanText, cleanPattern, String.Empty)
+        '	Return cleanText
+        '      End Function
+
+        Private Shared ReadOnly STRIP_HTML As New Regex("<[^>]*>", RegexOptions.Compiled)
+
+        Private Shared ReadOnly STRIP_RAWHTML As New Regex("<(?!br|/br|p>|/p>).+?>", RegexOptions.Compiled)
+
+        ''' <summary>
+        ''' Strips all HTML tags from the specified string.
+        ''' </summary>
+        ''' <param name="html">The string containing HTML</param>
+        ''' <returns>A string without HTML tags</returns>
+        Public Shared Function StripHtml(ByVal html As String) As String
+            If String.IsNullOrEmpty(html) Then
+                Return String.Empty
+            End If
+
+            Return STRIP_HTML.Replace(html, String.Empty)
+        End Function
+
+        Public Shared Function StripRawHtml(ByVal html As String) As String
+            If String.IsNullOrEmpty(html) Then
+                Return String.Empty
+            End If
+
+            Return STRIP_RAWHTML.Replace(html, String.Empty)
+        End Function
+
+        Private Shared ReadOnly REGEX_BETWEEN_TAGS As New Regex(">\s+", RegexOptions.Compiled)
+        Private Shared ReadOnly REGEX_LINE_BREAKS As New Regex("\n\s+", RegexOptions.Compiled)
+
+        ''' <summary>
+        ''' Removes the HTML whitespace.
+        ''' </summary>
+        ''' <param name="html">The HTML.</param>
+        Public Shared Function RemoveHtmlWhitespace(ByVal html As String) As String
+            If String.IsNullOrEmpty(html) Then
+                Return String.Empty
+            End If
+
+            html = REGEX_BETWEEN_TAGS.Replace(html, "> ")
+            html = REGEX_LINE_BREAKS.Replace(html, String.Empty)
+
+            Return html.Trim()
+        End Function
 
 		''' <summary>
 		''' Replaces inline attachments with the filename.
