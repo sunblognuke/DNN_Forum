@@ -197,6 +197,8 @@
     <Compile Include="Components\Entities\UserForumInfo.vb" />
     <Compile Include="Components\Entities\UserInfo.vb" />
     <Compile Include="Components\Entities\UserThreadInfo.vb" />
+    <Compile Include="Components\Markdown\Escapes.vb" />
+    <Compile Include="Components\Markdown\Markdown.vb" />
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
     <Compile Include="Components\Security\MockSecurity.vb" />
     <Compile Include="Components\Tracking\UserTracking.vb" />
@@ -705,6 +707,10 @@
     <Content Include="App_LocalResources\SharedResources.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Extensions\Markdown\wmd\images\wmd-buttons.png" />
+    <Content Include="Extensions\Markdown\wmd\jquery.wmd.min.js" />
+    <Content Include="Extensions\Markdown\wmd\wmd.css" />
+    <Content Include="Extensions\Markdown\wmd\wmdStarter.js" />
     <Content Include="Forum_PostReport.ascx" />
     <Content Include="Forum_ThreadSplit.ascx" />
     <Content Include="Documentation\License.txt" />

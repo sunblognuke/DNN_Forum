@@ -262,7 +262,7 @@
     <value>Moderate</value>
   </data>
   <data name="NewThread.Text" xml:space="preserve">
-    <value>New Thread</value>
+    <value>Start A New Thread</value>
   </data>
   <data name="Delete.Text" xml:space="preserve">
     <value>Delete</value>
@@ -437,5 +437,11 @@
   </data>
   <data name="cmdThreadSubscribers.Text" xml:space="preserve">
     <value>View Subscribers</value>
+  </data>
+  <data name="CreatedBy.Text" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="LastestPostBy.Text" xml:space="preserve">
+    <value>Lastest post by</value>
   </data>
 </root>

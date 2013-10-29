@@ -1,5 +1,5 @@
-'
-' DotNetNuke® - http://www.dotnetnuke.com
+ï»¿'
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -20,14 +20,16 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Modules.Actions
+
 Namespace DotNetNuke.Modules.Forum
 
-	''' <summary>
-	''' The base object is responsible for common methods used to build the forum UI in vb code including:
-	''' ForumPost, ForumThread, ForumGroup, ForumThreadSearch, ForumPortalSearch, ForumModerate
-	''' </summary>
-	''' <remarks>This is loaded by BaseControl.vb which is loaded by DNNForum.vb, which is loaded by forum container.
-	''' </remarks>
+    ''' <summary>
+    ''' The base object is responsible for common methods used to build the forum UI in vb code including:
+    ''' ForumPost, ForumThread, ForumGroup, ForumThreadSearch, ForumPortalSearch, ForumModerate
+    ''' </summary>
+    ''' <remarks>This is loaded by BaseControl.vb which is loaded by DNNForum.vb, which is loaded by forum container.
+    ''' </remarks>
     Public Class ForumBaseObject
         'Inherits ForumModuleBase
 
@@ -228,24 +230,23 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="Align">The horizontal alignment to apply to the table cell.</param>
         ''' <remarks>Used to build a table cell and enclose an image in it for most of programatically generated UI. (Similar to a stringbuilder)</remarks>
         Protected Sub RenderCapCell(ByVal wr As HtmlTextWriter, ByVal Image As String, ByVal CssClass As String, ByVal Align As String)
-            If CssClass.Length > 0 Then
-                wr.AddAttribute(HtmlTextWriterAttribute.Class, CssClass)
-            End If
+            'If Not String.IsNullOrEmpty(CssClass) Then
+            '    wr.AddAttribute(HtmlTextWriterAttribute.Class, CssClass)
+            'End If
 
-            If Align.Length > 0 Then
-                wr.AddAttribute(HtmlTextWriterAttribute.Align, Align)
-            End If
+            'If Not String.IsNullOrEmpty(Align) Then
+            '    wr.AddAttribute(HtmlTextWriterAttribute.Align, Align)
+            'End If
 
-            wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td>
+            'wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td>
 
-            'wr.AddAttribute(HtmlTextWriterAttribute.Valign, "middle")
-            wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-            wr.AddAttribute(HtmlTextWriterAttribute.Src, Image)
-            wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
-            wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
-            wr.RenderEndTag() ' </Img>
+            'wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+            'wr.AddAttribute(HtmlTextWriterAttribute.Src, Image)
+            'wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
+            'wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
+            'wr.RenderEndTag() ' </Img>
 
-            wr.RenderEndTag() ' </Td>
+            'wr.RenderEndTag() ' </td>
         End Sub
 
         ''' <summary>
@@ -597,7 +598,7 @@ Namespace DotNetNuke.Modules.Forum
             RenderDivBegin(wr, "divForumIcons", "Forum_Icons") ' <div>
             RenderDivBegin(wr, "divForumIconsCol", "Forum_IconsCol") ' <div>
 
-            For Each Action As Entities.Modules.Actions.ModuleAction In ForumControl.NavigatorActions
+            For Each Action As ModuleAction In ForumControl.NavigatorActions
                 RenderLinkButton(wr, Action.Url, Action.Title, "Forum_ToolbarLink")
             Next
 

@@ -1,5 +1,5 @@
 .Forum_Container {width: 100%;margin: 10px 0;}
-
+ .Forum_Container table{border-collapse:separate}
 .Forum_Container, .Forum_Container th, .Forum_Container td, .Forum_Container div, .Forum_Container p, .Forum_Container table, .Forum_Container a{font-family:Helvetica, Arial, San-Serif;line-height:16px;}
 .Forum_MenuItem{width:auto;background: url('images/header_bg.jpg') top left repeat-x;line-height:26px;padding:5px 10px;border-bottom:#50697D 1px solid;cursor:pointer;display:block;position:relative;vertical-align:middle;}
 .Forum_MenuGroup /* submenu */{height:100px;padding:5px 0px 5px 10px;border:1px solid #B8D7F3;}
@@ -16,8 +16,9 @@
 	.Forum_UCP_Item a.Forum_Link:hover, .Forum_UCP_Item a.Forum_Link:visited:hover{color:#006396;text-decoration:underline;}
 /*/////////////////////////// - FORUM VIEW - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 /*Used for the Forum breadcrumb navigation at the top and bottom of each thread and post view table (txt color is not applying here)*/
-a.Forum_BreadCrumb:link, a.Forum_BreadCrumb:visited, a.Forum_BreadCrumb:active, a.Forum_BreadCrumb:hover{font: bold 11px "Lucida Grande", Helvetica, Arial, San-Serif;color:#0088CE;padding:10px 0px;display:block;}
-A.Forum_BreadCrumb:hover{color:#006396;}
+.Forum_BreadCrumb a:link, .Forum_BreadCrumb a:visited, .Forum_BreadCrumb a:active, .Forum_BreadCrumb a:hover{color:#0088CE;}
+.Forum_BreadCrumb a:hover{color:#006396;}
+.Forum_BreadCrumb span{padding:0 5px;}
 /*/////////////////////////// - FORUM VIEW - HEADER \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 /* middle header section Handles title colors (Forums, Threads, Posts)*/
 .Forum_Header{background: url('images/header_bg.jpg') top left repeat-x;}
@@ -292,10 +293,11 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 .Forum_Container .tags li a{font-size: 11px;font-family: Helvetica, Arial, San-Serif;color:#0088CE; font-weight: bold;}
 .Forum_Container .tags li a:hover{color:#006396;}
 .AdvertisementPost {border: thin solid #BDBDBD;padding: 10px;}
-
+/* CUSTOMIZED & OVERWRITE */
  #wrap .Forum_Header, #wrap .Forum_HeaderCapLeft, #wrap .Forum_AltHeader, #wrap .Forum_HeaderCapRight, #wrap .Forum_Footer, #wrap .Forum_FooterCapLeft, #wrap .Forum_FooterCapRight {
     background-image: none;
     background-color: #0F749C; 
+    border-bottom: solid 2px #0F749C;
 }
  #wrap .Forum_ToolbarLink, #wrap a.Forum_ToolbarLink:link, #wrap a.Forum_ToolbarLink:visited, #wrap a.Forum_ToolbarLink:hover, #wrap td.Forum_LastPostText a.Forum_LastPostText
  /*, #wrap  a.Forum_Link*/ {
@@ -308,3 +310,14 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 
 .Forum_PostAuthorTable{text-align:center;}
 .Forum_PostAuthorTable table{text-align:center;margin:0 auto;}
+
+#wrap .Forum_Header{height: 46px;line-height: 46px;font-weight: bold;padding-left: 10px;border-right: 2px solid #0F749C;}
+.Forum_QuickReplyLink{display:block;width:200px;margin:10px 0}
+.Forum_NavBarButton a{
+    background: #6cb200;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.Forum_NavBarButton a:hover{text-decoration:none}

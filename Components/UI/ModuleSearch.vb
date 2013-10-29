@@ -1,5 +1,5 @@
-'
-' DotNetNuke® - http://www.dotnetnuke.com
+ï»¿'
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -543,14 +543,14 @@ Namespace DotNetNuke.Modules.Forum
 			If Not ForumControl.Page.IsPostBack Then
 				RenderTableBegin(wr, 0, 0, "SearchResultsTable")
 				RenderNavBar(wr, objConfig, ForumControl)
-				RenderBreadCrumbRow(wr)
+                'RenderBreadCrumbRow(wr)
 				If Aggregated Or myThreads Or LatestHours Then
 					RenderThreadSearchResults(wr)
 				Else
 					RenderPostSearchResults(wr)
 				End If
 				RenderFooter(wr)
-				RenderBottomBreadCrumb(wr)
+                'RenderBottomBreadCrumb(wr)
 				RenderTableEnd(wr)
 			End If
 		End Sub

@@ -293,19 +293,35 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Users ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
-			Dim url As String
-			Dim params As String()
+            'Dim url As String
+            'Dim params As String()
 
-			If NoReply Then
-				params = New String(2) {"forumid=" & ForumId, "scope=threads", "noreply=1"}
-				url = NavigateURL(TabId, "", params)
-			Else
-				params = New String(1) {"forumid=" & ForumId, "scope=threads"}
-				url = NavigateURL(TabId, "", params)
-			End If
+            'If NoReply Then
+            '	params = New String(2) {"forumid=" & ForumId, "scope=threads", "noreply=1"}
+            '	url = NavigateURL(TabId, "", params)
+            'Else
+            '	params = New String(1) {"forumid=" & ForumId, "scope=threads"}
+            '	url = NavigateURL(TabId, "", params)
+            'End If
 
-			Return url
-		End Function
+            'Return url
+            Return ContainerViewForumLink(TabId, ForumId, "noreply=1")
+        End Function
+
+        Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal keyPair As String) As String
+            Dim url As String
+            Dim params As String()
+
+            If Not String.IsNullOrEmpty(keyPair) Then
+                params = New String(2) {"forumid=" & ForumId, "scope=threads", keyPair}
+                url = NavigateURL(TabId, "", params)
+            Else
+                params = New String(1) {"forumid=" & ForumId, "scope=threads"}
+                url = NavigateURL(TabId, "", params)
+            End If
+
+            Return url
+        End Function
 
 		''' <summary>
 		''' Navigates user to posts view for a specific threadID.

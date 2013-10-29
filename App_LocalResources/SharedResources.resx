@@ -265,10 +265,10 @@
     <value>Notify</value>
   </data>
   <data name="Answered.Text" xml:space="preserve">
-    <value>Resolved</value>
+    <value>Answered Threads</value>
   </data>
   <data name="Unanswered.Text" xml:space="preserve">
-    <value>Unresolved</value>
+    <value>Unanswered Threads</value>
   </data>
   <data name="Informative.Text" xml:space="preserve">
     <value>Informative</value>
@@ -334,7 +334,7 @@
     <value>My Settings</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
-    <value>Search</value>
+    <value>Advanced Search</value>
   </data>
   <data name="Rank_10.Text" xml:space="preserve">
     <value>10th Level Poster</value>
@@ -602,5 +602,14 @@
   </data>
   <data name="ForumHome.Text" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="Resolved.Text" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+  <data name="Unresolved.Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="UnresolvedThreads.Text" xml:space="preserve">
+    <value>Unresolved Threads</value>
   </data>
 </root>

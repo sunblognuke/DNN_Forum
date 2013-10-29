@@ -151,9 +151,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' specific group should be shown based
         ''' on TabModuleSettings.
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <remarks>
-        ''' </remarks>
         Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
             RenderTableBegin(wr, 0, 0, "tblGroup") ' <table>
             Dim objGroupCnt As New GroupController
@@ -163,7 +160,9 @@ Namespace DotNetNuke.Modules.Forum
 
             If arrGroups.Count > 0 Then
                 RenderNavBar(wr, objConfig, ForumControl)
+                RenderSpacerRow(wr)
                 RenderBreadCrumbRow(wr)
+                RenderSpacerRow(wr)
                 RenderForums(wr)
                 RenderFooter(wr)
             Else
@@ -185,9 +184,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Breadcrumb row.
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub RenderBreadCrumbRow(ByVal wr As HtmlTextWriter)
             RenderRowBegin(wr) '<tr>
             RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "") ' <td><img/></td>
@@ -223,7 +219,7 @@ Namespace DotNetNuke.Modules.Forum
                 '	wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objGroupInfo, objConfig, ChildGroupView))
             Else
                 'Forum Home view
-                wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, Nothing, objConfig, ChildGroupView))
+                'wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, Nothing, objConfig, ChildGroupView))
                 RenderCellEnd(wr) ' </td>
                 RenderCellBegin(wr, "Forum_LastPostText", "", "", "right", "", "", "") ' <td>
 
@@ -262,12 +258,19 @@ Namespace DotNetNuke.Modules.Forum
         End Sub
 
         ''' <summary>
+        ''' This allows for spacing between posts
+        ''' </summary>
+        Private Sub RenderSpacerRow(ByVal wr As HtmlTextWriter)
+            RenderRowBegin(wr) '<tr> 
+            RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
+            RenderCellEnd(wr) '</td>
+            RenderRowEnd(wr) ' </tr>
+        End Sub
+
+        ''' <summary>
         ''' Area which has the +/- similar to section head.  This displays group name
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <param name="Group"></param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub RenderGroupInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
             ' Start row
             RenderRowBegin(wr) '<tr>
@@ -433,7 +436,7 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableBegin(wr, "", "", "100%", "100%", "0", "0", "", "middle", "0") ' <table>
             RenderRowBegin(wr) '<tr>
 
-            RenderCellBegin(wr, "Forum_Header", "", "", "center", "middle", "", "") ' <td>
+            RenderCellBegin(wr, "Forum_Header", "", "", "left", "middle", "", "") ' <td>
             If AuthorizedGroups.Count > 0 Then
                 RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
                 wr.Write(ForumControl.LocalizedText("LastPost"))
@@ -865,33 +868,7 @@ Namespace DotNetNuke.Modules.Forum
                         wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight3_Alt")
                     End If
 
-                    wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
                     wr.AddAttribute(HtmlTextWriterAttribute.Width, "26%")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
-                    wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
-                    wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
-
-                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
-                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
-                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
-                    wr.RenderEndTag() ' </Img>
-
-                    wr.RenderEndTag() '  </td>
-
-                    If even Then
-                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-                    Else
-                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-                    End If
-
-                    wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
                     wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
 
                     If objForum.ForumType = 2 Then
@@ -908,11 +885,9 @@ Namespace DotNetNuke.Modules.Forum
                             lastPostInfo = cntPost.GetPostInfo(objForum.MostRecentPostID, PortalID)
 
                             Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForum.MostRecentPost.CreatedDate, objConfig, "")
-                            ' shows only first 15 letters of the post subject title
-                            Dim truncatedTitle As String = System.Web.HttpUtility.HtmlDecode(lastPostInfo.Subject) 'HtmlDecode function prevent to cut string inside html code like: &#245; -> &#2 ...45;
-                            If truncatedTitle.Length > 16 Then
-                                truncatedTitle = Left(truncatedTitle, 15) & "..."
-                            End If
+                            ' shows only first 30 letters of the post subject title
+                            Dim title As String = HttpUtility.HtmlDecode(lastPostInfo.Subject) 'HtmlDecode function prevent to cut string inside html code like: &#245; -> &#2 ...45;
+                            Dim truncatedTitle As String = HtmlUtils.Shorten(title, 30, "...")
 
                             wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
                             wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
@@ -921,6 +896,7 @@ Namespace DotNetNuke.Modules.Forum
                             url = Utilities.Links.ContainerViewThreadLink(TabID, objForum.ForumID, lastPostInfo.ThreadID, objForum.MostRecentPostID)
                             wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
                             wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+                            wr.AddAttribute(HtmlTextWriterAttribute.Title, title)
                             wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
                             wr.Write(truncatedTitle)
                             wr.RenderEndTag() '  </A>
@@ -974,20 +950,6 @@ Namespace DotNetNuke.Modules.Forum
                         End If
                     End If
 
-                    wr.RenderEndTag() ' </Td>
-
-                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
-
-                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
-                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
-                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
-                    wr.RenderEndTag() ' </Img>
-
-                    wr.RenderEndTag() '  </td>
-                    wr.RenderEndTag() ' </Tr>
-                    wr.RenderEndTag() ' </Table>
                     wr.RenderEndTag() ' </Td>
                     wr.RenderEndTag() ' </Tr>
 

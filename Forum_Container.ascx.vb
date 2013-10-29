@@ -21,135 +21,180 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
+Imports DotNetNuke.Entities.Modules
+Imports DotNetNuke.Entities.Modules.Actions
+Imports DotNetNuke.Security.Permissions
 
 Namespace DotNetNuke.Modules.Forum
 
-	''' <summary>
-	''' Loads the proper control to display to the end user based on various parameters and settings.
-	''' </summary>
-	''' <remarks>This is a 'Dispatch' control, only the UI folder classes are rendered here.</remarks>
-	Public MustInherit Class Container
-		Inherits ForumModuleBase
-		Implements DotNetNuke.Entities.Modules.IActionable
+    ''' <summary>
+    ''' Loads the proper control to display to the end user based on various parameters and settings.
+    ''' </summary>
+    ''' <remarks>This is a 'Dispatch' control, only the UI folder classes are rendered here.</remarks>
+    Public MustInherit Class Container
+        Inherits ForumModuleBase
+        Implements IActionable
 
 #Region "Private Members"
 
-		Private _GroupID As Integer = Null.NullInteger
-		Private _ForumID As Integer = Null.NullInteger
-		Private _ThreadID As Integer = Null.NullInteger
-		Private _PostID As Integer = Null.NullInteger
+        Private _GroupID As Integer = Null.NullInteger
+        Private _ForumID As Integer = Null.NullInteger
+        Private _ThreadID As Integer = Null.NullInteger
+        Private _PostID As Integer = Null.NullInteger
 
 #End Region
 
 #Region "Optional Interfaces"
 
-		''' <summary>
-		''' Gets a list of module actions available to the user to provide it to DNN core.
-		''' </summary>
-		''' <value></value>
-		''' <returns>The collection of module actions available to the user</returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
-			Get
-				Return Utilities.ForumUtils.PerUserModuleActions(objConfig, Me)
-			End Get
-		End Property
+        ''' <summary>
+        ''' Gets a list of module actions available to the user to provide it to DNN core.
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns>The collection of module actions available to the user</returns>
+        ''' <remarks></remarks>
+        Public ReadOnly Property ModuleActions() As ModuleActionCollection Implements IActionable.ModuleActions
+            Get
+                Return Utilities.ForumUtils.PerUserModuleActions(objConfig, Me)
+            End Get
+        End Property
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Since this is a dispatch page, we need to set base properties and 
-		''' then load the proper view (Based on scope variable). This currently 
-		''' loads all non ascx views used throughout this module. It is important 
-		''' the base object be tied to the current moduleid, tabid. (Navigation)
-		''' </summary>
-		''' <param name="sender">The Object</param>
-		''' <param name="e">The event arguement.</param>
-		''' <remarks>The event arguement and the object are not used. ObjectID needs to be reconsidered.
-		''' </remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			If DotNetNuke.Framework.AJAX.IsInstalled Then
-				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-			End If
+        ''' <summary>
+        ''' Since this is a dispatch page, we need to set base properties and 
+        ''' then load the proper view (Based on scope variable). This currently 
+        ''' loads all non ascx views used throughout this module. It is important 
+        ''' the base object be tied to the current moduleid, tabid. (Navigation)
+        ''' </summary>
+        ''' <param name="sender">The Object</param>
+        ''' <param name="e">The event arguement.</param>
+        ''' <remarks>The event arguement and the object are not used. ObjectID needs to be reconsidered.
+        ''' </remarks>
+        Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
+            If DotNetNuke.Framework.AJAX.IsInstalled Then
+                DotNetNuke.Framework.AJAX.RegisterScriptManager()
+            End If
 
-			If Not (Request.QueryString("groupid") Is Nothing) Then
-				_GroupID = Int32.Parse(Request.QueryString("groupid"))
-			End If
+            'If Not (Request.QueryString("groupid") Is Nothing) Then
+            '    _GroupID = Int32.Parse(Request.QueryString("groupid"))
+            'End If
+            If CheckQueryStringWithIntType("groupid") Then
+                Integer.TryParse(Request.QueryString("groupid"), _GroupID)
+            End If
 
-			If Not (Request.QueryString("forumid") Is Nothing) Then
-				_ForumID = Int32.Parse(Request.QueryString("forumid"))
-			End If
+            'If Not (Request.QueryString("forumid") Is Nothing) Then
+            '    _ForumID = Int32.Parse(Request.QueryString("forumid"))
+            'End If
+            If CheckQueryStringWithIntType("forumid") Then
+                Integer.TryParse(Request.QueryString("forumid"), _ForumID)
+            End If
 
-			If Not (Request.QueryString("threadid") Is Nothing) Then
-				_ThreadID = Int32.Parse(Request.QueryString("threadid"))
-			End If
+            'If Not (Request.QueryString("threadid") Is Nothing) Then
+            '    _ThreadID = Int32.Parse(Request.QueryString("threadid"))
+            'End If
+            If CheckQueryStringWithIntType("threadid") Then
+                Integer.TryParse(Request.QueryString("threadid"), _ThreadID)
+            End If
 
-			If Not (Request.QueryString("postid") Is Nothing) Then
-				_PostID = Int32.Parse(Request.QueryString("postid"))
-			End If
+            'If Not (Request.QueryString("postid") Is Nothing) Then
+            '    _PostID = Int32.Parse(Request.QueryString("postid"))
+            'End If
+            If CheckQueryStringWithIntType("postid") Then
+                Integer.TryParse(Request.QueryString("postid"), _PostID)
+            End If
 
-			With DNNForum
-				.PortalID = PortalSettings.PortalId
-				.TabID = PortalSettings.ActiveTab.TabID
-				.ModuleID = ModuleId
-				.objConfig = objConfig
-				.BasePage = CType(Me.Page, DotNetNuke.Framework.CDefault)
-				.PortalName = PortalSettings.PortalName
-				.LocalResourceFile = TemplateSourceDirectory & "/" & Localization.LocalResourceDirectory & "/" & Me.ID
-				.TabModuleSettings = Settings
+            With DNNForum
+                .PortalID = PortalSettings.PortalId
+                .TabID = PortalSettings.ActiveTab.TabID
+                .ModuleID = ModuleId
+                .objConfig = objConfig
+                .BasePage = CType(Me.Page, CDefault)
+                .PortalName = PortalSettings.PortalName
+                .LocalResourceFile = TemplateSourceDirectory & "/" & Localization.LocalResourceDirectory & "/" & Me.ID
+                .TabModuleSettings = Settings
 
-				Select Case DNNForum.ViewType
-					Case ForumScope.Groups
-						.GenericObjectID = ModuleId
-					Case ForumScope.Threads
-						.GenericObjectID = _ForumID
-					Case ForumScope.Posts
-						.GenericObjectID = _ThreadID
-					Case ForumScope.ThreadSearch
-						.GenericObjectID = _ForumID
-					Case ForumScope.Unread
-						.GenericObjectID = ModuleId
-				End Select
-			End With
-		End Sub
+                Select Case DNNForum.ViewType
+                    Case ForumScope.Groups
+                        .GenericObjectID = ModuleId
+                    Case ForumScope.Threads
+                        .GenericObjectID = _ForumID
+                    Case ForumScope.Posts
+                        .GenericObjectID = _ThreadID
+                        PrepareWmdResources()
+                    Case ForumScope.ThreadSearch
+                        .GenericObjectID = _ForumID
+                    Case ForumScope.Unread
+                        .GenericObjectID = ModuleId
+                End Select
+            End With
 
-		''' <summary>
-		''' Determines if we need to redirect to this page again to change the scope, as well as sets the module actions 
-		''' </summary>
-		''' <param name="sender">The object.</param>
-		''' <param name="e">The event arguement being passed in.</param>
-		''' <remarks>We have to load the javascript files on every load of this control.</remarks>
-		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-			Try
-				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-				ForumUtils.LoadCssFile(DefaultPage, objConfig)
+            ' Check out whether the url request is valid, otherwise just redirect to the forum home
+            'If DNNForum.GenericObjectID > 0 Then
+            'Else
+            '    Response.Redirect(Utilities.Links.ContainerForumHome(TabId), False)
+            'End If
+        End Sub
 
-				' Redirect to user's default forum if user access forum via menu
-				Dim objModules As Entities.Modules.ModuleController = New Entities.Modules.ModuleController
+        ''' <summary>
+        ''' Determines if we need to redirect to this page again to change the scope, as well as sets the module actions 
+        ''' </summary>
+        ''' <param name="sender">The object.</param>
+        ''' <param name="e">The event arguement being passed in.</param>
+        ''' <remarks>We have to load the javascript files on every load of this control.</remarks>
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+            Try
+                Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+                ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
-				If (Not CType(Settings("defaultforumid"), String) Is Nothing) AndAlso (DNNForum.ViewType = ForumScope.Groups) AndAlso (Request.UrlReferrer Is Nothing) Then
-					If Not CType(Settings("defaultforumid"), Integer) = 0 Then
-						Response.Redirect(Utilities.Links.ContainerViewForumLink(TabId, CType(Settings("defaultforumid"), Integer), False), False)
-					End If
-				End If
+                ' Redirect to user's default forum if user access forum via menu
+                If (Not CType(Settings("defaultforumid"), String) Is Nothing) AndAlso
+                   (DNNForum.ViewType = ForumScope.Groups) AndAlso
+                   (Request.UrlReferrer Is Nothing) Then
+                    If Not CType(Settings("defaultforumid"), Integer) = 0 Then
+                        Response.Redirect(Utilities.Links.ContainerViewForumLink(TabId, CType(Settings("defaultforumid"), Integer), False), False)
+                    End If
+                End If
 
-				'Set the Navigator Actions Collection
-                For Each action As Entities.Modules.Actions.ModuleAction In ModuleActions
-                    If action.CommandName = Entities.Modules.Actions.ModuleActionType.ContentOptions Then
-                        If DotNetNuke.Security.Permissions.ModulePermissionController.HasModuleAccess(action.Secure, "Edit", ModuleConfiguration) Then
+                'Set the Navigator Actions Collection
+                For Each action As ModuleAction In ModuleActions
+                    If action.CommandName = ModuleActionType.ContentOptions Then
+                        If ModulePermissionController.HasModuleAccess(action.Secure, "Edit", ModuleConfiguration) Then
                             DNNForum.NavigatorActions.Add(action)
                         End If
                     End If
                 Next
-			Catch exc As Exception
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+            Catch exc As Exception
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
+
+        Private Sub PrepareWmdResources()
+            Dim litLinks As LiteralControl = New LiteralControl()
+            With litLinks
+                .ID = "wmdControl"
+            End With
+
+            Dim BasePage As CDefault = DirectCast(Page, CDefault)
+            If BasePage.Header.FindControl("wmdControl") Is Nothing Then
+                Dim sb As StringBuilder = New StringBuilder()
+
+                Const js As String = "<script type=""text/javascript"" src=""{0}""></script>"
+                Const css As String = "<link type=""text/css"" href=""{0}"" rel=""stylesheet"" />"
+                Dim wmdFolder As String = "~/DesktopModules/Forum/Extensions/MarkDown/wmd"
+
+                sb.Append(String.Format(css, ResolveUrl(wmdFolder & "/wmd.css")))
+                sb.Append(String.Format(js, ResolveUrl(wmdFolder & "/jquery.wmd.min.js")))
+                sb.Append(String.Format(js, ResolveUrl(wmdFolder & "/wmdStarter.js")))
+
+                litLinks.Text = sb.ToString()
+                BasePage.Header.Controls.Add(litLinks)
+            End If
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace
