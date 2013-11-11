@@ -80,7 +80,7 @@
 					<desktopModule>
 						<moduleName>DNN_Forum</moduleName>
 						<foldername>Forum</foldername>
-						<businessControllerClass>DotNetNuke.Modules.Forum.ThreadController, DotNetNuke.Modules.Forum</businessControllerClass>
+						<businessControllerClass>DotNetNuke.Modules.Forum.InterfaceController, DotNetNuke.Modules.Forum</businessControllerClass>
 						<supportedFeatures>
 							<supportedFeature type="Searchable" />
 						</supportedFeatures>
@@ -250,16 +250,6 @@
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 									<moduleControl>
-										<controlKey>PublicProfile</controlKey>
-										<controlSrc>DesktopModules/Forum/PublicProfile.ascx</controlSrc>
-										<supportsPartialRendering>True</supportsPartialRendering>
-										<controlTitle>User Profile</controlTitle>
-										<controlType>View</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
-									</moduleControl>
-									<moduleControl>
 										<controlKey>RoleAvatar</controlKey>
 										<controlSrc>DesktopModules/Forum/Controls/ACP_RoleAvatar.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
@@ -307,7 +297,30 @@
 						</file>
 					</files>
 				</component>
-				<component type="Cleanup" version="05.00.03" fileName="05.00.03.txt" />	
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/dotnetnuke/sitemap/providers" action="update" key="name" collision="overwrite">
+                                        <add name="ForumSitemapProvider"
+                                             type="DotNetNuke.Modules.Forum.Providers.ThreadSitemap, DotNetNuke.Modules.Forum"
+                                             providerPath="~\DesktopModules\Forum\Providers\SitemapProvider\"/>
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/dotnetnuke/sitemap/providers/add[@name='ForumSitemapProvider']" action="remove" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+				<component type="Cleanup" version="06.00.00" fileName="06.00.00.txt" />	
 			</components>
 		</package>
 	</packages>

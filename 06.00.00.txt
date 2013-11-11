@@ -86,6 +86,7 @@ DesktopModules\Forum\Forum_PostModerate.ascx
 DesktopModules\Forum\Forum_PostReport.ascx
 DesktopModules\Forum\Forum_ThreadMove.ascx
 DesktopModules\Forum\Forum_ThreadSplit.ascx
+DesktopModules\Forum\PublicProfile.ascx
 Install\Module\Forum_03.20.08_Install.resources
 Install\Module\Forum_03.20.09_Install.resources
 Install\Module\Forum_04.04.03_Install.resources

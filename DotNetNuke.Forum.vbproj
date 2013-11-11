@@ -136,6 +136,7 @@
     <Compile Include="Components\BaseControl\ModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Business\SearchableController.vb" />
     <Compile Include="Components\Configuration\Configuration.vb" />
     <Compile Include="Components\Configuration\Constants.vb" />
     <Compile Include="Components\BaseControl\DNNForum.vb" />
@@ -445,13 +446,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Providers\Sitemap\ThreadSitemap.vb" />
-    <Compile Include="PublicProfile.ascx.designer.vb">
-      <DependentUpon>PublicProfile.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="PublicProfile.ascx.vb">
-      <DependentUpon>PublicProfile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Admin\UCP.ascx.designer.vb">
       <DependentUpon>UCP.ascx</DependentUpon>
     </Compile>
@@ -785,7 +779,6 @@
     <Content Include="Controls\UCP_Tracking.ascx" />
     <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="Admin\MCP.ascx" />
-    <Content Include="PublicProfile.ascx" />
     <Content Include="Themes\Blue\Blue.css" />
     <Content Include="Themes\Blue\images\alt_header_bg.gif" />
     <Content Include="Themes\Blue\images\alt_header_bg.jpg" />

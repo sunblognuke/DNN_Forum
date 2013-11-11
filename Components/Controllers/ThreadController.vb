@@ -1,5 +1,5 @@
-'
-' DotNetNuke® - http://www.dotnetnuke.com
+ï»¿'
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -28,8 +28,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Public Class ThreadController
-		Implements DotNetNuke.Entities.Modules.ISearchable
-		Implements IEmailQueueable
+        Implements IEmailQueueable
 
 #Region "Private Members"
 
@@ -316,86 +315,15 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Optional Interfaces"
 
-		''' <summary>
-		''' This is called by the framework's indexing.  This is the only time it 
-		''' is called.  It gathers all posts added which are not private based on
-		''' the date of the post and the last date set of indexing.  This is what
-		''' exposes data to site search.
-		''' </summary>
-		''' <param name="ModInfo"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		''' </history>
-		Public Function GetSearchItems(ByVal ModInfo As Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements Entities.Modules.ISearchable.GetSearchItems
-			Dim objModules As New Entities.Modules.ModuleController
+        ''' <summary>
+        ''' Calls the email queue task to queue up one email for mass distribution
+        ''' </summary>
+        Public Function QueueEmail(ByVal EmailFromAddress As String, ByVal FromFriendlyName As String, ByVal EmailPriority As Integer, ByVal EmailHTMLBody As String, ByVal EmailTextBody As String, ByVal EmailSubject As String, ByVal PortalID As Integer, ByVal QueuePriority As Integer, ByVal ModuleID As Integer, ByVal EnableFriendlyToName As Boolean, ByVal DistroCall As String, ByVal DistroIsSproc As Boolean, ByVal DistroParams As String, ByVal ScheduleStartDate As Date, ByVal PersonalizeEmail As Boolean, ByVal Attachment As String) As EmailQueueTaskInfo Implements IEmailQueueable.QueueEmail
+            Dim EmailQueueTask As EmailQueueTaskInfo
+            EmailQueueTask = New EmailQueueTaskInfo(EmailFromAddress, FromFriendlyName, EmailPriority, EmailHTMLBody, EmailTextBody, EmailSubject, PortalID, QueuePriority, ModuleID, EnableFriendlyToName, DistroCall, DistroIsSproc, DistroParams, ScheduleStartDate, PersonalizeEmail, Attachment)
 
-			' get the date of the last index operation from module settings
-			Dim StartDate As DateTime = Null.NullDate
-			Dim settings As Hashtable = objModules.GetModuleSettings(ModInfo.ModuleID)
-			If Not settings("LastIndexDate") Is Nothing Then
-				Try
-					Dim tempDate As Double
-					tempDate = (CType(settings("LastIndexDate"), Double))
-					StartDate = Utilities.ForumUtils.NumToDate(tempDate)
-				Catch exc As Exception
-					LogException(exc)
-				End Try
-			End If
-
-			' save the current date
-			Dim LastIndexDate As DateTime = Now()
-
-			' get all posts since the last index date
-			Dim SearchItemCollection As New Services.Search.SearchItemInfoCollection
-			Dim ThreadSearchCollection As ArrayList = CBO.FillCollection(DotNetNuke.Modules.Forum.DataProvider.Instance().ISearchable(ModInfo.ModuleID, StartDate), GetType(ThreadSearchInfo))
-			Dim thread As ThreadSearchInfo
-
-			' iterate through the posts and create a search item collection
-			For Each thread In ThreadSearchCollection
-				Dim threadBody As String = HttpUtility.HtmlDecode(thread.Body)
-				Dim threadDescription As String = HtmlUtils.Shorten(threadBody, 100, "...")
-				Dim SearchItem As Services.Search.SearchItemInfo = New Services.Search.SearchItemInfo(thread.Subject, threadDescription, thread.CreatedByUser, thread.CreatedDate, ModInfo.ModuleID, thread.PostID.ToString, threadBody, "forumid=" & thread.ForumID & "&postid=" & thread.PostID & "&scope=posts", 0)
-				If Not SearchItem Is Nothing Then
-					SearchItemCollection.Add(SearchItem)
-				End If
-			Next
-
-			' update the last index date
-			objModules.UpdateModuleSetting(ModInfo.ModuleID, "LastIndexDate", Utilities.ForumUtils.DateToNum(LastIndexDate).ToString)
-
-			' return the search item collection
-			Return SearchItemCollection
-		End Function
-
-		''' <summary>
-		''' Calls the email queue task to queue up one email for mass distribution
-		''' </summary>
-		''' <param name="EmailFromAddress"></param>
-		''' <param name="FromFriendlyName"></param>
-		''' <param name="EmailPriority"></param>
-		''' <param name="EmailHTMLBody"></param>
-		''' <param name="EmailTextBody"></param>
-		''' <param name="EmailSubject"></param>
-		''' <param name="PortalID"></param>
-		''' <param name="QueuePriority"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="EnableFriendlyToName"></param>
-		''' <param name="DistroCall"></param>
-		''' <param name="DistroIsSproc"></param>
-		''' <param name="ScheduleStartDate"></param>
-		''' <param name="PersonalizeEmail"></param>
-		''' <param name="Attachment"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function QueueEmail(ByVal EmailFromAddress As String, ByVal FromFriendlyName As String, ByVal EmailPriority As Integer, ByVal EmailHTMLBody As String, ByVal EmailTextBody As String, ByVal EmailSubject As String, ByVal PortalID As Integer, ByVal QueuePriority As Integer, ByVal ModuleID As Integer, ByVal EnableFriendlyToName As Boolean, ByVal DistroCall As String, ByVal DistroIsSproc As Boolean, ByVal DistroParams As String, ByVal ScheduleStartDate As Date, ByVal PersonalizeEmail As Boolean, ByVal Attachment As String) As EmailQueueTaskInfo Implements IEmailQueueable.QueueEmail
-			Dim EmailQueueTask As EmailQueueTaskInfo
-			EmailQueueTask = New EmailQueueTaskInfo(EmailFromAddress, FromFriendlyName, EmailPriority, EmailHTMLBody, EmailTextBody, EmailSubject, PortalID, QueuePriority, ModuleID, EnableFriendlyToName, DistroCall, DistroIsSproc, DistroParams, ScheduleStartDate, PersonalizeEmail, Attachment)
-
-			Return EmailQueueTask
-		End Function
+            Return EmailQueueTask
+        End Function
 #End Region
 
 	End Class

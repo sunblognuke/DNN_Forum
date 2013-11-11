@@ -23,66 +23,61 @@ Option Explicit On
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Sitemap
 
-Namespace DotNetNuke.Modules.Forum.Components.Providers
+Namespace DotNetNuke.Modules.Forum.Providers
 
-	''' <summary>
-	''' This is the seo sitemap provider for the core forum module. 
-	''' </summary>
-	''' <remarks></remarks>
-	Public Class ThreadSitemap
-		Inherits SitemapProvider
+    ''' <summary>
+    ''' This is the seo sitemap provider for the core forum module. 
+    ''' </summary>
+    Public Class ThreadSitemap
+        Inherits SitemapProvider
 
-		''' <summary>
-		''' Builds a collection of sitemap url's which are then used by the Sitemap Provider for the Forum module to generate pages for the SEO sitemap. 
-		''' </summary>
-		''' <param name="portalId"></param>
-		''' <param name="ps"></param>
-		''' <param name="version"></param>
-		''' <returns></returns>
-		''' <remarks>Only public forums are included in the seo sitemap.</remarks>
-		Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
-			Dim threadURL As SitemapUrl
-			Dim urls As New List(Of SitemapUrl)
-			Dim cntThread As New ThreadController()
+        ''' <summary>
+        ''' Builds a collection of sitemap url's which are then used by the Sitemap Provider for the Forum module to generate pages for the SEO sitemap. 
+        ''' </summary>
+        ''' <remarks>Only public forums are included in the seo sitemap.</remarks>
+        Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
+            Dim threadURL As SitemapUrl
+            Dim urls As New List(Of SitemapUrl)
+            Dim cntThread As New ThreadController()
 
-			Dim entries As List(Of ThreadInfo) = cntThread.GetSitemapThreads(portalId)
+            Dim entries As List(Of ThreadInfo) = cntThread.GetSitemapThreads(portalId)
 
-			For Each objThread As ThreadInfo In entries
-				threadURL = GetThreadUrl(objThread)
-				urls.Add(threadURL)
-			Next
-			Return urls
-		End Function
+            For Each objThread As ThreadInfo In entries
+                threadURL = GetThreadUrl(objThread)
+                urls.Add(threadURL)
+            Next
+            Return urls
+        End Function
 
-		''' <summary>
-		''' Creates a seo sitemap url, with priority, change frequency
-		''' </summary>
-		''' <param name="objThread"></param>
-		''' <returns>A single sitemap url object.</returns>
-		''' <remarks></remarks>
-		Private Function GetThreadUrl(ByVal objThread As ThreadInfo) As SitemapUrl
-			Dim pageUrl As New SitemapUrl
-			pageUrl.Url = Forum.Utilities.Links.ContainerViewThreadLink(objThread.TabID, objThread.ForumID, objThread.ThreadID)
-			pageUrl.Priority = objThread.ContainingForum.SitemapPriority
-			pageUrl.LastModified = objThread.LastApprovedPost.CreatedDate
+        ''' <summary>
+        ''' Creates a seo sitemap url, with priority, change frequency
+        ''' </summary>
+        ''' <param name="objThread"></param>
+        ''' <returns>A single sitemap url object.</returns>
+        ''' <remarks></remarks>
+        Private Function GetThreadUrl(ByVal objThread As ThreadInfo) As SitemapUrl
+            Dim pageUrl As New SitemapUrl
+            pageUrl.Url = Forum.Utilities.Links.ContainerViewThreadLink(objThread.TabID, objThread.ForumID, objThread.ThreadID)
+            pageUrl.Priority = objThread.ContainingForum.SitemapPriority
+            pageUrl.LastModified = objThread.LastApprovedPost.CreatedDate
 
-			If objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Never
-			ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 6, DateTime.Now()) Then
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Yearly
-			ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 1, DateTime.Now()) Then
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Monthly
-			ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Day, 6, DateTime.Now()) Then
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
-			ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Hour, 12, DateTime.Now()) Then
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily
-			Else
-				pageUrl.ChangeFrequency = SitemapChangeFrequency.Hourly
-			End If
+            If objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Never
+            ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 6, DateTime.Now()) Then
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Yearly
+            ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 1, DateTime.Now()) Then
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Monthly
+            ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Day, 6, DateTime.Now()) Then
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
+            ElseIf objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Hour, 12, DateTime.Now()) Then
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily
+            Else
+                pageUrl.ChangeFrequency = SitemapChangeFrequency.Hourly
+            End If
 
-			Return pageUrl
-		End Function
+            Return pageUrl
+        End Function
 
-	End Class
+    End Class
 
 End Namespace

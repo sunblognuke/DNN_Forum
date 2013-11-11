@@ -762,19 +762,15 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <summary>
 		''' Navigates user to a page showing them there is no content to display.
 		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleId"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function NoContentLink(ByVal TabId As Integer, ByVal ModuleId As Integer) As String
-			Dim url As String
-			Dim params() As String
+        Shared Function NoContentLink(ByVal TabId As Integer, ByVal ModuleId As Integer) As String
+            Dim url As String
+            Dim params() As String
 
-			params = New String(0) {"mid=" & ModuleId.ToString}
-			url = NavigateURL(TabId, ForumPage.ContentRemoved.ToString, params)
+            params = New String(0) {"mid=" & ModuleId.ToString}
+            url = NavigateURL(TabId, ForumPage.ContentRemoved.ToString, params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
 		''' <summary>
 		''' Navigates user to the core unauthorized access page.
@@ -782,11 +778,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function UnAuthorizedLink() As String
-			Dim url As String
-
-			url = NavigateURL("Access Denied")
-
-			Return url
+            Return NavigateURL("Access Denied")
 		End Function
 
 #End Region
