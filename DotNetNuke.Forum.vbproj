@@ -129,7 +129,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ACP.ascx.designer.vb">
+    <Compile Include="Admin\ACP.ascx.designer.vb">
       <DependentUpon>ACP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\BaseControl\BaseControl.vb" />
@@ -434,13 +434,13 @@
       <DependentUpon>UCP_Tracking.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_PostEdit.ascx.designer.vb">
+    <Compile Include="Admin\Forum_PostEdit.ascx.designer.vb">
       <DependentUpon>Forum_PostEdit.ascx</DependentUpon>
     </Compile>
-    <Compile Include="MCP.ascx.designer.vb">
+    <Compile Include="Admin\MCP.ascx.designer.vb">
       <DependentUpon>MCP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="MCP.ascx.vb">
+    <Compile Include="Admin\MCP.ascx.vb">
       <DependentUpon>MCP.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -452,10 +452,10 @@
       <DependentUpon>PublicProfile.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UCP.ascx.designer.vb">
+    <Compile Include="Admin\UCP.ascx.designer.vb">
       <DependentUpon>UCP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UCP.ascx.vb">
+    <Compile Include="Admin\UCP.ascx.vb">
       <DependentUpon>UCP.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -493,7 +493,7 @@
     <Compile Include="Forum_Container.ascx.designer.vb">
       <DependentUpon>Forum_Container.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_ContentRemoved.ascx.designer.vb">
+    <Compile Include="Admin\Forum_ContentRemoved.ascx.designer.vb">
       <DependentUpon>Forum_ContentRemoved.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\ACP_Email.ascx.designer.vb">
@@ -505,19 +505,19 @@
     <Compile Include="Controls\ACP_ForumManage.ascx.designer.vb">
       <DependentUpon>ACP_ForumManage.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_ModuleSettings.ascx.designer.vb">
+    <Compile Include="Admin\Forum_ModuleSettings.ascx.designer.vb">
       <DependentUpon>Forum_ModuleSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_PostDelete.ascx.designer.vb">
+    <Compile Include="Admin\Forum_PostDelete.ascx.designer.vb">
       <DependentUpon>Forum_PostDelete.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_PostModerate.ascx.designer.vb">
+    <Compile Include="Admin\Forum_PostModerate.ascx.designer.vb">
       <DependentUpon>Forum_PostModerate.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_PostReport.ascx.designer.vb">
+    <Compile Include="Admin\Forum_PostReport.ascx.designer.vb">
       <DependentUpon>Forum_PostReport.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_PostReport.ascx.vb">
+    <Compile Include="Admin\Forum_PostReport.ascx.vb">
       <DependentUpon>Forum_PostReport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -533,17 +533,17 @@
     <Compile Include="Controls\ACP_Rating.ascx.designer.vb">
       <DependentUpon>ACP_Rating.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_ThreadMove.ascx.designer.vb">
+    <Compile Include="Admin\Forum_ThreadMove.ascx.designer.vb">
       <DependentUpon>Forum_ThreadMove.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_ThreadSplit.ascx.designer.vb">
+    <Compile Include="Admin\Forum_ThreadSplit.ascx.designer.vb">
       <DependentUpon>Forum_ThreadSplit.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Forum_ThreadSplit.ascx.vb">
+    <Compile Include="Admin\Forum_ThreadSplit.ascx.vb">
       <DependentUpon>Forum_ThreadSplit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ACP.ascx.vb">
+    <Compile Include="Admin\ACP.ascx.vb">
       <DependentUpon>ACP.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -555,7 +555,7 @@
       <DependentUpon>Forum_Container.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_ContentRemoved.ascx.vb">
+    <Compile Include="Admin\Forum_ContentRemoved.ascx.vb">
       <DependentUpon>Forum_ContentRemoved.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -575,19 +575,19 @@
       <DependentUpon>ACP_Avatar.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_ModuleSettings.ascx.vb">
+    <Compile Include="Admin\Forum_ModuleSettings.ascx.vb">
       <DependentUpon>Forum_ModuleSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_PostDelete.ascx.vb">
+    <Compile Include="Admin\Forum_PostDelete.ascx.vb">
       <DependentUpon>Forum_PostDelete.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_PostEdit.ascx.vb">
+    <Compile Include="Admin\Forum_PostEdit.ascx.vb">
       <DependentUpon>Forum_PostEdit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_PostModerate.ascx.vb">
+    <Compile Include="Admin\Forum_PostModerate.ascx.vb">
       <DependentUpon>Forum_PostModerate.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -607,7 +607,7 @@
       <DependentUpon>ACP_Rating.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forum_ThreadMove.ascx.vb">
+    <Compile Include="Admin\Forum_ThreadMove.ascx.vb">
       <DependentUpon>Forum_ThreadMove.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -630,9 +630,6 @@
     <None Include="Forum.dnn">
       <SubType>Designer</SubType>
     </None>
-    <None Include="My Project\ForumClassDiagram.cd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
@@ -652,8 +649,8 @@
     <None Include="Themes\FlatBlue\images\forum_unmoderated_new.png.bak" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.00.03.txt" />
-    <Content Include="App_LocalResources\ACP.ascx.resx">
+    <Content Include="06.00.00.txt" />
+    <Content Include="Admin\App_LocalResources\ACP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\ACP_Advertisement.ascx" />
@@ -663,7 +660,7 @@
     <Content Include="App_LocalResources\Forum_Container.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_ContentRemoved.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_ContentRemoved.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\App_LocalResources\ACP_Email.ascx.resx">
@@ -675,16 +672,16 @@
     <Content Include="Controls\App_LocalResources\ACP_ForumManage.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_ModuleSettings.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_ModuleSettings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_PostDelete.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_PostDelete.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_PostEdit.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_PostEdit.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_PostModerate.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_PostModerate.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_LocalResources\Forum_Search.ascx.resx">
@@ -696,13 +693,13 @@
     <Content Include="Controls\App_LocalResources\ACP_PopStatus.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_ThreadMove.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_ThreadMove.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\App_LocalResources\ACP_User.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\UCP.ascx.resx">
+    <Content Include="Admin\App_LocalResources\UCP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_LocalResources\SharedResources.resx">
@@ -712,33 +709,33 @@
     <Content Include="Extensions\Markdown\wmd\jquery.wmd.min.js" />
     <Content Include="Extensions\Markdown\wmd\wmd.css" />
     <Content Include="Extensions\Markdown\wmd\wmdStarter.js" />
-    <Content Include="Forum_PostReport.ascx" />
-    <Content Include="Forum_ThreadSplit.ascx" />
+    <Content Include="Admin\Forum_PostReport.ascx" />
+    <Content Include="Admin\Forum_ThreadSplit.ascx" />
     <Content Include="Documentation\License.txt" />
-    <Content Include="ACP.ascx" />
+    <Content Include="Admin\ACP.ascx" />
     <Content Include="Controls\ACP_Filter.ascx" />
     <Content Include="Forum_Container.ascx" />
-    <Content Include="Forum_ContentRemoved.ascx" />
+    <Content Include="Admin\Forum_ContentRemoved.ascx" />
     <Content Include="Controls\ACP_Email.ascx" />
     <Content Include="Controls\ACP_EmailTemplate.ascx" />
     <Content Include="Controls\ACP_ForumManage.ascx" />
     <Content Include="Controls\ACP_Avatar.ascx" />
-    <Content Include="Forum_ModuleSettings.ascx" />
-    <Content Include="Forum_PostDelete.ascx" />
-    <Content Include="Forum_PostEdit.ascx" />
-    <Content Include="Forum_PostModerate.ascx" />
+    <Content Include="Admin\Forum_ModuleSettings.ascx" />
+    <Content Include="Admin\Forum_PostDelete.ascx" />
+    <Content Include="Admin\Forum_PostEdit.ascx" />
+    <Content Include="Admin\Forum_PostModerate.ascx" />
     <Content Include="Forum_Rss.aspx" />
     <Content Include="Forum_Search.ascx" />
     <Content Include="Controls\ACP_General.ascx" />
     <Content Include="Controls\ACP_Rating.ascx" />
-    <Content Include="Forum_ThreadMove.ascx" />
+    <Content Include="Admin\Forum_ThreadMove.ascx" />
     <Content Include="Controls\ACP_User.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\Forum_PostReport.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_PostReport.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Forum_ThreadSplit.ascx.resx">
+    <Content Include="Admin\App_LocalResources\Forum_ThreadSplit.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -787,7 +784,7 @@
     <Content Include="Controls\UCP_Signature.ascx" />
     <Content Include="Controls\UCP_Tracking.ascx" />
     <Content Include="Documentation\ReleaseNotes.txt" />
-    <Content Include="MCP.ascx" />
+    <Content Include="Admin\MCP.ascx" />
     <Content Include="PublicProfile.ascx" />
     <Content Include="Themes\Blue\Blue.css" />
     <Content Include="Themes\Blue\images\alt_header_bg.gif" />
@@ -1063,7 +1060,7 @@
     <Content Include="Themes\FlatBlue\images\s_update.png" />
     <Content Include="Themes\FlatBlue\images\thread_newest.png" />
     <Content Include="Themes\FlatBlue\images\unchecked.png" />
-    <Content Include="UCP.ascx" />
+    <Content Include="Admin\UCP.ascx" />
     <Content Include="Controls\UCP_Main.ascx" />
     <Content Include="Controls\UCP_Settings.ascx" />
     <Content Include="Controls\UCP_Profile.ascx" />
@@ -1120,7 +1117,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\App_LocalResources\MCP_Menu.ascx.resx" />
-    <Content Include="App_LocalResources\MCP.ascx.resx">
+    <Content Include="Admin\App_LocalResources\MCP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\App_LocalResources\MCP_ModQueue.ascx.resx">
@@ -1140,6 +1137,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Controls\App_LocalResources\ACP_Advertisement.ascx.resx" />
+    <Content Include="Admin\App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="js\forum.js" />
   </ItemGroup>
   <ItemGroup />

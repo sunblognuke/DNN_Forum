@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="05.00.03">
+		<package name="DNN_Forum" type="Module" version="06.00.00">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -141,7 +141,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>PostEdit</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_PostEdit.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_PostEdit.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Edit Post</controlTitle>
 										<controlType>View</controlType>
@@ -151,7 +151,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>PostModerate</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_PostModerate.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_PostModerate.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Moderate Post</controlTitle>
 										<controlType>View</controlType>
@@ -161,7 +161,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>MCP</controlKey>
-										<controlSrc>DesktopModules/Forum/MCP.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/MCP.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Moderator Control Panel</controlTitle>
 										<controlType>View</controlType>
@@ -171,7 +171,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>PostReport</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_PostReport.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_PostReport.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Report Post</controlTitle>
 										<controlType>View</controlType>
@@ -181,7 +181,7 @@
 									</moduleControl>	 
 									<moduleControl>
 										<controlKey>ThreadMove</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_ThreadMove.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_ThreadMove.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Move Thread</controlTitle>
 										<controlType>View</controlType>
@@ -191,7 +191,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>UCP</controlKey>
-										<controlSrc>DesktopModules/Forum/UCP.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/UCP.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>User Control Panel</controlTitle>
 										<controlType>View</controlType>
@@ -201,7 +201,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_ModuleSettings.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_ModuleSettings.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Forum Settings</controlTitle>
 										<controlType>Edit</controlType>
@@ -211,7 +211,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>ACP</controlKey>
-										<controlSrc>DesktopModules/Forum/ACP.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/ACP.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Admin Control Panel</controlTitle>
 										<controlType>View</controlType>
@@ -221,7 +221,7 @@
 									</moduleControl>	  
 									<moduleControl>
 										<controlKey>ContentRemoved</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_ContentRemoved.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_ContentRemoved.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Content Removed</controlTitle>
 										<controlType>Anonymous</controlType>
@@ -241,7 +241,7 @@
 									</moduleControl>
 									<moduleControl>
 										<controlKey>ThreadSplit</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_ThreadSplit.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_ThreadSplit.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Split Thread</controlTitle>
 										<controlType>View</controlType>
@@ -283,7 +283,7 @@
 						<assembly>
 							<name>DotNetNuke.Modules.Forum.dll</name>
 							<sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
-							<version>05.00.03</version>
+							<version>06.00.00</version>
 						</assembly>
 					</assemblies>
 				</component>

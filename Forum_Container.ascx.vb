@@ -140,9 +140,9 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 ' Redirect to user's default forum if user access forum via menu
-                If (Not CType(Settings("defaultforumid"), String) Is Nothing) AndAlso
-                   (DNNForum.ViewType = ForumScope.Groups) AndAlso
-                   (Request.UrlReferrer Is Nothing) Then
+                If (Not CType(Settings("defaultforumid"), String) Is Nothing) AndAlso _
+                    (DNNForum.ViewType = ForumScope.Groups) AndAlso _
+                    (Request.UrlReferrer Is Nothing) Then
                     If Not CType(Settings("defaultforumid"), Integer) = 0 Then
                         Response.Redirect(Utilities.Links.ContainerViewForumLink(TabId, CType(Settings("defaultforumid"), Integer), False), False)
                     End If

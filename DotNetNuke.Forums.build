@@ -26,7 +26,7 @@
 		<property name="ModuleName" value="Forum"  overwrite="false"  />
 		<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-		<property name="fullversion" value="05.00.03" />
+		<property name="fullversion" value="06.00.00" />
 
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />
@@ -86,7 +86,9 @@
 				<include name="**/images/*" />
 				<include name="**/js/*" />
 				<include name="**/Themes/Blue/*" />
+                <include name="**/Themes/FlatBlue/*" />
 				<include name="**/Resources/**/*" />
+                <include name="**/Extensions/**/*" />
 				<include name="**/${localresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.xml" />
@@ -138,6 +140,8 @@
 				<include name="**/images/*" />
 				<include name="**/js/*" />
 				<include name="**/Themes/Blue/*" />
+                <include name="**/Themes/FlatBlue/*" />
+                <include name="**/Extensions/**/*" />
 				<include name="**/Resources/**/*" />
 				<include name="**/${localresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.resx" />
@@ -199,6 +203,8 @@
 				<exclude name="**/*.ascx" />
 				<exclude name="**/Themes/**/*" />
 				<exclude name="**/Controls/**/*" />
+                <exclude name="**/Admin/**/*" />
+                <exclude name="**/Extensions/**/*" />
 				<exclude name="**/DNNDebug.aspx" />
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>
@@ -230,6 +236,8 @@
 				<exclude name="**/*.ascx" />
 				<exclude name="**/Themes/**/*" />
 				<exclude name="**/Controls/**/*" />
+                <exclude name="**/Admin/**/*" />
+                <exclude name="**/Extensions/**/*" />
 				<exclude name="**/DNNDebug.aspx" />
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>

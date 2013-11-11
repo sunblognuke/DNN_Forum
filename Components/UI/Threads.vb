@@ -1189,8 +1189,8 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' This allows for spacing between posts
         ''' </summary>
-        Private Sub RenderSpacerRow(ByVal wr As HtmlTextWriter,
-                                    Optional ByVal cssClass As String = "Forum_SpacerRow",
+        Private Sub RenderSpacerRow(ByVal wr As HtmlTextWriter, _
+                                    Optional ByVal cssClass As String = "Forum_SpacerRow", _
                                     Optional ByVal colspan As String = "2")
             RenderRowBegin(wr) '<tr> 
             RenderCellBegin(wr, cssClass, "", "", "", "", colspan, "")  ' <td>
