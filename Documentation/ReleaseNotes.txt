@@ -1,8 +1,8 @@
 <h3>Forum 6.0.0</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
-	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
-	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+	<a href="mailto:support@sunblognuke.com">support@sunblognuke.com</a><br />
+	<a href="https://github.com/sunblognuke/DNN_Forum">https://github.com/sunblognuke/DNN_Forum</a><br />
 </p>
 <hr/>
 <div class="License">

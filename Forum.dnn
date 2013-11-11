@@ -5,9 +5,9 @@
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
 				<name>Forum Module Project</name>
-				<organization>DotNetNuke Corporation</organization>
-				<url>http://www.dotnetnuke.com/Development/Forge/ModuleForums/tabid/820/Default.aspx</url>
-				<email>chris.paterra@dotnetnuke.com</email>
+				<organization>SunBlogNuke Corporation</organization>
+                <url>https://github.com/sunblognuke/DNN_Forum</url>
+				<email>support@sunblognuke.com</email>
 			</owner>
 			<license src="License.txt"></license>
 			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
