@@ -288,6 +288,9 @@
   <data name="LatestThreads.Text" xml:space="preserve">
     <value>Display threads from: </value>
   </data>
+  <data name="OrderPostsFrom.Text" xml:space="preserve">
+    <value>Order posts from: </value>
+  </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>(None Specified)</value>
   </data>

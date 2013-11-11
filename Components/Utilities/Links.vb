@@ -293,19 +293,11 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Users ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
-            'Dim url As String
-            'Dim params As String()
-
-            'If NoReply Then
-            '	params = New String(2) {"forumid=" & ForumId, "scope=threads", "noreply=1"}
-            '	url = NavigateURL(TabId, "", params)
-            'Else
-            '	params = New String(1) {"forumid=" & ForumId, "scope=threads"}
-            '	url = NavigateURL(TabId, "", params)
-            'End If
-
-            'Return url
-            Return ContainerViewForumLink(TabId, ForumId, "noreply=1")
+            Dim keyPair As String = String.Empty
+            If NoReply Then
+                keyPair = "noreply=1"
+            End If
+            Return ContainerViewForumLink(TabId, ForumId, keyPair)
         End Function
 
         Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal keyPair As String) As String

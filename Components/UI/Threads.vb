@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         '''  The forum we are viewing the threads for.
         ''' </summary>
-        Private ReadOnly Property objForum() As ForumInfo
+        Private ReadOnly Property CurrentForum() As ForumInfo
             Get
                 Dim cntForum As New ForumController
                 Return cntForum.GetForumItemCache(ForumID)
@@ -256,9 +256,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Creates a new instance of this class
         ''' </summary>
-        ''' <param name="forum"></param>
-        ''' <remarks>
-        ''' </remarks>
         Public Sub New(ByVal forum As DNNForum)
             MyBase.New(forum)
 
@@ -266,13 +263,13 @@ Namespace DotNetNuke.Modules.Forum
                 ' Redirect the user to the aggregated view (Prior to 4.4.4, aggregated used this view so we have to handle legacy links)
                 HttpContext.Current.Response.Redirect(Utilities.Links.ContainerAggregatedLink(TabID, False), True)
             Else
-                If Not objForum.IsActive Then
+                If Not CurrentForum.IsActive Then
                     ' we should consider setting type of redirect here?
 
                     MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
                 End If
 
-                If Not (objForum.PublicView) Then
+                If Not (CurrentForum.PublicView) Then
                     ' The forum is private, see if we have proper view perms here
 
                     If Not objSecurity.IsAllowedToViewPrivateForum Then
@@ -285,19 +282,25 @@ Namespace DotNetNuke.Modules.Forum
 
             'We are past knowing the user should be here, let's handle SEO oriented things
             If objConfig.OverrideTitle Then
-                Me.BaseControl.BasePage.Title = objForum.Name & " - " & Me.BaseControl.PortalName
+                Me.BaseControl.BasePage.Title = CurrentForum.Name & " - " & Me.BaseControl.PortalName
             End If
 
             ' Consider add metakeywords via applied tags, when taxonomy is integrated
             If objConfig.OverrideDescription Then
-                MyBase.BasePage.Description = "," + objForum.Name + "," + Me.BaseControl.PortalName
+                MyBase.BasePage.Description = "," + CurrentForum.Name + "," + Me.BaseControl.PortalName
             End If
 
+            BuildPagingParameters()
+
+            BuildFilter()
+        End Sub
+
+        Private Sub BuildPagingParameters()
             ' We need to make sure the user's thread pagesize can handle this 
             '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
             If Not HttpContext.Current.Request.QueryString("currentpage") Is Nothing Then
                 Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("currentpage"))
-                Dim TotalThreads As Integer = objForum.TotalThreads
+                Dim TotalThreads As Integer = CurrentForum.TotalThreads
                 Dim userThreadsPerPage As Integer
 
                 If CurrentForumUser.UserID > 0 Then
@@ -320,6 +323,12 @@ Namespace DotNetNuke.Modules.Forum
                 CurrentPage = ThreadPageToShow
             End If
 
+            If CurrentPage > 0 Then
+                CurrentPage = CurrentPage - 1
+            End If
+        End Sub
+
+        Private Sub BuildFilter()
             Dim Term As New SearchTerms
             If CurrentForumUser.UserID > -1 Then
                 Dim dateFilter As Integer = CurrentForumUser.TrackingDuration
@@ -372,12 +381,7 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             Filter = Term.WhereClause
-
-            If CurrentPage > 0 Then
-                CurrentPage = CurrentPage - 1
-            End If
         End Sub
-
 #End Region
 
         ''' <summary>
@@ -408,7 +412,7 @@ Namespace DotNetNuke.Modules.Forum
 
             ddlDateFilter = New DotNetNuke.Web.UI.WebControls.DnnComboBox
             With ddlDateFilter
-                '.CssClass = "Forum_NormalTextBox"
+                .CssClass = "Forum_NormalTextBox"
                 .Skin = "WebBlue"
                 .ID = "lstDateFilter"
                 .Width = Unit.Parse("160")
@@ -524,8 +528,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Loads all the handlers for the controls used in this view
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub AddControlHandlers()
             Try
                 If CurrentForumUser.UserID > 0 Then
@@ -545,8 +547,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Loads the controls early on in the control's lifecycle so they can be used later on
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub AddControlsToTree()
             Try
                 If CurrentForumUser.UserID > 0 Then
@@ -565,8 +565,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Binds the controls used in this view, happens each postback too
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub BindControls()
             Try
                 ddlDateFilter.Items.Clear()
@@ -700,42 +698,19 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "Forum_NavBarButton", "", "50%", "right", "", "", "") ' <td> 
             'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
             If CurrentForumUser.UserID > 0 And (Not ForumID = -1) Then
-                If Not objForum.PublicPosting Then
+                If Not CurrentForum.PublicPosting Then
                     If objSecurity.IsAllowedToStartRestrictedThread Then
-                        'RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0") '<Table>            
-                        'RenderRowBegin(wr) '<tr>
                         url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
-
-                        'RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
                         If CurrentForumUser.IsBanned Then
                             RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "", False)
                         Else
                             RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "")
                         End If
-                        'RenderCellEnd(wr) ' </td>
-
-                        'RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-                        'RenderCellEnd(wr) ' </td>
-                        'RenderRowEnd(wr) ' </tr>
-
-                        'RenderRowBegin(wr) '<tr>
-                        'RenderCellBegin(wr, "", "", "", "", "middle", "", "")   '<td>   
-                        'RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
-                        'RenderCellEnd(wr) ' </Td>
-                        'RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-                        'RenderCellEnd(wr) ' </Td>
-                        'RenderRowEnd(wr) ' </tr>
-
-                        'RenderTableEnd(wr) ' </table>
                     Else
                         wr.Write("&nbsp;")
                     End If
                 Else
-                    'RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
-                    'RenderRowBegin(wr) '<tr>
                     url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
-
-                    'RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
                     If CurrentForumUser.IsBanned Then
                         RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "", False)
                     Else
@@ -822,9 +797,8 @@ Namespace DotNetNuke.Modules.Forum
             Url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.ThreadID)
 
             'link so icon is clickable (also used below for subject)
-            wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
-            wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
-
+            'wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+            'wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
             ' see if post is pinned, priority over other icons
             If objThread.IsPinned Then
                 ' First see if the thread is popular
@@ -880,18 +854,11 @@ Namespace DotNetNuke.Modules.Forum
                 RenderImage(wr, GetMediaURL(objThread), GetMediaText(objThread), "") ' <img/>
             End If
 
-            wr.RenderEndTag() ' </A>
-            RenderCellEnd(wr) ' </td>
-
-            ' Spacing between status icon and subject
-            RenderCellBegin(wr, "", "", "1px", "left", "", "", "")  ' <td>
-            RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")   ' <img/>
+            'wr.RenderEndTag() ' </A>
             RenderCellEnd(wr) ' </td>
 
             ' cell for thread subject
             RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' <td>
-
-            wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
 
             Dim SubjectCssClass As String
             If (HasNewPosts(CurrentForumUser.UserID, objThread)) Then
@@ -899,22 +866,14 @@ Namespace DotNetNuke.Modules.Forum
             Else
                 SubjectCssClass = "Forum_Normal"
             End If
-            wr.AddAttribute(HtmlTextWriterAttribute.Class, SubjectCssClass)
-            ' Below would enable tooltip when over for thread link showing last post body, this adds extra page size we don't want here for now
-            'wr.AddAttribute(HtmlTextWriterAttribute.Title, thread.LastPostShortBody)
-            wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
-
+            Dim subject As String = objThread.Subject
             ' Format prohibited words
             If ForumControl.objConfig.FilterSubject Then
-                wr.Write(Utilities.ForumUtils.FormatProhibitedWord(objThread.Subject, objThread.CreatedDate, PortalID))
-            Else
-                wr.Write(objThread.Subject)
+                subject = Utilities.ForumUtils.FormatProhibitedWord(objThread.Subject, objThread.CreatedDate, PortalID)
             End If
-
-            RenderDivEnd(wr) ' </div> - CP - I am not sure why this has to be here
+            RenderLinkButton(wr, url, subject, SubjectCssClass)
 
             RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
-
             wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("CreatedBy")))
             If Not objConfig.EnableExternalProfile Then
                 Url = objThread.StartedByUser.UserCoreProfileLink
@@ -923,13 +882,15 @@ Namespace DotNetNuke.Modules.Forum
             End If
             RenderLinkButton(wr, Url, objThread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
-            wr.Write(String.Format(". {0}&nbsp;", ForumControl.LocalizedText("LastestPostBy")))
+            Dim publishedOnDate As String = Utilities.DateUtils.RelativeDate(objThread.LastApprovedPost.CreatedDate)
+            wr.Write(String.Format(". {0} ", ForumControl.LocalizedText("LastestPostBy")))
             If Not objConfig.EnableExternalProfile Then
                 url = objThread.LastApprovedUser.UserCoreProfileLink
             Else
                 url = Utilities.Links.UserExternalProfileLink(objThread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, CurrentForumUser.Username)
             End If
             RenderLinkButton(wr, url, objThread.LastApprovedUser.SiteAlias, "Forum_NormalSmall") ' <a/>
+            wr.Write(", " + publishedOnDate)
 
             ' correct logic to handle posts per page per user
             Dim userPostsPerPage As Integer
@@ -1159,7 +1120,7 @@ Namespace DotNetNuke.Modules.Forum
             RenderRowBegin(wr) ' <tr>
 
             ' xml link (for single forum syndication)
-            If (ForumControl.objConfig.EnableRSS And objForum.EnableRSS) AndAlso (objForum.PublicView) Then
+            If (ForumControl.objConfig.EnableRSS And CurrentForum.EnableRSS) AndAlso (CurrentForum.PublicView) Then
                 RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
 
                 wr.AddAttribute(HtmlTextWriterAttribute.Href, objConfig.SourceDirectory & "/Forum_Rss.aspx?forumid=" & Me.ForumID.ToString & "&tabid=" & TabID & "&mid=" & ModuleID)
@@ -1209,7 +1170,7 @@ Namespace DotNetNuke.Modules.Forum
             If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
                 ChildGroupView = True
             End If
-            wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, objForum, objConfig, ChildGroupView))
+            wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, CurrentForum, objConfig, ChildGroupView))
             If NoReply Then
                 wr.Write(Utilities.ForumUtils.GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, ForumID, True), Localization.GetString("Unanswered.Text", objConfig.SharedResourceFile), "/"))
             End If
@@ -1244,58 +1205,29 @@ Namespace DotNetNuke.Modules.Forum
         Private Sub RenderThreadOptions(ByVal wr As HtmlTextWriter)
             RenderRowBegin(wr) '<tr>
 
-            RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
+            RenderCellBegin(wr, "Forum_Subscription", "", "", "right", "", "", "") ' <td>
 
             RenderDivBegin(wr, "", "Forum_NormalTextBox") ' <div>
             wr.Write(ForumControl.LocalizedText("LatestThreads"))
-            RenderDivEnd(wr) ' </div>
-
-            ddlDateFilter.CssClass = "Forum_NormalTextBox"
             ddlDateFilter.RenderControl(wr)
-
-            RenderCellEnd(wr) ' </td>
-            RenderRowEnd(wr) ' </tr>
-
-            RenderSpacerRow(wr, String.Empty, "1")
+            RenderDivEnd(wr) ' </div>
 
             ' Display tracking option if user is authenticated 
             If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumID <> -1) Then
-                RenderRowBegin(wr) ' <tr>
-                RenderCellBegin(wr, "", "", "", "right", "", "", "")
+                ' Notifications section
+                RenderDivBegin(wr, "", "")
+                chkEmail.RenderControl(wr)
+                RenderDivEnd(wr)
 
                 If objSecurity.IsForumAdmin Then
+                    RenderDivBegin(wr, "", "")
                     cmdForumSubscribers.RenderControl(wr)
+                    RenderDivEnd(wr)
                 End If
-                chkEmail.RenderControl(wr)
-                RenderCellEnd(wr) ' </td>
-                RenderRowEnd(wr) ' </tr>
-
-                ' Mark As Read linkbutton
-                'RenderRowBegin(wr) ' <tr>
-                'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
-
-                '' need a new table
-                'RenderTableBegin(wr, 0, 0, "tblReadButton") ' <table>
-                'RenderRowBegin(wr) '<tr>
-
-                'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
-                'wr.Write("&nbsp;")
-                'RenderCellEnd(wr) ' </td>
-
-                'RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
-                'If objConfig.EnableUserReadManagement AndAlso CurrentForumUser.UserID > 0 Then
-                '    cmdRead.RenderControl(wr)
-                'End If
-                'RenderCellEnd(wr) ' </td>
-
-                'RenderRowEnd(wr) ' </tr>
-                'RenderTableEnd(wr) ' </table>
-
-                'RenderCellEnd(wr) ' </td>
-                'RenderRowEnd(wr) ' </tr>
-            Else
-                ' user is not logged on (or notification is not enabled)
             End If
+
+            RenderCellEnd(wr) ' </td> 
+            RenderRowEnd(wr) ' </tr>
         End Sub
 
         ''' <summary>

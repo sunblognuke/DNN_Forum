@@ -453,7 +453,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="Css">The css class being applied to the link button.</param>
         ''' <remarks>(Similar to a stringbuilder)</remarks>
         Protected Overloads Sub RenderLinkButton(ByVal wr As HtmlTextWriter, ByVal URL As String, ByVal Text As String, ByVal Css As String)
-            If Css.Length > 0 Then
+            If Not String.IsNullOrEmpty(Css) Then
                 wr.AddAttribute(HtmlTextWriterAttribute.Class, Css)
             End If
             wr.AddAttribute(HtmlTextWriterAttribute.Href, URL)

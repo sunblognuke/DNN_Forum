@@ -188,6 +188,11 @@ Namespace DotNetNuke.Modules.Forum
             AddGenericLink(String.Empty, relation, title, href)
         End Sub
 
+        Public Overridable Function CheckQueryStringWithIntType(ByVal key As String) As Boolean
+            Dim Request As HttpRequest = HttpContext.Current.Request
+            Return Request.QueryString(key) IsNot Nothing AndAlso Regex.IsMatch(Request.QueryString(key), "^\d+$")
+        End Function
+
     End Class
 
 End Namespace

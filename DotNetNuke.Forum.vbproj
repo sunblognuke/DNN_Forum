@@ -218,6 +218,7 @@
     <Compile Include="Components\UI\Unread.vb" />
     <Compile Include="Components\Utilities\AjaxLoader.vb" />
     <Compile Include="Components\Utilities\Caching.vb" />
+    <Compile Include="Components\Utilities\DateUtils.vb" />
     <Compile Include="Components\Utilities\PostContent.vb" />
     <Compile Include="Components\Utilities\ForumUtils.vb" />
     <Compile Include="Components\Utilities\Links.vb" />

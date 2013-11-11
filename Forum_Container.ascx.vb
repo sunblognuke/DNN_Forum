@@ -77,23 +77,14 @@ Namespace DotNetNuke.Modules.Forum
                 DotNetNuke.Framework.AJAX.RegisterScriptManager()
             End If
 
-            'If Not (Request.QueryString("groupid") Is Nothing) Then
-            '    _GroupID = Int32.Parse(Request.QueryString("groupid"))
-            'End If
             If CheckQueryStringWithIntType("groupid") Then
                 Integer.TryParse(Request.QueryString("groupid"), _GroupID)
             End If
 
-            'If Not (Request.QueryString("forumid") Is Nothing) Then
-            '    _ForumID = Int32.Parse(Request.QueryString("forumid"))
-            'End If
             If CheckQueryStringWithIntType("forumid") Then
                 Integer.TryParse(Request.QueryString("forumid"), _ForumID)
             End If
 
-            'If Not (Request.QueryString("threadid") Is Nothing) Then
-            '    _ThreadID = Int32.Parse(Request.QueryString("threadid"))
-            'End If
             If CheckQueryStringWithIntType("threadid") Then
                 Integer.TryParse(Request.QueryString("threadid"), _ThreadID)
             End If

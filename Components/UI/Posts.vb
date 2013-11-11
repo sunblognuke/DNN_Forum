@@ -711,8 +711,6 @@ Namespace DotNetNuke.Modules.Forum
                 'CP: NOTE: Telerik conversion
                 .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
                 .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
-                '.Items.Add(New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
-                '.Items.Add(New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
                 .ClearSelection()
             End With
 
@@ -810,7 +808,6 @@ Namespace DotNetNuke.Modules.Forum
 
             Me.cmdThreadSubscribers = New LinkButton
             With cmdThreadSubscribers
-                .CssClass = "Forum_Profile"
                 .ID = "cmdThreadSubscribers"
                 .Text = ForumControl.LocalizedText("cmdThreadSubscribers")
             End With
@@ -820,7 +817,7 @@ Namespace DotNetNuke.Modules.Forum
             AddControlsToTree()
 
             For Each post As PostInfo In PostCollection
-                Me.cmdThreadAnswer = New System.Web.UI.WebControls.LinkButton
+                Me.cmdThreadAnswer = New LinkButton
                 With cmdThreadAnswer
                     .CssClass = "Forum_AnswerText"
                     .ID = "cmdThreadAnswer" + post.PostID.ToString()
@@ -852,9 +849,10 @@ Namespace DotNetNuke.Modules.Forum
             RenderBottomBreadCrumb(wr)
             RenderSpacerRow(wr, String.Empty, "1")
             RenderTags(wr)
+            RenderOrderPosts(wr)
             RenderSpacerRow(wr, String.Empty, "1")
             RenderQuickReply(wr)
-            RenderThreadOptions(wr)
+            RenderSubscription(wr)
 
             RenderTableEnd(wr)
 
@@ -934,8 +932,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Adds the controls to the control tree
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub AddControlsToTree()
             Try
                 If objConfig.EnableThreadStatus And CurrentForumUser.UserID > 0 Then
@@ -2495,51 +2491,50 @@ Namespace DotNetNuke.Modules.Forum
             End If
         End Sub
 
-        ''' <summary>
-        ''' Renders the bottom area that includes date drop down, view subscribers link (for admin) and notification checkbox.
-        ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <remarks></remarks>
-        Private Sub RenderThreadOptions(ByVal wr As HtmlTextWriter)
-            RenderRowBegin(wr) '<tr>
-            RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td> 
-
+        Private Sub RenderOrderPosts(ByVal wr As HtmlTextWriter)
             If PostCollection.Count > 0 Then
-                ddlViewDescending.RenderControl(wr)
-            End If
-
-            RenderCellEnd(wr) ' </td> 
-            RenderRowEnd(wr) ' </tr>   
-
-            RenderSpacerRow(wr, String.Empty, "1")
-
-            ' Display tracking option if user is authenticated and post count > 0 
-            ' and user not track parent forum (make sure tracking is enabled)
-            'CP - Seperating so we can show user they are tracking at forum level if need be
-            If PostCollection.Count > 0 AndAlso CurrentForumUser.UserID > 0 And objConfig.MailNotification Then
-                ' Notifications row
                 RenderRowBegin(wr) '<tr>
-                RenderCellBegin(wr, "", "", "", "right", "", "", "")   ' <td> 
-                If objSecurity.IsForumAdmin Then
-                    cmdThreadSubscribers.RenderControl(wr)
-                End If
-
-                If TrackedForum Then
-                Else
-                    chkEmail.RenderControl(wr)
-                End If
+                RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td> 
+                wr.Write(ForumControl.LocalizedText("OrderPostsFrom"))
+                ddlViewDescending.RenderControl(wr)
                 RenderCellEnd(wr) ' </td> 
                 RenderRowEnd(wr) ' </tr>
             End If
         End Sub
 
         ''' <summary>
+        ''' Renders the bottom area that includes date drop down, view subscribers link (for admin) and notification checkbox.
+        ''' </summary>
+        Private Sub RenderSubscription(ByVal wr As HtmlTextWriter)
+            RenderRowBegin(wr) '<tr>
+            RenderCellBegin(wr, "Forum_Subscription", "", "", "right", "", "", "") ' <td> 
+
+            ' Display tracking option if user is authenticated and post count > 0 
+            ' and user not track parent forum (make sure tracking is enabled)
+            'CP - Seperating so we can show user they are tracking at forum level if need be
+            If PostCollection.Count > 0 AndAlso (CurrentForumUser.UserID > 0 And objConfig.MailNotification) Then
+                ' Notifications section
+                If TrackedForum Then
+                Else
+                    RenderDivBegin(wr, "", "")
+                    chkEmail.RenderControl(wr)
+                    RenderDivEnd(wr)
+                End If
+
+                If objSecurity.IsForumAdmin Then
+                    RenderDivBegin(wr, "", "")
+                    cmdThreadSubscribers.RenderControl(wr)
+                    RenderDivEnd(wr)
+                End If
+            End If
+
+            RenderCellEnd(wr) ' </td> 
+            RenderRowEnd(wr) ' </tr>
+        End Sub
+
+        ''' <summary>
         ''' Renders available post reply/quote/moderate, etc.  buttons
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <param name="Post"></param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub RenderCommands(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo)
             Dim author As ForumUserInfo = Post.Author
             Dim url As String = String.Empty
@@ -2569,16 +2564,26 @@ Namespace DotNetNuke.Modules.Forum
                     RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
                     RenderLinkButton(wr, url, ForumControl.LocalizedText("Split"), "Forum_Link")
                     RenderCellEnd(wr)
-                End If
 
-                'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting
-                If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
+                    ' Delete current post - the first post cannot be removed
                     url = Utilities.Links.PostDeleteLink(TabID, ModuleID, ForumID, Post.PostID, False)
 
                     RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
                     RenderLinkButton(wr, url, ForumControl.LocalizedText("Delete"), "Forum_Link")
                     RenderCellEnd(wr)
                 End If
+
+                ''Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting
+                'If CurrentForumUser.UserID > 0 AndAlso
+                '   objSecurity.IsForumModerator AndAlso
+                '   Post.ParentPostID > 0 Then
+
+                '    url = Utilities.Links.PostDeleteLink(TabID, ModuleID, ForumID, Post.PostID, False)
+
+                '    RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
+                '    RenderLinkButton(wr, url, ForumControl.LocalizedText("Delete"), "Forum_Link")
+                '    RenderCellEnd(wr)
+                'End If
 
                 'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting - Anonymous cannot edit post
                 If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
