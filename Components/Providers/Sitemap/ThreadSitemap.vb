@@ -41,11 +41,11 @@ Namespace DotNetNuke.Modules.Forum.Providers
             Dim cntThread As New ThreadController()
 
             Dim entries As List(Of ThreadInfo) = cntThread.GetSitemapThreads(portalId)
-
             For Each objThread As ThreadInfo In entries
                 threadURL = GetThreadUrl(objThread)
                 urls.Add(threadURL)
             Next
+
             Return urls
         End Function
 
@@ -60,6 +60,7 @@ Namespace DotNetNuke.Modules.Forum.Providers
             pageUrl.Url = Forum.Utilities.Links.ContainerViewThreadLink(objThread.TabID, objThread.ForumID, objThread.ThreadID)
             pageUrl.Priority = objThread.ContainingForum.SitemapPriority
             pageUrl.LastModified = objThread.LastApprovedPost.CreatedDate
+            pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily
 
             If objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then
                 pageUrl.ChangeFrequency = SitemapChangeFrequency.Never

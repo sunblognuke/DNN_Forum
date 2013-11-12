@@ -85,53 +85,35 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 			End If
 		End Sub
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <param name="GroupID"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub UpdateForumCache(ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
-			ForumController.ResetForumItemCache(ForumID)
+        Public Shared Sub UpdateForumCache(ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
+            ForumController.ResetForumItemCache(ForumID)
 
-			If ParentID > 0 Then
-				ForumController.ResetForumItemCache(ParentID)
-				ForumController.ResetChildForumsCache(ParentID, GroupID)
-				ForumController.ResetChildForumsCache(0, GroupID)
-			Else
-				ForumController.ResetChildForumsCache(0, GroupID)
-			End If
+            If ParentID > 0 Then
+                ForumController.ResetForumItemCache(ParentID)
+                ForumController.ResetChildForumsCache(ParentID, GroupID)
+                ForumController.ResetChildForumsCache(0, GroupID)
+            Else
+                ForumController.ResetChildForumsCache(0, GroupID)
+            End If
 
-			If GroupID > 0 Then
-				UpdateGroupCache(GroupID, ModuleID)
-			End If
-		End Sub
+            If GroupID > 0 Then
+                UpdateGroupCache(GroupID, ModuleID)
+            End If
+        End Sub
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="GroupID"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub UpdateGroupCache(ByVal GroupID As Integer, ByVal ModuleID As Integer)
-			GroupController.ResetGroupCacheItem(GroupID)
-			ForumController.ResetParentForumsCache(GroupID)
+        Public Shared Sub UpdateGroupCache(ByVal GroupID As Integer, ByVal ModuleID As Integer)
+            GroupController.ResetGroupCacheItem(GroupID)
+            ForumController.ResetParentForumsCache(GroupID)
 
-			If ModuleID > 0 Then
-				UpdateModuleLevelCache(ModuleID)
-			End If
-		End Sub
+            If ModuleID > 0 Then
+                UpdateModuleLevelCache(ModuleID)
+            End If
+        End Sub
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Private Shared Sub UpdateModuleLevelCache(ByVal ModuleID As Integer)
-			ForumController.ResetModuleForumsCache(ModuleID)
-			GroupController.ResetModuleGroups(ModuleID)
-		End Sub
+        Private Shared Sub UpdateModuleLevelCache(ByVal ModuleID As Integer)
+            ForumController.ResetModuleForumsCache(ModuleID)
+            GroupController.ResetModuleGroups(ModuleID)
+        End Sub
 
 		''' <summary>
 		''' This will reset the cached user data. It should happen when a user has a post added or when they change their post display order (or any other settings from "My Settings"). 

@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNuke?- http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -81,24 +81,24 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Friend Function GetForumItemCache(ByVal ForumID As Integer) As ForumInfo
-			Dim strCacheKey As String = ForumCacheKeyPrefix + CStr(ForumID)
-			Dim objForum As ForumInfo = CType(DataCache.GetCache(strCacheKey), ForumInfo)
+            Dim CacheKey As String = ForumCacheKeyPrefix + CStr(ForumID)
+            Dim objForum As ForumInfo = CType(DataCache.GetCache(CacheKey), ForumInfo)
 
-			If objForum Is Nothing Then
-				If ForumID > 0 Then
-					'forum caching settings
-					Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-					objForum = New ForumInfo
-					objForum = GetForum(ForumID)
+            If objForum Is Nothing Then
+                If ForumID > 0 Then
+                    'forum caching settings
+                    Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+                    objForum = New ForumInfo
+                    objForum = GetForum(ForumID)
 
-					'Cache Forum if timeout > 0 and Forum is not null
-					If timeOut > 0 And objForum IsNot Nothing Then
-						DataCache.SetCache(strCacheKey, objForum, TimeSpan.FromMinutes(timeOut))
-					End If
-				Else
-					objForum = New ForumInfo
-				End If
-			End If
+                    'Cache Forum if timeout > 0 and Forum is not null
+                    If timeOut > 0 And objForum IsNot Nothing Then
+                        DataCache.SetCache(CacheKey, objForum, TimeSpan.FromMinutes(timeOut))
+                    End If
+                Else
+                    objForum = New ForumInfo
+                End If
+            End If
 
 			Return objForum
 		End Function
