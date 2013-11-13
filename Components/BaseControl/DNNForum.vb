@@ -22,80 +22,80 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-	''' <summary>
-	''' This is initialized by the Forum_Container (dispatch).
-	''' </summary>
-	''' <remarks>This is the second classes loaded which in turn loads up other classes to generate a UI programatically. DNNForum serves as a placeholder.
-	''' </remarks>
-	Public Class DNNForum
-		Inherits ForumBaseControl
+    ''' <summary>
+    ''' This is initialized by the Forum_Container (dispatch).
+    ''' </summary>
+    ''' <remarks>This is the second classes loaded which in turn loads up other classes to generate a UI programatically. DNNForum serves as a placeholder.
+    ''' </remarks>
+    Public Class DNNForum
+        Inherits ForumBaseControl
 
 #Region "Constructors"
 
-		''' <summary>
-		''' Instantiats this class (which is the basis for most UI)
-		''' </summary>
-		''' <remarks>Used to determine which UI to render (thread view, post view, group view, search results view)</remarks>
-		Public Sub New()
-			MyBase.New()
+        ''' <summary>
+        ''' Instantiats this class (which is the basis for most UI)
+        ''' </summary>
+        ''' <remarks>Used to determine which UI to render (thread view, post view, group view, search results view)</remarks>
+        Public Sub New()
+            MyBase.New()
 
-			If Not HttpContext.Current Is Nothing Then
-				If Not HttpContext.Current.Request.QueryString("scope") Is Nothing Then
-					ViewType = CType([Enum].Parse(GetType(ForumScope), HttpContext.Current.Request.QueryString("scope"), True), ForumScope)
-				Else
-					If Not HttpContext.Current.Request.QueryString("postid") Is Nothing Then
-						ViewType = ForumScope.Posts
-					Else
-						ViewType = ForumScope.Groups
-					End If
-				End If
-			End If
-		End Sub
+            If Not HttpContext.Current Is Nothing Then
+                If Not HttpContext.Current.Request.QueryString("scope") Is Nothing Then
+                    ViewType = CType([Enum].Parse(GetType(ForumScope), HttpContext.Current.Request.QueryString("scope"), True), ForumScope)
+                ElseIf Not HttpContext.Current.Request.QueryString("threadid") Is Nothing Then
+                    ViewType = ForumScope.Posts
+                ElseIf Not HttpContext.Current.Request.QueryString("postid") Is Nothing Then
+                    ViewType = ForumScope.Posts
+                Else
+                    ViewType = ForumScope.Groups
+                End If
+            End If
+        End Sub
 
 #End Region
 
 #Region "Protected Methods"
 
-		''' <summary>
-		''' Initializes the proper class to render the forum UI
-		''' </summary>
-		''' <remarks>Creates a new instance of the base object as the type of forum view (ie. load the thread view UI).</remarks>
-		Protected Overrides Sub CreateObject()
-			Select Case ViewType
-				Case ForumScope.Groups
-					ForumBaseObject = New Groups(Me)
-					'Case ForumScope.Forums
-					'	ForumBaseObject = New Forums(Me)
-				Case ForumScope.Threads
-					ForumBaseObject = New Threads(Me)
-				Case ForumScope.Posts
-					ForumBaseObject = New Posts(Me)
-				Case ForumScope.ThreadSearch
-					ForumBaseObject = New ThreadSearch(Me)
-				Case ForumScope.Unread
-					ForumBaseObject = New Unread(Me)
-			End Select
-		End Sub
+        ''' <summary>
+        ''' Initializes the proper class to render the forum UI
+        ''' </summary>
+        ''' <remarks>Creates a new instance of the base object as the type of forum view (ie. load the thread view UI).</remarks>
+        Protected Overrides Sub CreateObject()
+            Select Case ViewType
+                Case ForumScope.Groups
+                    ForumBaseObject = New Groups(Me)
+                    'Case ForumScope.Forums
+                    '	ForumBaseObject = New Forums(Me)
+                Case ForumScope.Threads
+                    ForumBaseObject = New Threads(Me)
+                Case ForumScope.Posts
+                    ForumBaseObject = New Posts(Me)
+                Case ForumScope.ThreadSearch
+                    ForumBaseObject = New ThreadSearch(Me)
+                Case ForumScope.Unread
+                    ForumBaseObject = New Unread(Me)
+            End Select
+        End Sub
 
-		''' <summary>
-		''' Here to make certain the forum instance is completely assigned the proper variables
-		''' </summary>
-		''' <remarks>Used to make certain everything in the control is rendered. This actually can decrease performance (but not noticeably)</remarks>
-		Protected Overrides Sub Initialize()
-			MyBase.Initialize()
-			Me.EnsureChildControls()
-		End Sub
+        ''' <summary>
+        ''' Here to make certain the forum instance is completely assigned the proper variables
+        ''' </summary>
+        ''' <remarks>Used to make certain everything in the control is rendered. This actually can decrease performance (but not noticeably)</remarks>
+        Protected Overrides Sub Initialize()
+            MyBase.Initialize()
+            Me.EnsureChildControls()
+        End Sub
 
-		''' <summary>
-		''' we have to create the controls each time because they are built dynamically and loaded into Forum_Container.ascx
-		''' </summary>
-		''' <remarks>Creates all controls rendered in this class.</remarks>
-		Protected Overrides Sub CreateChildControls()
-			MyBase.CreateChildControls()
-		End Sub
+        ''' <summary>
+        ''' we have to create the controls each time because they are built dynamically and loaded into Forum_Container.ascx
+        ''' </summary>
+        ''' <remarks>Creates all controls rendered in this class.</remarks>
+        Protected Overrides Sub CreateChildControls()
+            MyBase.CreateChildControls()
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

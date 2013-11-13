@@ -29,8 +29,6 @@ Namespace DotNetNuke.Modules.Forum
     ''' <summary>
     ''' Renders the Posts view UI.  
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     Public Class Posts
         Inherits ForumObject
 
@@ -70,9 +68,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' This is used to determine the permissions for the current user/forum combination. 
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private ReadOnly Property objSecurity() As ModuleSecurity
             Get
                 Return New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
@@ -82,12 +77,9 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' The PostID being rendered, if the user was not directed here via a postid, the threadid is used.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private ReadOnly Property PostID() As Integer
             Get
-                If HttpContext.Current.Request.QueryString("postid") IsNot Nothing Then
+                If CheckQueryStringWithIntType("postid") Then
                     Return Convert.ToInt32(HttpContext.Current.Request.QueryString("postid"))
                 Else
                     Return -1
@@ -98,12 +90,9 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' The ThreadID for all the posts being rendered.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Property ThreadID() As Integer
             Get
-                If HttpContext.Current.Request.QueryString("threadid") IsNot Nothing Then
+                If CheckQueryStringWithIntType("threadid") Then
                     Return Convert.ToInt32(HttpContext.Current.Request.QueryString("threadid"))
                 Else
                     Return _ThreadID
@@ -117,10 +106,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' The ThreadInfo object of the ThreadID being rendered.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Property objThread() As ThreadInfo
+        Private Property CurrentThread() As ThreadInfo
             Get
                 Return _objThread
             End Get
@@ -129,12 +115,15 @@ Namespace DotNetNuke.Modules.Forum
             End Set
         End Property
 
+        Public Overrides ReadOnly Property ForumID As Integer
+            Get
+                Return CInt(IIf(CurrentThread IsNot Nothing, CurrentThread.ForumID, MyBase.ForumID))
+            End Get
+        End Property
+
         ''' <summary>
         ''' The collection of posts being rendered.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Property PostCollection() As List(Of PostInfo)
             Get
                 Return _PostCollection
@@ -147,9 +136,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' The page index being rendered (of the thread).
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Property PageIndex() As Integer
             Get
                 Return _PageIndex
@@ -184,9 +170,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' if the user is tracking the thread (email notifications). 
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Property TrackedThread() As Boolean
             Get
                 Return _TrackedThread
@@ -203,16 +186,12 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Updates the thread status
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks>
-        ''' </remarks>
         Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
             Dim ThreadStatus As Integer = ddlThreadStatus.SelectedIndex
             Dim ctlThread As New ThreadController
 
             Dim ModeratorID As Integer = -1
-            If CurrentForumUser.UserID <> objThread.StartedByUserID Then
+            If CurrentForumUser.UserID <> CurrentThread.StartedByUserID Then
                 ModeratorID = CurrentForumUser.UserID
             End If
 
@@ -224,10 +203,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' This Event turns the users thread tracking on/off.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks>
-        ''' </remarks>
         Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
             Dim ctlTracking As New TrackingController
             ctlTracking.TrackingThreadCreateDelete(ForumID, ThreadID, CurrentForumUser.UserID, chkEmail.Checked, ModuleID)
@@ -237,8 +212,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Applies the user's thread rating.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
         ''' <remarks>This needs to have redirect link generated from link utils.</remarks>
         Protected Sub trcRating_Rate(ByVal sender As Object, ByVal e As System.EventArgs)
             Dim rate As Double = trcRating.Value
@@ -254,9 +227,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Adds a user's vote to the data store for a specific poll.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Sub cmdVote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
             ' get the user's vote and put it in the data store
             Dim intAnswerID As Integer = CInt(rblstPoll.SelectedValue)
@@ -265,7 +235,7 @@ Namespace DotNetNuke.Modules.Forum
             Dim objUserAnswer As New UserAnswerInfo
 
             objUserAnswer.UserID = CurrentForumUser.UserID
-            objUserAnswer.PollID = objThread.PollID
+            objUserAnswer.PollID = CurrentThread.PollID
             objUserAnswer.AnswerID = intAnswerID
 
             cntUserAnswer.AddUserAnswer(objUserAnswer)
@@ -275,9 +245,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Adds or remove the current thread to the users bookmark list 
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Sub cmdBookmark_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
             Dim BookmarkCtl As New BookmarkController
             Select Case cmdBookmark.AlternateText
@@ -299,9 +266,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' This takes moderators/forum admin to moderator screen with the thread loaded to view subscribers. 
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Sub cmdThreadSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
             Dim url As String
             url = Utilities.Links.ThreadEmailSubscribers(TabID, ModuleID, ForumID, ThreadID)
@@ -345,13 +309,10 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Submits a quickly reply to the posting API (which is related to an existing thread). 
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Sub cmdSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
             If Len(txtQuickReply.Text) > 0 Then
                 Dim RemoteAddress As String = "0.0.0.0"
-                Dim strSubject As String = Utilities.ForumUtils.SetReplySubject(objThread.Subject)
+                Dim strSubject As String = Utilities.ForumUtils.SetReplySubject(CurrentThread.Subject)
 
                 If Not HttpContext.Current.Request.UserHostAddress Is Nothing Then
                     RemoteAddress = HttpContext.Current.Request.UserHostAddress
@@ -381,7 +342,7 @@ Namespace DotNetNuke.Modules.Forum
                 text = text.Replace("<br />", Environment.NewLine)
                 Dim textReply As String = md.Transform(text)
 
-                PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
+                PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, CurrentThread.ThreadID, -1, CurrentThread.IsPinned, False, False, CurrentThread.ThreadStatus, "", RemoteAddress, CurrentThread.PollID, False, CurrentThread.ThreadID, CurrentThread.Terms)
 
                 Select Case PostMessage
                     Case PostMessage.PostApproved
@@ -428,9 +389,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Sets a specific post as an answer, only available when thread status is set to 'unresolved'. 
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Sub cmdThreadAnswer_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
             Dim ctlThread As New ThreadController
             Dim answerPostID As Integer
@@ -445,7 +403,7 @@ Namespace DotNetNuke.Modules.Forum
                 objPostInfo = ctlPost.GetPostInfo(answerPostID, PortalID)
 
                 Dim ModeratorID As Integer = -1
-                If objThread.StartedByUserID <> CurrentForumUser.UserID Then
+                If CurrentThread.StartedByUserID <> CurrentForumUser.UserID Then
                     ModeratorID = CurrentForumUser.UserID
                 End If
 
@@ -462,26 +420,24 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Instantiates this class, sets the page title and does a security check.
         ''' </summary>
-        ''' <param name="forum"></param>
-        ''' <remarks></remarks>
         Public Sub New(ByVal forum As DNNForum)
             MyBase.New(forum)
 
             Dim user As ForumUserInfo = CurrentForumUser
-
+            Dim correctUrl As String
             If PostID > 0 Then
                 Dim objPostCnt As New PostController
                 Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
-                Dim correctUrl As String = Utilities.Links.ContainerViewThreadLink(TabID, objPost.ForumID, objPost.ThreadID, PostID)
-                '301 Redirect to the correct format for the page
-                HttpContext.Current.Response.Status = "301 Moved Permanently"
-                HttpContext.Current.Response.AddHeader("Location", correctUrl)
-                HttpContext.Current.Response.AddHeader("X-Blog-Redirect-Reason", "No match for requested Url (" + HttpContext.Current.Request.RawUrl + ").  Correct url is " + correctUrl)
-                'Fixed issue where url not redirect to permalink but just only blog home page due to "response -> Property evaluation failed"
-                'And solution link is: http://support.microsoft.com/kb/312629/EN-US/
-                HttpContext.Current.ApplicationInstance.CompleteRequest()
+                correctUrl = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objPost.ThreadID, objPost.ParentThread.Subject, PostID)
+                ''301 Redirect to the correct format for the page
+                'HttpContext.Current.Response.Status = "301 Moved Permanently"
+                'HttpContext.Current.Response.AddHeader("Location", correctUrl)
+                'HttpContext.Current.Response.AddHeader("X-Forum-Redirect-Reason", "No match for requested Url (" + HttpContext.Current.Request.RawUrl + ").  Correct url is " + correctUrl)
+                ''Fixed issue where url not redirect to permalink but just only blog home page due to "response -> Property evaluation failed"
+                ''And solution link is: http://support.microsoft.com/kb/312629/EN-US/
+                'HttpContext.Current.ApplicationInstance.CompleteRequest()
 
-                MyBase.BasePage.Response.Redirect(correctUrl, True)
+                CheckSEOUrl(correctUrl)
 
                 'ThreadID = objPost.ThreadID
 
@@ -512,83 +468,111 @@ Namespace DotNetNuke.Modules.Forum
                 '    ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsBefore + 1) / PageSize))
                 'End If
                 'PageIndex = ThreadPageToShow
-            Else
-                If ThreadID > 0 Then
-                    Dim cntThread As New ThreadController()
-                    objThread = cntThread.GetThread(ThreadID)
+            ElseIf ThreadID > 0 Then
+                Dim cntThread As New ThreadController()
+                CurrentThread = cntThread.GetThread(ThreadID)
 
-                    ' we need to see if there is a content item for the thread, if not create one.
-                    If objThread.ContentItemId < 1 Then
-                        Dim cntContent As New Content
-                        objThread.ModuleID = ModuleID
-                        objThread.TabID = TabID
-                        objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
+                ' we need to see if there is a content item for the thread, if not create one.
+                If CurrentThread.ContentItemId < 1 Then
+                    Dim cntContent As New Content
+                    CurrentThread.ModuleID = ModuleID
+                    CurrentThread.TabID = TabID
+                    CurrentThread.SitemapInclude = CurrentThread.ContainingForum.EnableSitemap
 
-                        cntContent.CreateContentItem(objThread, TabID)
+                    cntContent.CreateContentItem(CurrentThread, TabID)
 
-                        DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-                        objThread = cntThread.GetThread(ThreadID)
-                    End If
-
-                    '' We need to make sure the user's thread pagesize can handle this 
-                    ''(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
-                    'If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-                    '    Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-                    '    Dim TotalPosts As Integer = objThread.Replies + 1
-
-                    '    Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / PageSize))
-                    '    Dim ThreadPageToShow As Integer
-
-                    '    ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
-                    '    If TotalPages >= urlThreadPage Then
-                    '        ThreadPageToShow = urlThreadPage
-                    '    Else
-                    '        ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
-                    '        ThreadPageToShow = 0
-                    '    End If
-                    '    PageIndex = ThreadPageToShow
-                    'End If
+                    DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(CurrentThread.ThreadID)
+                    CurrentThread = cntThread.GetThread(ThreadID)
                 End If
+
+                correctUrl = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, CurrentThread.ThreadID, CurrentThread.Subject, PostID)
+                CheckSEOUrl(correctUrl)
+
+                '' We need to make sure the user's thread pagesize can handle this 
+                ''(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
+                'If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
+                '    Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
+                '    Dim TotalPosts As Integer = objThread.Replies + 1
+
+                '    Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / PageSize))
+                '    Dim ThreadPageToShow As Integer
+
+                '    ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
+                '    If TotalPages >= urlThreadPage Then
+                '        ThreadPageToShow = urlThreadPage
+                '    Else
+                '        ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
+                '        ThreadPageToShow = 0
+                '    End If
+                '    PageIndex = ThreadPageToShow
+                'End If
             End If
 
             ' If the thread info is nothing, it is probably a deleted thread
-            If objThread Is Nothing Then
+            If CurrentThread Is Nothing Then
                 ' we should consider setting type of redirect here?
-
                 MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
             End If
 
             ' Make sure the forum is active 
-            If Not objThread.ContainingForum.IsActive Then
+            If Not CurrentThread.ContainingForum.IsActive Then
                 ' we should consider setting type of redirect here?
-
                 MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
             End If
 
             ' User might access this page by typing url so better check permission on parent forum
-            If Not (objThread.ContainingForum.PublicView) Then
+            If Not (CurrentThread.ContainingForum.PublicView) Then
                 If Not objSecurity.IsAllowedToViewPrivateForum Then
                     ' we should consider setting type of redirect here?
-
                     MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
                 End If
             End If
 
+            BuildMetaData()
+
+            If PageIndex > 0 Then
+                PageIndex = PageIndex - 1
+            Else
+                PageIndex = 0
+            End If
+        End Sub
+
+        Private Sub CheckSEOUrl(ByVal correctUrl As String)
+            ' Added code to issue a 301 Redirect in cases where the URL of the page is not the same
+            ' as that created by the NavigateURL function
+            Dim requestedUrl As String = DirectCast(HttpContext.Current.Items("UrlRewrite:OriginalUrl"), String)
+            ' Replaced with Permalink
+            ' And (Not requestedUrl.ToLower().EndsWith(correctUrl.ToLower()) And Not HttpUtility.UrlDecode(requestedUrl.ToLower()).EndsWith(correctUrl.ToLower()))) Then
+            If Not String.IsNullOrEmpty(requestedUrl) And _
+              (Not requestedUrl.ToLower().StartsWith(correctUrl.ToLower()) And Not HttpUtility.UrlDecode(requestedUrl).ToLower().StartsWith(correctUrl.ToLower())) Then
+                'NOTE: We use EndsWith here because NavigateURL returns a relative URL when friendly URLs is not turned on for the portal.
+                '301 Redirect to the correct format for the page
+                HttpContext.Current.Response.Status = "301 Moved Permanently"
+                HttpContext.Current.Response.AddHeader("Location", correctUrl)
+                HttpContext.Current.Response.AddHeader("X-Forum-Redirect-Reason", "No match for requested Url (" & requestedUrl & ").  Correct url is " & correctUrl)
+                ' Fixed issue where url not redirect to permalink but just only blog home page due to "response -> Property evaluation failed"
+                ' And solution link is: http://support.microsoft.com/kb/312629/EN-US/
+                'Response.End()
+                HttpContext.Current.ApplicationInstance.CompleteRequest()
+            End If
+        End Sub
+
+        Private Sub BuildMetaData()
             Dim security As PortalSecurity = New PortalSecurity()
             If objConfig.OverrideTitle Then
                 Dim Title As String
                 Dim Subject As String
 
-                If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
-                    Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
+                If CurrentThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
+                    Subject = CurrentThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
                 Else
-                    Subject = objThread.Subject
+                    Subject = CurrentThread.Subject
                 End If
 
                 If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                     Title = Subject
 
-                    Subject += " - " & objThread.ContainingForum.Name
+                    Subject += " - " & CurrentThread.ContainingForum.Name
                     If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                         Title = Subject
 
@@ -605,7 +589,7 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If objConfig.OverrideDescription Then
-                Dim Description As String = Utilities.ForumUtils.RemoveHtmlWhitespace(HttpUtility.HtmlDecode(objThread.Body))
+                Dim Description As String = Utilities.ForumUtils.RemoveHtmlWhitespace(HttpUtility.HtmlDecode(CurrentThread.Body))
                 Description = Utilities.ForumUtils.StripHtml(Description)
                 Description = security.InputFilter(Description, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoSQL)
                 Description = HtmlUtils.Shorten(Description, Constants.SEO_DESCRIPTION_LIMIT, String.Empty)
@@ -623,16 +607,16 @@ Namespace DotNetNuke.Modules.Forum
                 Dim KeyWords As String = ""
                 Dim keyCount As Integer = 0
 
-                If objThread.ContainingForum.ParentID = 0 Then
-                    KeyWords = objThread.ContainingForum.Name
+                If CurrentThread.ContainingForum.ParentID = 0 Then
+                    KeyWords = CurrentThread.ContainingForum.Name
                     keyCount = 1
                 Else
-                    KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
+                    KeyWords = CurrentThread.ContainingForum.ParentForum.Name + "," + CurrentThread.ContainingForum.Name
                     keyCount = 2
                 End If
 
                 If objConfig.EnableTagging Then
-                    For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+                    For Each Term As Entities.Content.Taxonomy.Term In CurrentThread.Terms
                         If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
                             KeyWords += "," + Term.Name
                             keyCount += 1
@@ -649,19 +633,11 @@ Namespace DotNetNuke.Modules.Forum
 
                 MyBase.BasePage.KeyWords = KeyWords
             End If
-
-            If PageIndex > 0 Then
-                PageIndex = PageIndex - 1
-            Else
-                PageIndex = 0
-            End If
         End Sub
 
         ''' <summary>
         ''' This is the first class that runs as part of New().  This could be invoked in Render as well but is not
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Public Overrides Sub CreateChildControls()
             Controls.Clear()
 
@@ -695,7 +671,7 @@ Namespace DotNetNuke.Modules.Forum
                 With chkEmail
                     .CssClass = "Forum_NormalTextBox"
                     .ID = "chkEmail"
-                    .Text = ForumControl.LocalizedText("MailWhenReply").Replace("[ThreadSubject]", "<b>" & objThread.Subject & "</b>")
+                    .Text = ForumControl.LocalizedText("MailWhenReply").Replace("[ThreadSubject]", "<b>" & CurrentThread.Subject & "</b>")
                     .TextAlign = TextAlign.Left
                     .AutoPostBack = True
                     .Checked = False
@@ -897,8 +873,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Sets handlers for certain server controls
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub AddControlHandlers()
             Try
                 If objConfig.EnableThreadStatus And CurrentForumUser.UserID > 0 Then
@@ -982,7 +956,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 ' All enclosed items are user specific, so we must have a userID
                 If CurrentForumUser.UserID > 0 Then
-                    If objConfig.EnableThreadStatus And objThread.ContainingForum.EnableForumsThreadStatus Then
+                    If objConfig.EnableThreadStatus And CurrentThread.ContainingForum.EnableForumsThreadStatus Then
                         ddlThreadStatus.Visible = True
                         ddlThreadStatus.Items.Clear()
 
@@ -995,13 +969,13 @@ Namespace DotNetNuke.Modules.Forum
                         ddlThreadStatus.Visible = False
                     End If
                     'polling changes
-                    If objThread.ThreadStatus = ThreadStatus.Poll Then
+                    If CurrentThread.ThreadStatus = ThreadStatus.Poll Then
                         'CP: NOTE: Telerik conversion
                         Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
                         ddlThreadStatus.Items.Add(statusEntry)
                     End If
 
-                    ddlThreadStatus.SelectedIndex = CType(objThread.ThreadStatus, Integer)
+                    ddlThreadStatus.SelectedIndex = CType(CurrentThread.ThreadStatus, Integer)
 
                     ' display tracking option only if user is authenticated and the forum module allows tracking
                     If objConfig.MailNotification Then
@@ -1037,11 +1011,11 @@ Namespace DotNetNuke.Modules.Forum
                     End If
 
                     ' Handle Polls
-                    If objThread.PollID > 0 Then
+                    If CurrentThread.PollID > 0 Then
                         Dim cntAnswer As New AnswerController
                         Dim arrAnswers As List(Of AnswerInfo)
 
-                        arrAnswers = cntAnswer.GetPollAnswers(objThread.PollID)
+                        arrAnswers = cntAnswer.GetPollAnswers(CurrentThread.PollID)
                         If arrAnswers.Count > 0 Then
                             rblstPoll.DataTextField = "Answer"
                             rblstPoll.DataValueField = "AnswerID"
@@ -1057,7 +1031,7 @@ Namespace DotNetNuke.Modules.Forum
                     trcRating.Enabled = False
                 End If
 
-                tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+                tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(CurrentThread.ContentItemId)
 
                 PostCollection = ctlPost.PostGetAll(ThreadID, PageIndex, PageSize, ForumControl.Descending, PortalID)
             Catch exc As Exception
@@ -1070,8 +1044,8 @@ Namespace DotNetNuke.Modules.Forum
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub BindRating()
-            trcRating.Value = CDec(objThread.Rating)
-            trcRating.ToolTip = objThread.RatingText
+            trcRating.Value = CDec(CurrentThread.Rating)
+            trcRating.ToolTip = CurrentThread.RatingText
 
             If Not CurrentForumUser.UserID > 0 Then
                 trcRating.Enabled = False
@@ -1108,7 +1082,7 @@ Namespace DotNetNuke.Modules.Forum
             ' Display rating only if user is authenticated
             If PostCollection.Count > 0 Then
                 'check to see if new setting, enable ratings is enabled
-                If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
+                If objConfig.EnableRatings And CurrentThread.ContainingForum.EnableForumsRating Then
                     RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td> 
                     'CP - Sub in ajax image rating solution here for ddl
                     trcRating.RenderControl(wr)
@@ -1165,7 +1139,7 @@ Namespace DotNetNuke.Modules.Forum
             If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
                 ChildGroupView = True
             End If
-            wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Posts, objThread, objConfig, ChildGroupView))
+            wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Posts, CurrentThread, objConfig, ChildGroupView))
             RenderCellEnd(wr) ' </td>
 
             RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "") '<td></td>
@@ -1207,7 +1181,7 @@ Namespace DotNetNuke.Modules.Forum
             ' new thread button
             'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
             If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
-                If Not objThread.ContainingForum.PublicPosting Then
+                If Not CurrentThread.ContainingForum.PublicPosting Then
                     If objSecurity.IsAllowedToStartRestrictedThread Then
                         RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
                         RenderRowBegin(wr) '<tr>
@@ -1222,7 +1196,7 @@ Namespace DotNetNuke.Modules.Forum
 
                         RenderCellEnd(wr) ' </td>
 
-                        If CurrentForumUser.IsBanned Or (Not objSecurity.IsAllowedToPostRestrictedReply) Or (objThread.IsClosed) Then
+                        If CurrentForumUser.IsBanned Or (Not objSecurity.IsAllowedToPostRestrictedReply) Or (CurrentThread.IsClosed) Then
                             'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                             'wr.Write("&nbsp;")
                             'RenderCellEnd(wr) ' </td>
@@ -1230,7 +1204,7 @@ Namespace DotNetNuke.Modules.Forum
                             RenderLinkButton(wr, url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
                             RenderCellEnd(wr) ' </td>
                         Else
-                            url = Utilities.Links.NewPostLink(TabID, ForumID, objThread.ThreadID, "reply", ModuleID)
+                            url = Utilities.Links.NewPostLink(TabID, ForumID, CurrentThread.ThreadID, "reply", ModuleID)
                             'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                             'wr.Write("&nbsp;")
                             'RenderCellEnd(wr) ' </td>
@@ -1257,8 +1231,8 @@ Namespace DotNetNuke.Modules.Forum
                         RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
                         RenderRowBegin(wr) '<tr>
 
-                        If CurrentForumUser.IsBanned Or objThread.IsClosed Then
-                            url = Utilities.Links.NewPostLink(TabID, ForumID, objThread.ThreadID, "reply", ModuleID)
+                        If CurrentForumUser.IsBanned Or CurrentThread.IsClosed Then
+                            url = Utilities.Links.NewPostLink(TabID, ForumID, CurrentThread.ThreadID, "reply", ModuleID)
 
                             'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                             'wr.Write("&nbsp;")
@@ -1267,7 +1241,7 @@ Namespace DotNetNuke.Modules.Forum
                             RenderLinkButton(wr, url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
                             RenderCellEnd(wr) ' </td>
                         Else
-                            url = Utilities.Links.NewPostLink(TabID, ForumID, objThread.ThreadID, "reply", ModuleID)
+                            url = Utilities.Links.NewPostLink(TabID, ForumID, CurrentThread.ThreadID, "reply", ModuleID)
                             'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                             'wr.Write("&nbsp;")
                             'RenderCellEnd(wr) ' </td>
@@ -1297,7 +1271,7 @@ Namespace DotNetNuke.Modules.Forum
 
                     RenderCellEnd(wr) ' </td>
 
-                    If CurrentForumUser.IsBanned Or objThread.IsClosed Then
+                    If CurrentForumUser.IsBanned Or CurrentThread.IsClosed Then
                         'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                         'wr.Write("&nbsp;")
                         'RenderCellEnd(wr) ' </td>
@@ -1305,7 +1279,7 @@ Namespace DotNetNuke.Modules.Forum
                         RenderLinkButton(wr, url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
                         RenderCellEnd(wr) ' </td>
                     Else
-                        url = Utilities.Links.NewPostLink(TabID, ForumID, objThread.ThreadID, "reply", ModuleID)
+                        url = Utilities.Links.NewPostLink(TabID, ForumID, CurrentThread.ThreadID, "reply", ModuleID)
                         'RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
                         'wr.Write("&nbsp;")
                         'RenderCellEnd(wr) ' </td>
@@ -1339,8 +1313,8 @@ Namespace DotNetNuke.Modules.Forum
 
             Dim PreviousEnabled As Boolean = False
             Dim EnabledText As String = "Disabled"
-            If Not objThread.PreviousThreadID = 0 Then
-                If Not objThread.IsPinned Then
+            If Not CurrentThread.PreviousThreadID = 0 Then
+                If Not CurrentThread.IsPinned Then
                     PreviousEnabled = True
                     EnabledText = "Previous"
                 End If
@@ -1352,7 +1326,7 @@ Namespace DotNetNuke.Modules.Forum
                 RenderCellBegin(wr, "Forum_NavBarButtonDisabled", "", "", "", "", "", "")   ' <td> ' 
             End If
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.PreviousThreadID)
+            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, CurrentThread.PreviousThreadID)
             If PreviousEnabled Then
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
@@ -1365,8 +1339,8 @@ Namespace DotNetNuke.Modules.Forum
             'next button
             Dim NextEnabled As Boolean = False
             Dim NextText As String = "Disabled"
-            If Not objThread.NextThreadID = 0 Then
-                If Not objThread.IsPinned Then
+            If Not CurrentThread.NextThreadID = 0 Then
+                If Not CurrentThread.IsPinned Then
                     NextEnabled = True
                     NextText = "Next"
                 End If
@@ -1379,7 +1353,7 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If NextEnabled Then
-                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, CurrentThread.NextThreadID)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -1408,7 +1382,7 @@ Namespace DotNetNuke.Modules.Forum
             ''End spacer row
 
             ' Handle polls
-            If objThread.ContainingForum.AllowPolls And objThread.PollID > 0 And CurrentForumUser.UserID > 0 Then
+            If CurrentThread.ContainingForum.AllowPolls And CurrentThread.PollID > 0 And CurrentForumUser.UserID > 0 Then
                 RenderPoll(wr)
             End If
 
@@ -1441,7 +1415,7 @@ Namespace DotNetNuke.Modules.Forum
 
             Dim cntPoll As New PollController
             Dim objPoll As New PollInfo
-            objPoll = cntPoll.GetPoll(objThread.PollID)
+            objPoll = cntPoll.GetPoll(CurrentThread.PollID)
 
             RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
             wr.Write("&nbsp;" & ForumControl.LocalizedText("Poll") & ": " & objPoll.Question)
@@ -1478,7 +1452,7 @@ Namespace DotNetNuke.Modules.Forum
                 'End If
             Else
                 ' check to see if we are able to show user results
-                If objPoll.ShowResults Or ((CurrentForumUser.UserID = objThread.StartedByUserID) Or (objSecurity.IsForumModerator)) Then
+                If objPoll.ShowResults Or ((CurrentForumUser.UserID = CurrentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) Then
                     ' show results
                     RenderTableBegin(wr, "", "", "", "", "0", "0", "center", "middle", "")  ' <table> 
 
@@ -1692,13 +1666,13 @@ Namespace DotNetNuke.Modules.Forum
             Else
                 ' this is either not the original post or the user is not the author or a moderator
                 ' If the thread is answered AND this is the post accepted as the answer
-                If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And objThread.ContainingForum.EnableForumsThreadStatus Then
+                If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And CurrentThread.ContainingForum.EnableForumsThreadStatus Then
                     RenderDivBegin(wr, "", "Forum_AnswerText") ' <span>
                     wr.Write(ForumControl.LocalizedText("AcceptedAnswer"))
                     wr.Write("&nbsp;")
                     RenderDivEnd(wr) ' </span>
                     ' If the thread is NOT answered AND this user started the post or is a moderator of some sort
-                ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And objThread.ContainingForum.EnableForumsThreadStatus Then
+                ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And CurrentThread.ContainingForum.EnableForumsThreadStatus Then
                     ' Select the proper command argument (set before rendering)
                     If hsThreadAnswers.ContainsKey(Post.PostID) Then
                         cmdThreadAnswer = CType(hsThreadAnswers(Post.PostID), LinkButton)
@@ -2362,7 +2336,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' Footer w/ paging (second to last row)
         ''' </summary>
         Private Sub RenderFooter(ByVal wr As HtmlTextWriter)
-            Dim pageCount As Integer = CInt(Math.Floor((objThread.Replies) / PageSize)) + 1
+            Dim pageCount As Integer = CInt(Math.Floor((CurrentThread.Replies) / PageSize)) + 1
             Dim sb As New StringBuilder
 
             sb.Append(ForumControl.LocalizedText("PageCountInfo"))
@@ -2423,7 +2397,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="wr"></param>
         ''' <remarks>We are only allowing tagging in public forums, because of security concerns in tag search results (we go one level deeper in perms than core).</remarks>
         Private Sub RenderTags(ByVal wr As HtmlTextWriter)
-            If objThread.ContainingForum.PublicView AndAlso objConfig.EnableTagging Then
+            If CurrentThread.ContainingForum.PublicView AndAlso objConfig.EnableTagging Then
                 RenderRowBegin(wr) '<tr>
 
                 RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td> 
@@ -2441,15 +2415,15 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks></remarks>
         Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
             If objConfig.EnableQuickReply Then
-                If (CurrentForumUser.UserID > 0) And (Not objThread.ForumID = -1) Then
-                    If Not objThread.ContainingForum.PublicPosting Then
-                        If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
+                If (CurrentForumUser.UserID > 0) And (Not CurrentThread.ForumID = -1) Then
+                    If Not CurrentThread.ContainingForum.PublicPosting Then
+                        If CurrentForumUser.IsBanned = False And CurrentThread.IsClosed = False Then
                             If objSecurity.IsAllowedToPostRestrictedReply Then
                                 QuickReply(wr)
                             End If
                         End If
                     Else
-                        If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
+                        If CurrentForumUser.IsBanned = False And CurrentThread.IsClosed = False Then
                             QuickReply(wr)
                         End If
                     End If
@@ -2510,7 +2484,7 @@ Namespace DotNetNuke.Modules.Forum
             ' Render reply/mod buttons if necessary
             ' First see if the user has the ability to post
             ' remove logged on limitation if wishing to implement Anonymous posting
-            If CurrentForumUser.UserID > 0 AndAlso ((Not objThread.ContainingForum.PublicPosting And objSecurity.IsAllowedToPostRestrictedReply) Or objThread.ContainingForum.PublicPosting) Then
+            If CurrentForumUser.UserID > 0 AndAlso ((Not CurrentThread.ContainingForum.PublicPosting And objSecurity.IsAllowedToPostRestrictedReply) Or CurrentThread.ContainingForum.PublicPosting) Then
                 ' move link (logged user is admin and this is the first post in the thread)
                 'start table for mod/reply buttons
                 'RenderTableBegin(wr, "tblCommand_" & Post.PostID.ToString, "", "", "", "4", "0", "right", "", "0")     ' <table>
@@ -2667,10 +2641,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Just relevant to paging
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <param name="PageCount"></param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub RenderPostPaging(ByVal wr As HtmlTextWriter, ByVal PageCount As Integer)
             ' First, previous, next, last thread hyperlinks
             Dim backwards As Boolean
@@ -2800,10 +2770,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Builds a bookmark for RenderPost, used to navigate directly to a specific post
         ''' </summary>
-        ''' <param name="wr"></param>
-        ''' <param name="BookMark"></param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub RenderPostBookmark(ByVal wr As HtmlTextWriter, ByVal BookMark As String)
             wr.Write("<a name=""" & BookMark & """></a>")
         End Sub

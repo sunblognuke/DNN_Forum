@@ -315,31 +315,40 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Return url
         End Function
 
-		''' <summary>
-		''' Navigates user to posts view for a specific threadID.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ThreadId"></param>
-		''' <returns></returns>
-		''' <remarks>Usere ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to posts view for a specific threadID.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ThreadId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Usere ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
+            Dim cntThread As New ThreadController()
+            Dim CurrentThread As ThreadInfo = cntThread.GetThread(ThreadId)
 
-			params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
-			url = NavigateURL(TabId, "", params)
+            Return ContainerViewThreadLink(CurrentThread.PortalID, TabId, ThreadId, CurrentThread.Subject)
+            'Dim url As String
+            'Dim params As String()
 
-			Return url
+            'params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
+            'url = NavigateURL(TabId, "", params)
+
+            'Return url
         End Function
 
-        Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer, ByVal lastPostID As Integer) As String
+        Public Shared Function ContainerViewThreadLink(ByVal PortalId As Integer, ByVal TabId As Integer, _
+                                                       ByVal ThreadId As Integer, ByVal slug As String, _
+                                                       Optional ByVal lastPostID As Integer = -1) As String
             Dim url As String
             Dim params As String()
 
-            params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
-            url = NavigateURL(TabId, "", params)
-            url = url + "#" + lastPostID.ToString()
+            'params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
+            params = New String(0) {"threadid=" & ThreadId}
+            url = FormatSEOFriendlyURL(PortalId, TabId, slug, params) 'NavigateURL(TabId, "", params)
+            If lastPostID > 0 Then
+                url = url + "#" + lastPostID.ToString()
+            End If
 
             Return url
         End Function
@@ -783,101 +792,178 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 #End Region
 
+#Region "Utils"
+
+        Private Shared Function FormatSEOFriendlyURL(ByVal PortalId As Integer, ByVal TabID As Integer, ByVal Slug As String, _
+                                                     ByVal ParamArray AdditionalParameters As String()) As String
+            Dim tabCtl As New TabController()
+            'Retrieve the TabInfo object from the TabId
+            Dim tab As DotNetNuke.Entities.Tabs.TabInfo = tabCtl.GetTab(TabID, PortalId, False)
+            Dim urlPath As String = String.Format("~/default.aspx?tabid={0}", tab.TabID)
+            For Each item As String In AdditionalParameters
+                urlPath += "&" & item
+            Next
+            Slug = If(String.IsNullOrEmpty(Slug), "Default", Slug)
+            Dim PageName As String = ResolvePageTitleWithoutIllegalCharacters(Slug)
+
+            Return DotNetNuke.Common.Globals.FriendlyUrl(tab, urlPath, PageName)
+        End Function
+
+        Private Shared Function ResolvePageTitleWithoutIllegalCharacters(ByVal title As String) As String
+            'Set the PageName
+            Dim PageName As String = title.Replace("'", String.Empty)
+            'Handle international characters
+            PageName = Regex.Replace(PageName, "Ă|Ā|À|Á|Â|Ã|Ä|Å", "A")
+            PageName = Regex.Replace(PageName, "ă|ā|à|á|â|ã|ä|å|ą", "a")
+            PageName = Regex.Replace(PageName, "Æ", "AE")
+            PageName = Regex.Replace(PageName, "æ", "ae")
+            PageName = Regex.Replace(PageName, "ß", "ss")
+            PageName = Regex.Replace(PageName, "Ç|Ć|Ĉ|Ċ|Č", "C")
+            PageName = Regex.Replace(PageName, "ć|ĉ|ċ|č|ç", "c")
+            PageName = Regex.Replace(PageName, "Ď|Đ", "D")
+            PageName = Regex.Replace(PageName, "ď|đ", "d")
+            PageName = Regex.Replace(PageName, "Ē|Ĕ|Ė|Ę|Ě|É|Ę|È|É|Ê|Ë", "E")
+            PageName = Regex.Replace(PageName, "ē|ĕ|ė|ę|ě|ê|ë|è|é", "e")
+            PageName = Regex.Replace(PageName, "Ĝ|Ğ|Ġ|Ģ|Ģ", "G")
+            PageName = Regex.Replace(PageName, "ĝ|ğ|ġ|ģ|ģ", "g")
+            PageName = Regex.Replace(PageName, "Ĥ|Ħ", "H")
+            PageName = Regex.Replace(PageName, "ĥ|ħ", "h")
+            PageName = Regex.Replace(PageName, "Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Į|İ|İ", "I")
+            PageName = Regex.Replace(PageName, "ì|í|î|ï|ĩ|ī|ĭ|į", "i")
+            PageName = Regex.Replace(PageName, "Ĳ", "IJ")
+            PageName = Regex.Replace(PageName, "Ĵ", "J")
+            PageName = Regex.Replace(PageName, "ĵ", "j")
+            PageName = Regex.Replace(PageName, "Ķ", "K")
+            PageName = Regex.Replace(PageName, "ķ", "k")
+            PageName = Regex.Replace(PageName, "Ñ|Ñ", "N")
+            PageName = Regex.Replace(PageName, "ñ", "n")
+            PageName = Regex.Replace(PageName, "Ò|Ó|Ô|Õ|Ö|Ø|Ő", "O")
+            PageName = Regex.Replace(PageName, "ò|ó|ô|õ|ö|ø|ő", "o")
+            PageName = Regex.Replace(PageName, "Œ", "OE")
+            PageName = Regex.Replace(PageName, "œ", "oe")
+            PageName = Regex.Replace(PageName, "Ŕ|Ř|Ŗ|Ŕ", "R")
+            PageName = Regex.Replace(PageName, "ř|ŗ|ŕ", "r")
+            PageName = Regex.Replace(PageName, "Š|Ş|Ŝ|Ś", "S")
+            PageName = Regex.Replace(PageName, "š|ş|ŝ|ś", "s")
+            PageName = Regex.Replace(PageName, "Ť|Ţ", "T")
+            PageName = Regex.Replace(PageName, "ť|ţ", "t")
+            PageName = Regex.Replace(PageName, "Ų|Ű|Ů|Ŭ|Ū|Ũ|Ù|Ú|Û|Ü", "U")
+            PageName = Regex.Replace(PageName, "ų|ű|ů|ŭ|ū|ũ|ú|û|ü|ù", "u")
+            PageName = Regex.Replace(PageName, "Ŵ", "W")
+            PageName = Regex.Replace(PageName, "ŵ", "w")
+            PageName = Regex.Replace(PageName, "Ÿ|Ŷ|Ý", "Y")
+            PageName = Regex.Replace(PageName, "ŷ|ÿ|ý", "y")
+            PageName = Regex.Replace(PageName, "Ž|Ż|Ź", "Z")
+            PageName = Regex.Replace(PageName, "ž|ż|ź", "z")
+
+            PageName = Regex.Replace(PageName, "[^a-z0-9_-ĂăĀāÀÁÂÃÄÅàáâãäåąæÆßÇĆćĈĉĊċČčçĎďĐđĒēĔĕĖėĘęĚěÉêëĘÈÉÊËèéĜĝĞğĠġĢģĢģĤĥĦħÌÍÎÏĨĩĪīĬĭĮįİÌíîïìĲĴĵĶķÑÑÒÓÔÕÖŐØòóôõőöøñŒœŔřŘŗŖŕŔšŠşŞŝŜśŚťŤţŢųŲűŰůŮŭŬūŪũŨÙÚÛÜÙúûüùŵŴŸŷŶÝÿýžŽżŻźŹ]+", "-", RegexOptions.IgnoreCase) & ".aspx"
+            'For titles with ' - ', we replace --- with -
+            PageName = PageName.Replace("---", "-")
+
+            'Remove trailing dash if one exists.
+            If PageName.EndsWith("-.aspx") Then
+                PageName = PageName.Replace("-.aspx", ".aspx")
+            End If
+
+            Return PageName
+        End Function
+#End Region
+
 #Region "Posting"
 
-		''' <summary>
-		''' Navigates user to postEdit, to create a reply/quote to an existing thread. (Means parent PostID present)
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="PostID"></param>
-		''' <param name="Action"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function NewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostID As Integer, _
-			    ByVal Action As String, ByVal ModuleID As Integer) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to postEdit, to create a reply/quote to an existing thread. (Means parent PostID present)
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="PostID"></param>
+        ''' <param name="Action"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Shared Function NewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostID As Integer, _
+             ByVal Action As String, ByVal ModuleID As Integer) As String
+            Dim url As String
+            Dim params As String()
 
-			params = New String(3) {"forumid=" & ForumId, "postid=" & PostID, "action=" & Action, "mid=" & ModuleID}
-			url = NavigateURL(TabId, ForumPage.PostEdit.ToString, params)
+            params = New String(3) {"forumid=" & ForumId, "postid=" & PostID, "action=" & Action, "mid=" & ModuleID}
+            url = NavigateURL(TabId, ForumPage.PostEdit.ToString, params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
-		''' <summary>
-		''' Navigates user to postEdit, to create a new thread. (Meaning no parent postID present)
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function NewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ModuleID As Integer) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to postEdit, to create a new thread. (Meaning no parent postID present)
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Shared Function NewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ModuleID As Integer) As String
+            Dim url As String
+            Dim params As String()
 
-			params = New String(2) {"forumid=" & ForumId, "action=new", "mid=" & ModuleID}
-			url = NavigateURL(TabId, ForumPage.PostEdit.ToString, params)
+            params = New String(2) {"forumid=" & ForumId, "action=new", "mid=" & ModuleID}
+            url = NavigateURL(TabId, ForumPage.PostEdit.ToString, params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
 #End Region
 
 #Region "UCP Links"
 
-		''' <summary>
-		''' Navigates user to UCP Profile. This is for a forum admin to manage the profile of a different user.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="UserControl"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Shared Function UCP_AdminLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, _
-		    ByVal UserControl As UserAjaxControl) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to UCP Profile. This is for a forum admin to manage the profile of a different user.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <param name="UserControl"></param>
+        ''' <returns></returns>
+        ''' <remarks>Added by Skeel</remarks>
+        Shared Function UCP_AdminLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, _
+            ByVal UserControl As UserAjaxControl) As String
+            Dim url As String
+            Dim params As String()
 
-			If UserControl <> UserAjaxControl.Main Then
-				params = New String(2) {"mid=" & ModuleID.ToString, "userid=" & UserId, "view=" & CStr(UserControl)}
-			Else
-				params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId}
-			End If
+            If UserControl <> UserAjaxControl.Main Then
+                params = New String(2) {"mid=" & ModuleID.ToString, "userid=" & UserId, "view=" & CStr(UserControl)}
+            Else
+                params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId}
+            End If
 
-			url = NavigateURL(TabId, ForumPage.UCP.ToString, params)
+            url = NavigateURL(TabId, ForumPage.UCP.ToString, params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
-		''' <summary>
-		''' Navigates user to THEIR UCP page. 
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="UserControl"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Shared Function UCP_UserLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserControl As UserAjaxControl, _
-		   ByVal SiteSettings As PortalSettings) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to THEIR UCP page. 
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <param name="UserControl"></param>
+        ''' <returns></returns>
+        ''' <remarks>Added by Skeel</remarks>
+        Shared Function UCP_UserLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserControl As UserAjaxControl, _
+           ByVal SiteSettings As PortalSettings) As String
+            Dim url As String
+            Dim params As String()
 
-			If UserControl <> UserAjaxControl.Main Then
-				params = New String(1) {"mid=" & ModuleID.ToString, "view=" & CStr(UserControl)}
-			Else
-				params = New String(0) {"mid=" & ModuleID.ToString}
-			End If
+            If UserControl <> UserAjaxControl.Main Then
+                params = New String(1) {"mid=" & ModuleID.ToString, "view=" & CStr(UserControl)}
+            Else
+                params = New String(0) {"mid=" & ModuleID.ToString}
+            End If
 
-			url = NavigateURL(TabId, SiteSettings, ForumPage.UCP.ToString, params)
+            url = NavigateURL(TabId, SiteSettings, ForumPage.UCP.ToString, params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

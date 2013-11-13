@@ -89,9 +89,6 @@ Namespace DotNetNuke.Modules.Forum
                 Integer.TryParse(Request.QueryString("threadid"), _ThreadID)
             End If
 
-            'If Not (Request.QueryString("postid") Is Nothing) Then
-            '    _PostID = Int32.Parse(Request.QueryString("postid"))
-            'End If
             If CheckQueryStringWithIntType("postid") Then
                 Integer.TryParse(Request.QueryString("postid"), _PostID)
             End If
@@ -106,7 +103,7 @@ Namespace DotNetNuke.Modules.Forum
                 .LocalResourceFile = TemplateSourceDirectory & "/" & Localization.LocalResourceDirectory & "/" & Me.ID
                 .TabModuleSettings = Settings
 
-                Select Case DNNForum.ViewType
+                Select Case .ViewType
                     Case ForumScope.Groups
                         .GenericObjectID = ModuleId
                     Case ForumScope.Threads

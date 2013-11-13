@@ -783,11 +783,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "IHydratable Implementation"
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="dr">The datareader we are using to populate the object.</param>
-        ''' <remarks></remarks>
         Public Sub Fill(ByVal dr As System.Data.IDataReader) Implements IHydratable.Fill
             GroupID = Null.SetNullInteger(dr("GroupID"))
             ModuleID = Null.SetNullInteger(dr("ModuleID"))

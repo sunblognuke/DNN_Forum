@@ -158,8 +158,9 @@ Namespace DotNetNuke.Modules.Forum
         Public Overridable ReadOnly Property ForumID() As Integer
             Get
                 Dim _forumID As Integer = -1
-                If (HttpContext.Current.Request.QueryString("forumid") IsNot Nothing) AndAlso Integer.TryParse(HttpContext.Current.Request.QueryString("forumid"), _forumID) Then
-                    Return _ForumID
+                If CheckQueryStringWithIntType("forumid") AndAlso _
+                    Integer.TryParse(HttpContext.Current.Request.QueryString("forumid"), _forumID) Then
+                    Return _forumID
                 Else
                     ' maybe something else is in the url
                     Return -1

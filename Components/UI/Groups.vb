@@ -680,7 +680,7 @@ Namespace DotNetNuke.Modules.Forum
                     Dim title As String = HttpUtility.HtmlDecode(objLastPost.Subject) 'HtmlDecode function prevent to cut string inside html code like: &#245; -> &#2 ...45;
                     Dim truncatedTitle As String = HtmlUtils.Shorten(title, 30, "...")
                     'url = Utilities.Links.ContainerViewPostLink(TabID, objForum.ForumID, objForum.MostRecentPostID)
-                    Dim Url As String = Utilities.Links.ContainerViewThreadLink(TabID, objForum.ForumID, objLastPost.ThreadID, objForum.MostRecentPostID)
+                    Dim Url As String = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objLastPost.ThreadID, objLastPost.ParentThread.Subject, objLastPost.PostID)
                     RenderDivBegin(wr, "", "")
                     RenderTitleLinkButton(wr, Url, truncatedTitle, "Forum_LastPostText", title)
                     RenderDivEnd(wr)
