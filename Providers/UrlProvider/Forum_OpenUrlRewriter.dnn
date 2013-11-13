@@ -1,0 +1,56 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Forum_OpenUrlRewriter" type="Provider" version="01.00.00">
+      <friendlyName>Forum_OpenUrlRewriter</friendlyName>
+      <description>DNN Forum OpenUrlRewriter provider</description>
+      <iconFile>Images/icon_extensions.gif</iconFile>
+      <owner>
+        <name>SunBlog Project</name>
+        <organization>SunBlogNuke Corporation</organization>
+        <url><![CDATA[<a href="http://www.sunblognuke.com">www.sunblognuke.com</a>]]></url>
+        <email>dnnsun@gmail.com</email>
+      </owner>
+      <license/>
+      <releaseNotes/>
+      <dependencies>
+        <dependency type="CoreVersion">06.00.00</dependency>
+        <dependency type="package">OpenUrlRewriter</dependency>
+        <dependency type="type">DotNetNuke.Modules.Forum.ThreadController</dependency>
+      </dependencies>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <path>bin</path>
+              <name>SunBlogNuke.Providers.ForumUrlRuleProvider.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/urlRule/providers"
+                        action="update" key="name" collision="ignore">
+                    <add name="ForumUrlRuleProvider" type="SunBlogNuke.Providers.OpenUrlRewriter.ForumUrlRuleProvider, SunBlogNuke.Providers.ForumUrlRuleProvider" includePageName="true" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/urlRule/providers/add[@name='ForumUrlRuleProvider']"
+                        action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
