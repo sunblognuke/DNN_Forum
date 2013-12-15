@@ -146,6 +146,8 @@ User Settings, Search  (Admin, editable stuff) */
 .Forum_Admin_SectionHead{font-family: normal bold Helvetica, Arial, sans-serif;font-size:12px;color: #999;font-variant:small-caps;border-left: #B8D7F3 0px solid;border-right: #B8D7F3 0px solid;border-top: #B8D7F3 1px solid;background: url('Images/text-bg.jpg') repeat-x;}
 /* Text for dnn labels, grid values */
 .Forum_Row_AdminText{font: normal 10px Helvetica, Arial, San-Serif;color: black;}
+.dnnssStat{border-top:1px #ccc solid;padding:1em 0 4em;margin-top:20px;overflow:hidden;}
+.dnnssStat p{float:left;padding-right:2em;}
 /*/////////////////////////// - MISC CLASSES - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 /* Used in forum search results(my posts icon area), in moderator sections */
 .Forum_RowHeader{background-color: #F7F7F7;}

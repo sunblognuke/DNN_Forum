@@ -263,20 +263,15 @@ Namespace DotNetNuke.Modules.Forum
                 ' Redirect the user to the aggregated view (Prior to 4.4.4, aggregated used this view so we have to handle legacy links)
                 HttpContext.Current.Response.Redirect(Utilities.Links.ContainerAggregatedLink(TabID, False), True)
             Else
-                If Not CurrentForum.IsActive Then
+                If CurrentForum Is Nothing OrElse Not CurrentForum.IsActive Then
                     ' we should consider setting type of redirect here?
-
                     MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
                 End If
 
-                If Not (CurrentForum.PublicView) Then
-                    ' The forum is private, see if we have proper view perms here
-
-                    If Not objSecurity.IsAllowedToViewPrivateForum Then
-                        ' we should consider setting type of redirect here?
-
-                        MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-                    End If
+                ' The forum is private, see if we have proper view perms here
+                If Not CurrentForum.PublicView OrElse Not objSecurity.IsAllowedToViewPrivateForum Then
+                    ' we should consider setting type of redirect here?
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
                 End If
             End If
 

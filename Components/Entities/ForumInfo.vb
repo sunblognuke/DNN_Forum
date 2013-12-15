@@ -841,9 +841,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' The primary key necessary for IHdryatable. In this case, the value will be set to the ForumID.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Property KeyID() As Integer Implements IHydratable.KeyID
             Get
                 Return ForumID
@@ -873,10 +870,6 @@ Namespace DotNetNuke.Modules.Forum
                         Null.SetNullDateTime(dr("UpdatedDate")))
 
             Return dt
-            'CreatedByUserID = Null.SetNullInteger(dr("CreatedByUser"))
-            'CreatedOnDate = Null.SetNullDateTime(dr("CreatedDate"))
-            'LastModifiedByUserID = Null.SetNullInteger(dr("UpdatedByUser"))
-            'LastModifiedOnDate = Null.SetNullDateTime(dr("UpdatedDate"))
         End Function
 
         Dim _ForumAudit As ForumAudit
@@ -890,56 +883,6 @@ Namespace DotNetNuke.Modules.Forum
 
     Public Class ForumAudit
         Inherits DotNetNuke.Entities.BaseEntityInfo
-
-        'Dim _CreatedByUserID As Integer
-        'Public Overloads Property CreatedByUserID() As Integer
-        '    Get
-        '        Return _CreatedByUserID
-        '    End Get
-        '    Set(ByVal Value As Integer)
-        '        _CreatedByUserID = Value
-        '    End Set
-        'End Property
-
-        'Dim _LastModifiedByUserID As Integer
-        'Public Overloads Property LastModifiedByUserID() As Integer
-        '    Get
-        '        Return _LastModifiedByUserID
-        '    End Get
-        '    Set(ByVal Value As Integer)
-        '        _LastModifiedByUserID = Value
-        '    End Set
-        'End Property
-
-        'Dim _CreatedOnDate As DateTime
-        'Public Overloads Property CreatedOnDate() As DateTime
-        '    Get
-        '        Return _CreatedOnDate
-        '    End Get
-        '    Set(ByVal Value As DateTime)
-        '        _CreatedOnDate = Value
-        '    End Set
-        'End Property
-
-        'Dim _LastModifiedOnDate As DateTime
-        'Public Overloads Property LastModifiedOnDate() As DateTime
-        '    Get
-        '        Return _LastModifiedOnDate
-        '    End Get
-        '    Set(ByVal Value As DateTime)
-        '        '_LastModifiedOnDate = Value
-        '        MyBase.LastModifiedOnDate = Value
-        '    End Set
-        'End Property
-
-        'Protected Overrides Sub FillInternal(ByVal dr As IDataReader)
-
-
-        '    CreatedByUserID = Null.SetNullInteger(dr("CreatedByUser"))
-        '    CreatedOnDate = Null.SetNullDateTime(dr("CreatedDate"))
-        '    LastModifiedByUserID = Null.SetNullInteger(dr("UpdatedByUser"))
-        '    LastModifiedOnDate = Null.SetNullDateTime(dr("UpdatedDate"))
-        'End Sub
 
         Public Sub New(ByVal dr As IDataReader)
             If dr IsNot Nothing Then

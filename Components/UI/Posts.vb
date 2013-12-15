@@ -1326,8 +1326,8 @@ Namespace DotNetNuke.Modules.Forum
                 RenderCellBegin(wr, "Forum_NavBarButtonDisabled", "", "", "", "", "", "")   ' <td> ' 
             End If
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, CurrentThread.PreviousThreadID)
             If PreviousEnabled Then
+                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, CurrentThread.PreviousThreadID)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")

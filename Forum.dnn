@@ -131,7 +131,7 @@
 									</moduleControl>	
 									<moduleControl>
 										<controlKey>PostDelete</controlKey>
-										<controlSrc>DesktopModules/Forum/Forum_PostDelete.ascx</controlSrc>
+										<controlSrc>DesktopModules/Forum/Admin/Forum_PostDelete.ascx</controlSrc>
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Delete Post</controlTitle>
 										<controlType>View</controlType>

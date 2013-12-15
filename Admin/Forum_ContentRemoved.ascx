@@ -3,31 +3,17 @@
 	align="center">
 	<tr>
 		<td id="celHeader" width="100%" class="Forum_Header" valign="middle">
-			<table cellspacing="0" cellpadding="0" border="0" width="100%">
-				<tr>
-					<td width="1" class="Forum_HeaderCapLeft"><asp:image id="imgHeadSpacer" runat="server" /></td>
-					<td width="100%">&nbsp;<asp:Label ID="lblTitleContentRemoved" Runat="server" resourcekey="lblTitleContentRemoved"
-							Text="Content Removed" CssClass="Forum_HeaderText" /></td>
-					<td width="1" class="Forum_HeaderCapRight"><asp:image id="imgHeadSpacer2" runat="server" /></td>
-				</tr>
-			</table>
+			&nbsp;<asp:Label ID="lblTitleContentRemoved" Runat="server" resourcekey="lblTitleContentRemoved" CssClass="Forum_HeaderText" />
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" align="center" width="100%" class="Forum_Row_Admin">
-			<asp:Label id="lblContentRemoved" runat="server" resourcekey="lblContentRemoved" CssClass="Forum_Normal" />
+            <h3><%=lblContentRemoved%></h3>
 		</td>
 	</tr>
 	<tr>
 		<td class="Forum_Footer" valign="middle" align="center">
-			<table cellpadding="0" cellspacing="0" border="0" width="100%">
-				<tr>
-					<td width="1" class="Forum_FooterCapLeft"><asp:image id="imgFootSpacer" runat="server" /></td>
-					<td width="100%" align="center">
-						<asp:linkbutton class="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" /></td>
-					<td width="1" class="Forum_FooterCapRight"><asp:image id="imgFootSpacer2" runat="server" /></td>
-				</tr>
-			</table>
+			<asp:linkbutton class="CommandButton" id="cmdCancel" runat="server" style="color: #fff;font-weight: bold;" resourcekey="cmdCancel" />
 		</td>
 	</tr>
 </table>

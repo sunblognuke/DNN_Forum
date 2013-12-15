@@ -38,11 +38,11 @@
             If delta < 31104000 Then
                 ' 12 * 30 * 24 * 60 * 60
                 Dim months As Integer = Convert.ToInt32(Math.Floor(CDbl(ts.Days) / 30))
-                Return If(months <= 1, "one month ago", months & " months ago")
+                Return If(months <= 1, "a month ago", months & " months ago")
             End If
             Dim years As Integer = Convert.ToInt32(Math.Floor(CDbl(ts.Days) / 365))
 
-            Return If(years <= 1, "one year ago", years & " years ago")
+            Return If(years <= 1, "a year ago", years & " years ago")
         End Function
     End Class
 End Namespace

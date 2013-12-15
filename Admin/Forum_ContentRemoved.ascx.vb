@@ -34,6 +34,8 @@ Namespace DotNetNuke.Modules.Forum
 		Inherits ForumModuleBase
 		Implements DotNetNuke.Entities.Modules.IActionable
 
+        Protected lblContentRemoved As String
+
 #Region "Optional Interfaces"
 
 		''' <summary>
@@ -52,44 +54,34 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Load the page/settings
-		''' </summary>
-		''' <param name="sender">System.Object</param>
-		''' <param name="e">System.EventArgs)</param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-			Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-			ForumUtils.LoadCssFile(DefaultPage, objConfig)
+        Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+            Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+            ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
-			If Not Page.IsPostBack Then
-				' Store the referrer for returning to where the user came from
-				If Not Request.UrlReferrer Is Nothing Then
-					ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
-				End If
-				'Spacer image
-				imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-				imgHeadSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-				imgFootSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-				imgFootSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-			End If
-		End Sub
+            lblContentRemoved = Localization.GetString("lblContentRemoved.Text", LocalResourceFile)
+            If Not Page.IsPostBack Then
+                ' Store the referrer for returning to where the user came from
+                If Not Request.UrlReferrer Is Nothing Then
+                    ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
+                End If
+                ''Spacer image
+                'imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+                'imgHeadSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+                'imgFootSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+                'imgFootSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+            End If
+        End Sub
 
 		''' <summary>
 		''' Takes the user back where they came from
 		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-			If Not ViewState("UrlReferrer") Is Nothing Then
-				Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
-			Else
-				Response.Redirect(Utilities.Links.ContainerForumHome(TabId), False)
-			End If
-		End Sub
+        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+            If Not ViewState("UrlReferrer") Is Nothing Then
+                Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
+            Else
+                Response.Redirect(Utilities.Links.ContainerForumHome(TabId), False)
+            End If
+        End Sub
 
 #End Region
 

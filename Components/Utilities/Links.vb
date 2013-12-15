@@ -507,23 +507,19 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <summary>
 		''' Nagivates user to the aggregated forum view. 
 		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="NoReply"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Shared Function ContainerAggregatedLink(ByVal TabId As Integer, ByVal NoReply As Boolean) As String
-			Dim url As String
-			Dim params As String()
+        Public Shared Function ContainerAggregatedLink(ByVal TabId As Integer, ByVal NoReply As Boolean) As String
+            Dim url As String
+            Dim params As String()
 
-			If NoReply Then
-				params = New String(2) {"scope=threadsearch", "noreply=1", "aggregated=1"}
-			Else
-				params = New String(1) {"scope=threadsearch", "aggregated=1"}
-			End If
-			url = NavigateURL(TabId, "", params)
+            If NoReply Then
+                params = New String(2) {"scope=threadsearch", "noreply=1", "aggregated=1"}
+            Else
+                params = New String(1) {"scope=threadsearch", "aggregated=1"}
+            End If
+            url = NavigateURL(TabId, "", params)
 
-			Return url
-		End Function
+            Return url
+        End Function
 
 		''' <summary>
 		''' Navigates user to search results for a single ForumID which results

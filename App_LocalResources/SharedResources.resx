@@ -544,7 +544,7 @@
     <value>Results</value>
   </data>
   <data name="SearchResult.Text" xml:space="preserve">
-    <value>Your search returned {0} result(s)</value>
+    <value>&lt;h3 style="margin:10px 0"&gt;Your search returned {0} result(s):&lt;/h3&gt;</value>
   </data>
   <data name="In.Text" xml:space="preserve">
     <value>in</value>
