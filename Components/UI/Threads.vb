@@ -269,7 +269,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 ' The forum is private, see if we have proper view perms here
-                If Not CurrentForum.PublicView OrElse Not objSecurity.IsAllowedToViewPrivateForum Then
+                If Not CurrentForum.PublicView AndAlso Not objSecurity.IsAllowedToViewPrivateForum Then
                     ' we should consider setting type of redirect here?
                     MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
                 End If
