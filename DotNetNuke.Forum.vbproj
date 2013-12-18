@@ -617,33 +617,33 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
+    <Compile Include="Components\Providers\Data\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DotNetNuke.Forums.build" />
-    <None Include="Forum.dnn">
+    <None Include="Package.build" />
+    <None Include="Installation\Forum.dnn">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.03.04.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.04.03.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.04.04.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.05.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.05.02.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.06.01.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.07.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.09.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <None Include="Installation\Scripts\03.00.00.SqlDataProvider" />
+    <None Include="Installation\Scripts\03.10.05.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.03.00.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.03.04.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.04.03.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.04.04.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.05.00.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.05.02.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.06.01.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.07.00.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.09.00.SqlDataProvider" />
+    <None Include="Installation\Scripts\04.09.01.SqlDataProvider" />
+    <None Include="Installation\Scripts\05.00.01.SqlDataProvider" />
+    <None Include="Installation\Scripts\Uninstall.SqlDataProvider" />
     <None Include="Themes\FlatBlue\images\forum_moderated.png.bak" />
     <None Include="Themes\FlatBlue\images\forum_unmoderated.png.bak" />
     <None Include="Themes\FlatBlue\images\forum_unmoderated_new.png.bak" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="06.00.00.txt" />
+    <Content Include="Installation\CleanUp\06.00.00.txt" />
     <Content Include="Admin\App_LocalResources\ACP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -705,7 +705,7 @@
     <Content Include="Extensions\Markdown\wmd\wmdStarter.js" />
     <Content Include="Admin\Forum_PostReport.ascx" />
     <Content Include="Admin\Forum_ThreadSplit.ascx" />
-    <Content Include="Documentation\License.txt" />
+    <Content Include="Installation\License.txt" />
     <Content Include="Admin\ACP.ascx" />
     <Content Include="Controls\ACP_Filter.ascx" />
     <Content Include="Forum_Container.ascx" />
@@ -777,7 +777,7 @@
     <Content Include="Controls\UCP_Bookmark.ascx" />
     <Content Include="Controls\UCP_Signature.ascx" />
     <Content Include="Controls\UCP_Tracking.ascx" />
-    <Content Include="Documentation\ReleaseNotes.txt" />
+    <Content Include="Installation\ReleaseNotes.txt" />
     <Content Include="Admin\MCP.ascx" />
     <Content Include="Themes\Blue\Blue.css" />
     <Content Include="Themes\Blue\images\alt_header_bg.gif" />
