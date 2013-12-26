@@ -428,6 +428,12 @@ Namespace DotNetNuke.Modules.Forum
             If PostID > 0 Then
                 Dim objPostCnt As New PostController
                 Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
+                ' If the post info is nothing, it is probably a deleted thread
+                If objPost Is Nothing Then
+                    ' we should consider setting type of redirect here?
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+                End If
+
                 correctUrl = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objPost.ThreadID, objPost.ParentThread.Subject, PostID)
                 ''301 Redirect to the correct format for the page
                 'HttpContext.Current.Response.Status = "301 Moved Permanently"
@@ -471,6 +477,12 @@ Namespace DotNetNuke.Modules.Forum
             ElseIf ThreadID > 0 Then
                 Dim cntThread As New ThreadController()
                 CurrentThread = cntThread.GetThread(ThreadID)
+
+                ' If the thread info is nothing, it is probably a deleted thread
+                If CurrentThread Is Nothing Then
+                    ' we should consider setting type of redirect here?
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+                End If
 
                 ' we need to see if there is a content item for the thread, if not create one.
                 If CurrentThread.ContentItemId < 1 Then
