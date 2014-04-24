@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum
 
     ''' <summary>
@@ -678,7 +680,7 @@ Namespace DotNetNuke.Modules.Forum
                     Dim publishedOnDate As String = Utilities.DateUtils.RelativeDate(objLastPost.CreatedDate) 'Utilities.ForumUtils.GetCreatedDateInfo(objLastPost.CreatedDate, objConfig, "")
                     ' shows only first 30 letters of the post subject title
                     Dim title As String = HttpUtility.HtmlDecode(objLastPost.Subject) 'HtmlDecode function prevent to cut string inside html code like: &#245; -> &#2 ...45;
-                    Dim truncatedTitle As String = HtmlUtils.Shorten(title, 30, "...")
+                    Dim truncatedTitle As String = ForumUtils.TrimString(title, Constants.SEO_TITLE_LIMIT)
                     'url = Utilities.Links.ContainerViewPostLink(TabID, objForum.ForumID, objForum.MostRecentPostID)
                     Dim Url As String = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objLastPost.ThreadID, objLastPost.ParentThread.Subject, objLastPost.PostID)
                     RenderDivBegin(wr, "", "")

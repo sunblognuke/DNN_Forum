@@ -1288,7 +1288,8 @@ Namespace DotNetNuke.Modules.Forum
                         End If
                     Case PostAction.Reply
                         tblPoll.Visible = False
-                        txtSubject.Text = HttpUtility.HtmlDecode(Utilities.ForumUtils.SetReplySubject(objParentPost.Subject))
+                        'txtSubject.Text = HttpUtility.HtmlDecode(Utilities.ForumUtils.SetReplySubject(objParentPost.Subject))
+                        rowSubject.Visible = False
                         rowThreadStatus.Visible = False
 
                     Case PostAction.Quote

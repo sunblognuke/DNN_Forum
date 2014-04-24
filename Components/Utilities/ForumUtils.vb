@@ -485,10 +485,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         ''' Used to trim strings based on word count passed in.
         ''' This is similar to a My Subject Here ...
         ''' </summary>
-        ''' <param name="Content"></param>
-        ''' <param name="CharCount"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Shared Function TrimString(ByVal Content As String, ByVal CharCount As Integer) As String
             Return HtmlUtils.Shorten(Content, CharCount, "...")
         End Function

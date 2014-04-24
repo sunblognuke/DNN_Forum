@@ -1737,7 +1737,7 @@ Namespace DotNetNuke.Modules.Forum
                 Dim url As String
 
                 ' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
-                RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "", "")
+                RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "10", "", "", "")
 
                 ' row to display user alias and online status
                 RenderRowBegin(wr) '<tr> 
@@ -1766,8 +1766,6 @@ Namespace DotNetNuke.Modules.Forum
                     wr.Write("&nbsp;")
                     RenderImageButton(wr, Utilities.Links.UCP_AdminLinks(TabID, ModuleID, objAuthor.UserID, UserAjaxControl.Profile), objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, ForumControl.LocalizedText("EditProfile"), "")
                 End If
-                RenderCellEnd(wr) ' </td>
-                RenderRowEnd(wr) ' </tr> (end user alias/online)  
 
                 ' display user ranking 
                 If objConfig.Ranking Then
@@ -1776,8 +1774,9 @@ Namespace DotNetNuke.Modules.Forum
                     Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
                     Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
 
-                    RenderRowBegin(wr) ' <tr> (start ranking row)
-                    RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
+                    'RenderRowBegin(wr) ' <tr> (start ranking row)
+                    'RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
+                    wr.Write("<br />")
                     If objConfig.EnableRankingImage Then
                         RenderImage(wr, rankURL, RankTitle, "")
                     Else
@@ -1785,18 +1784,23 @@ Namespace DotNetNuke.Modules.Forum
                         wr.Write(RankTitle)
                         RenderDivEnd(wr)
                     End If
-                    RenderCellEnd(wr) ' </td>
-                    RenderRowEnd(wr) ' </tr>
+                    'RenderCellEnd(wr) ' </td>
+                    'RenderRowEnd(wr) ' </tr>
                 End If
+
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr> (end user alias/online) 
 
                 ' display user avatar
                 RenderUserAvatar(wr, objAuthor)
 
                 'Joined
+                RenderDivBegin(wr, "", "Forum_NormalSmall")
                 Dim strJoinedDate As String
                 Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(objAuthor.Membership.CreatedDate, DateTime), objConfig)
                 strJoinedDate = ForumControl.LocalizedText("Joined") & ": " & displayCreatedDate.ToShortDateString
-                wr.Write("<br />" & strJoinedDate)
+                wr.Write(strJoinedDate)
+                RenderDivEnd(wr)
 
                 'Post count
                 RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
@@ -1814,7 +1818,7 @@ Namespace DotNetNuke.Modules.Forum
             If objConfig.EnableUserAvatar AndAlso (String.IsNullOrEmpty(author.AvatarComplete) = False) Then
                 RenderRowBegin(wr) ' <tr> (start avatar row)
                 RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
-                wr.Write("<br />")
+                'wr.Write("<br />")
                 If objConfig.EnableProfileAvatar And author.UserID > 0 Then
                     If Not author.IsSuperUser Then
                         Dim AvatarVisibility As UserVisibilityMode
@@ -1934,6 +1938,8 @@ Namespace DotNetNuke.Modules.Forum
                     avatar_url = ResolveUrl("~/images/no_avatar.gif")
                 End If
                 imgUserProfileAvatar.ImageUrl = avatar_url
+                imgUserProfileAvatar.Width = objConfig.UserAvatarWidth
+                imgUserProfileAvatar.Height = objConfig.UserAvatarHeight
                 imgUserProfileAvatar.RenderControl(wr)
                 imgUserProfileAvatar.Visible = True
             Else
@@ -1957,7 +1963,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' </summary>
         Private Sub RenderWebSiteLink(ByVal author As ForumUserInfo, ByVal wr As HtmlTextWriter)
             If Len(author.UserWebsite) > 0 Then
-                wr.Write("<br />")
+                'wr.Write("<br />")
                 RenderLinkButton(wr, author.UserWebsite, Replace(author.UserWebsite, "http://", ""), "Forum_Profile", "", True, objConfig.NoFollowWeb)
             End If
         End Sub
@@ -2016,40 +2022,40 @@ Namespace DotNetNuke.Modules.Forum
             End If
             'RenderTableBegin(wr, Post.PostID.ToString, "", "100%", "100%", "0", "0", "", "", "0") ' <table>
             RenderTableBegin(wr, "", "", "100%", "100%", "0", "0", "", "", "0") ' <table>
-            RenderRowBegin(wr) ' <tr>
+            'RenderRowBegin(wr) ' <tr>
 
-            RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
-            RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
-            RenderRowBegin(wr) ' <tr>
+            'RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
+            'RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+            'RenderRowBegin(wr) ' <tr>
 
-            RenderCellBegin(wr, detailCellClass, "", "100%", "left", "top", "", "") ' <td>
+            'RenderCellBegin(wr, detailCellClass, "", "100%", "left", "top", "", "") ' <td>
 
-            '[skeel] Subject now works as a direct link to a specific post!
-            RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
-            Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
-            wr.Write("&nbsp;")
-            wr.Write(strAuthorLocation)
+            ''[skeel] Subject now works as a direct link to a specific post!
+            'RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
+            'Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
+            'wr.Write("&nbsp;")
+            'wr.Write(strAuthorLocation)
 
             ' display edited tag if post has been modified
-            If (Post.UpdatedByUser > 0) Then
-                ' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
-                'CP - Impersonate
-                Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
-                If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
-                    wr.Write("&nbsp;")
-                    RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
-                End If
-            End If
+            'If (Post.UpdatedByUser > 0) Then
+            '    ' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
+            '    'CP - Impersonate
+            '    Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
+            '    If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
+            '        wr.Write("&nbsp;")
+            '        RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
+            '    End If
+            'End If
 
-            RenderDivEnd(wr) ' </span> 
+            'RenderDivEnd(wr) ' </span> 
 
-            RenderCellEnd(wr) ' </td> 
+            'RenderCellEnd(wr) ' </td> 
 
             'CP- Add back in row seperation 
-            RenderRowEnd(wr) '</tr>    
-            RenderRowBegin(wr) ' <tr>
+            'RenderRowEnd(wr) '</tr>    
+            'RenderRowBegin(wr) ' <tr>
 
-            RenderCellBegin(wr, buttonCellClass, "", "", "left", "top", "", "") ' <td>
+            'RenderCellBegin(wr, buttonCellClass, "", "", "left", "top", "", "") ' <td>
             'RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
             'RenderRowBegin(wr) ' <tr>
 
@@ -2068,15 +2074,15 @@ Namespace DotNetNuke.Modules.Forum
 
             ' (in flatview or selected, display commands on right)
             'RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-            RenderCommands(wr, Post)
+            'RenderCommands(wr, Post)
             'RenderCellEnd(wr) ' </td> 
             'RenderRowEnd(wr) '</tr>    
             'RenderTableEnd(wr) ' </table> 
-            RenderCellEnd(wr) ' </td> 
-            RenderRowEnd(wr) '</tr>    
-            RenderTableEnd(wr) ' </table> 
-            RenderCellEnd(wr) ' </td> 
-            RenderRowEnd(wr) '</tr>    
+            'RenderCellEnd(wr) ' </td> 
+            'RenderRowEnd(wr) '</tr>    
+            'RenderTableEnd(wr) ' </table> 
+            'RenderCellEnd(wr) ' </td> 
+            'RenderRowEnd(wr) '</tr>    
 
             RenderRowBegin(wr) ' <tr>
 
@@ -2154,9 +2160,22 @@ Namespace DotNetNuke.Modules.Forum
             wr.Write(cleanBody)
             RenderDivEnd(wr) ' </div>
 
+            RenderCellEnd(wr) ' </td>
+            RenderRowEnd(wr) ' </tr> done with post body
+
+            RenderRowBegin(wr) '<tr> 
+            RenderCellBegin(wr, "", "", "100%", "right", "", "", "") ' <td>
+
+            RenderCommands(wr, Post)
+          
+            RenderCellEnd(wr) ' </td>
+            RenderRowEnd(wr) ' </tr> 
+
             If objConfig.EnableUserSignatures Then
                 ' insert signature if exists
                 If Len(author.Signature) > 0 Then
+                    RenderRowBegin(wr) '<tr> 
+                    RenderCellBegin(wr, "", "", "", "left", "top", "", "") ' <td>
                     RenderDivBegin(wr, "", "Forum_Normal")
                     wr.RenderBeginTag(HtmlTextWriterTag.Hr) ' <hr>
                     wr.RenderEndTag() ' </hr>
@@ -2166,53 +2185,9 @@ Namespace DotNetNuke.Modules.Forum
                         wr.Write(cleanSignature)
                     End If
                     RenderDivEnd(wr) ' </span>
-                End If
-            End If
-
-            RenderCellEnd(wr) ' </td>
-            RenderRowEnd(wr) ' </tr> done with post body
-
-            If objConfig.EnablePostAbuse AndAlso (Post.PostReported > 0 OrElse CurrentForumUser.UserID > 0) Then
-                ' Report abuse
-                RenderRowBegin(wr) '<tr> 
-                RenderCellBegin(wr, "", "1px", "100%", "right", "", "", "") ' <td>
-                url = Utilities.Links.ReportToModsLink(TabID, ModuleID, Post.PostID)
-
-                ' create table to hold link and image
-                RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
-                RenderRowBegin(wr) ' <tr>
-
-                Dim renderSpace As Boolean = True
-
-                If Post.PostReported > 0 Then
-                    RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
-                    ' make a link to take users to see whom reported this post and why
-                    RenderImage(wr, objConfig.GetThemeImageURL("s_postabuse.") & objConfig.ImageExtension, Post.PostReported.ToString & " " & Localization.GetString("AbuseReports", ForumControl.objConfig.SharedResourceFile), "")
-                    wr.Write("&nbsp;")
                     RenderCellEnd(wr) ' </td>
-                    renderSpace = False
+                    RenderRowEnd(wr)
                 End If
-
-                If CurrentForumUser.UserID > 0 Then
-                    RenderCellBegin(wr, "Forum_ReplyCell", "", "", "right", "middle", "", "") ' <td>
-                    ' Warn link
-                    RenderLinkButton(wr, url, ForumControl.LocalizedText("ReportAbuse"), "Forum_Link")
-                    RenderCellEnd(wr) ' </td>
-                    renderSpace = False
-                End If
-
-                If renderSpace Then
-                    RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
-                    wr.Write("&nbsp;")
-                    RenderCellEnd(wr) ' </td>
-                End If
-
-                RenderRowEnd(wr) ' </tr> 
-                RenderTableEnd(wr) ' </table>
-                RenderCellEnd(wr) ' </td>
-                RenderRowEnd(wr) ' </tr> 
-                'Else
-                '   wr.Write("&nbsp;")
             End If
 
             ''CP-ADD - New per post rating (preparing UI) - Not Implemented
@@ -2627,6 +2602,46 @@ Namespace DotNetNuke.Modules.Forum
             Else
                 ' User cannot post, which means no moderation either
                 RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "left")
+            End If
+
+            ' Report abuse command
+            If objConfig.EnablePostAbuse AndAlso (Post.PostReported > 0 OrElse CurrentForumUser.UserID > 0) Then
+                url = Utilities.Links.ReportToModsLink(TabID, ModuleID, Post.PostID)
+
+                '' create table to hold link and image
+                'RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
+                'RenderRowBegin(wr) ' <tr>
+
+                Dim renderSpace As Boolean = True
+
+                If Post.PostReported > 0 Then
+                    RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
+                    ' make a link to take users to see whom reported this post and why
+                    RenderImage(wr, objConfig.GetThemeImageURL("s_postabuse.") & objConfig.ImageExtension, Post.PostReported.ToString & " " & Localization.GetString("AbuseReports", ForumControl.objConfig.SharedResourceFile), "")
+                    wr.Write("&nbsp;")
+                    RenderCellEnd(wr) ' </td>
+                    renderSpace = False
+                End If
+
+                If CurrentForumUser.UserID > 0 Then
+                    RenderCellBegin(wr, "Forum_ReplyCell", "", "", "right", "middle", "", "") ' <td>
+                    ' Warn link
+                    RenderLinkButton(wr, url, ForumControl.LocalizedText("ReportAbuse"), "Forum_Link")
+                    RenderCellEnd(wr) ' </td>
+                    renderSpace = False
+                End If
+
+                If renderSpace Then
+                    RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
+                    wr.Write("&nbsp;")
+                    RenderCellEnd(wr) ' </td>
+                End If
+
+                'RenderRowEnd(wr) ' </tr> 
+                'RenderTableEnd(wr) ' </table>
+
+                'Else
+                '   wr.Write("&nbsp;")
             End If
 
             RenderRowEnd(wr) ' </tr>

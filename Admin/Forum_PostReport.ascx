@@ -46,11 +46,11 @@
 		</tr>
 		<tr>
 			<td class="Forum_Row_Admin_Foot" align="center" colspan="2">
-				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />&nbsp;
 				<asp:linkbutton cssclass="CommandButton primary-action" id="cmdReport" runat="server" resourcekey="cmdReport" />
+                <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />
 			</td>
 		</tr>
-				<tr>
+		<tr>
 			<td align="center" colspan="2">
 				<asp:Label ID="lblAlreadyReported" runat="server" CssClass="NormalRed" Visible="False" resourcekey="lblAlreadyReported" />
 			</td>

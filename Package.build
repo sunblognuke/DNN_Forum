@@ -26,7 +26,6 @@
         <property name="ModuleName" value="Forum"  overwrite="false"  />
         <property name="subproject.name" value="DotNetNuke.${ModuleName}" />
         <property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-        <property name="fullversion" value="06.00.00" />
 
         <property name="debug" value="false" overwrite="false" />
         <property name="config" value="debug" if="${debug}" />
@@ -39,6 +38,16 @@
         </if>
     </target>
 
+    <!--<target name="VersionInfo" >
+        <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(module.dll)))}" />
+        <property name="shortVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
+
+        <if test="${verbose}">
+            <echo message="version: ${version}" />
+        </if>
+
+    </target>-->
+
     <target name="Compile" depends="init">
         <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
             <arg value="${subproject.name}.sln" />
@@ -48,22 +57,21 @@
     </target>
 
     <!-- It is important that this target does not run before the Compile target since it will lock the assembly -->
-    <target name="VersionInfo" >
-        <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(module.dll)))}" />
-        <property name="shortVersion" value="${string::substring(version,00,string::last-index-of(version,'.'))}" />
+    <target name="set-assemblyVersion" description="Sets the assemblyVersion property to the first three numbers from the version of the assembly specified by the assemblyFile property">
+        <property name="assemblyVersion" value="${format::version-info(fileversioninfo::get-version-info(module.dll))}" />
 
         <if test="${verbose}">
-            <echo message="shortVersion: ${shortVersion}" />
-            <echo message="version: ${version}" />
+            <echo message="assemblyVersion: ${assemblyVersion}" />
+            <!--<echo message="license: ${license}" />-->
         </if>
     </target>
 
-    <target name="CleanPackageBin" depends="init VersionInfo">
-        <delete file="${package.dir}/${ModuleName}_${shortVersion}${installZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${shortVersion}${installZip}.zip')}" />
+    <target name="CleanPackageBin" depends="init set-assemblyVersion">
+        <delete file="${package.dir}/${ModuleName}_${assemblyVersion}${installZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${assemblyVersion}${installZip}.zip')}" />
     </target>
 
-    <target name="CleanPackageSource" depends="init VersionInfo">
-        <delete file="${package.dir}/${ModuleName}_${shortVersion}${srcZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${shortVersion}${srcZip}.zip')}" />
+    <target name="CleanPackageSource" depends="init set-assemblyVersion">
+        <delete file="${package.dir}/${ModuleName}_${assemblyVersion}${srcZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${assemblyVersion}${srcZip}.zip')}" />
     </target>
 
     <target name="CleanPackageAll" depends="init">
@@ -180,7 +188,7 @@
             </fileset>
         </copy>
         <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-        <zip zipfile="${package.dir}/${ModuleName}_${fullversion}${installZip}.zip">
+        <zip zipfile="${package.dir}/${ModuleName}_${assemblyVersion}${installZip}.zip">
             <fileset basedir="temp">
                 <include name="**/*" />
             </fileset>
@@ -211,7 +219,7 @@
             </fileset>
         </copy>
         <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-        <zip zipfile="${package.dir}/${ModuleName}_${fullversion}${srcZip}.zip">
+        <zip zipfile="${package.dir}/${ModuleName}_${assemblyVersion}${srcZip}.zip">
             <fileset basedir="temp">
                 <include name="**/*" />
             </fileset>
@@ -224,12 +232,12 @@
     <target name="CreateDNNReleasePackage" depends="CreateInstallZip CreateSrcZip">
         <copy todir="temp" flatten="true">
             <fileset>
-                <include name="**${package.dir}/${ModuleName}_${fullversion}${srcZip}.zip" />
-                <include name="**${package.dir}/${ModuleName}_${fullversion}${installZip}.zip" />
+                <include name="**${package.dir}/${ModuleName}_${assemblyVersion}${srcZip}.zip" />
+                <include name="**${package.dir}/${ModuleName}_${assemblyVersion}${installZip}.zip" />
             </fileset>
         </copy>
         <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-        <zip zipfile="${package.dir}/${ModuleName}_${fullversion}${pckZip}.zip">
+        <zip zipfile="${package.dir}/${ModuleName}_${assemblyVersion}${pckZip}.zip">
             <fileset basedir="temp">
                 <include name="**/*" />
             </fileset>
@@ -242,10 +250,27 @@
     <target name="build" depends="Compile" description="This target compiles the application.
 	" />
 
-    <target name="BuildAndZip" depends="build CreateSrcZip CreateInstallZip CreateDNNReleasePackage" description="This target compiles the application and then creates two-three zip files: 
+    <target name="BuildAndZip" depends="build CreateSrcZip CreateInstallZip" description="This target compiles the application and then creates two-three zip files: 
 				  - one that only contains the compiled code and runtime files 
 			  - one is the resourceszip for installable pa's
 				  - the other with compiled code and source code.
 	" />
-
+    <script language="C#" prefix="format" >
+        <references>
+            <include name="System.dll" />
+        </references>
+        <imports>
+            <import namespace="System.Diagnostics"/>
+            <import namespace="System.Globalization"/>
+        </imports>
+        <code>
+            <![CDATA[
+              [Function("version-info")]
+              public static string FormatVersionInfo(FileVersionInfo fileVersionInfo) {
+                  
+                  return string.Format(CultureInfo.InvariantCulture, "{0:00}.{1:00}.{2:00}", fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart, fileVersionInfo.FileBuildPart);
+              }
+            ]]>
+        </code>
+    </script>
 </project>

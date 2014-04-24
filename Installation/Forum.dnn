@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DNN_Forum" type="Module" version="06.00.00">
+        <package name="DNN_Forum" type="Module" version="06.00.05">
             <friendlyName>Forum</friendlyName>
             <description>The core forum module for DotNetNuke.</description>
             <owner>
@@ -17,60 +17,74 @@
             <components>
                 <component type="Script">
                     <scripts>
-                        <basePath>DesktopModules\Forum\Installation\Scripts</basePath>
+                        <basePath>DesktopModules\Forum</basePath>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>03.00.00.SqlDataProvider</name>
                             <version>03.00.00</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>03.10.05.SqlDataProvider</name>
                             <version>03.10.05</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.03.00.SqlDataProvider</name>
                             <version>04.03.00</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.03.04.SqlDataProvider</name>
                             <version>04.03.04</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.04.03.SqlDataProvider</name>
                             <version>04.04.03</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.04.04.SqlDataProvider</name>
                             <version>04.04.04</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.05.00.SqlDataProvider</name>
                             <version>04.05.00</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.05.02.SqlDataProvider</name>
                             <version>04.05.02</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.06.01.SqlDataProvider</name>
                             <version>04.06.01</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.07.00.SqlDataProvider</name>
                             <version>04.07.00</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.09.00.SqlDataProvider</name>
                             <version>04.09.00</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>04.09.01.SqlDataProvider</name>
                             <version>04.09.01</version>
                         </script>
                         <script type="Install">
+                            <path>Installation\Scripts</path>
                             <name>05.00.01.SqlDataProvider</name>
                             <version>05.00.01</version>
                         </script>
                         <script type="UnInstall">
+                            <path>Installation\Scripts</path>
                             <name>Uninstall.SqlDataProvider</name>
                             <version>05.00.03</version>
                         </script>
@@ -273,7 +287,7 @@
                         <assembly>
                             <name>DotNetNuke.Modules.Forum.dll</name>
                             <sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
-                            <version>06.00.00</version>
+                            <version>06.00.05</version>
                         </assembly>
                     </assemblies>
                 </component>
