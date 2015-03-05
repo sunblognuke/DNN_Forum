@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Controls"
 
-        Private ddlDateFilter As DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Private ddlDateFilter As System.Web.UI.WebControls.DropDownList 'DotNetNuke.Web.UI.WebControls.DnnComboBox
         Private cmdRead As LinkButton
         Private chkEmail As CheckBox
         Private txtForumSearch As TextBox
@@ -405,10 +405,10 @@ Namespace DotNetNuke.Modules.Forum
                 End With
             End If
 
-            ddlDateFilter = New DotNetNuke.Web.UI.WebControls.DnnComboBox
+            ddlDateFilter = New System.Web.UI.WebControls.DropDownList 'DotNetNuke.Web.UI.WebControls.DnnComboBox
             With ddlDateFilter
-                .CssClass = "Forum_NormalTextBox"
-                .Skin = "WebBlue"
+                '.CssClass = "Forum_NormalTextBox"
+                '.Skin = "WebBlue"
                 .ID = "lstDateFilter"
                 .Width = Unit.Parse("160")
                 .AutoPostBack = True
@@ -564,14 +564,23 @@ Namespace DotNetNuke.Modules.Forum
             Try
                 ddlDateFilter.Items.Clear()
 
-                ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
-                ddlDateFilter.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
-                ddlDateFilter.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
-                ddlDateFilter.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
-                ddlDateFilter.Items.Insert(4, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
-                ddlDateFilter.Items.Insert(5, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
-                ddlDateFilter.Items.Insert(6, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
-                ddlDateFilter.Items.Insert(7, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+                ddlDateFilter.Items.Insert(0, New ListItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
+                ddlDateFilter.Items.Insert(1, New ListItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
+                ddlDateFilter.Items.Insert(2, New ListItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
+                ddlDateFilter.Items.Insert(3, New ListItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
+                ddlDateFilter.Items.Insert(4, New ListItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
+                ddlDateFilter.Items.Insert(5, New ListItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
+                ddlDateFilter.Items.Insert(6, New ListItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
+                ddlDateFilter.Items.Insert(7, New ListItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+                'ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
+                'ddlDateFilter.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
+                'ddlDateFilter.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
+                'ddlDateFilter.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
+                'ddlDateFilter.Items.Insert(4, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
+                'ddlDateFilter.Items.Insert(5, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
+                'ddlDateFilter.Items.Insert(6, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
+                'ddlDateFilter.Items.Insert(7, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+
                 'ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
                 'ddlDateFilter.Items.Insert(1, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
                 'ddlDateFilter.Items.Insert(2, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
@@ -582,7 +591,8 @@ Namespace DotNetNuke.Modules.Forum
                 'ddlDateFilter.Items.Insert(7, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
 
                 If CurrentForumUser.UserID > 0 Then
-                    ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
+                    ddlDateFilter.Items.Insert(0, New ListItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
+                    'ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
                     'ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
                 End If
 

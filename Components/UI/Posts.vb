@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum
         Private trcRating As Telerik.Web.UI.RadRating
         Private ddlViewDescending As DotNetNuke.Web.UI.WebControls.DnnComboBox
         Private chkEmail As CheckBox
-        Private ddlThreadStatus As DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Private ddlThreadStatus As System.Web.UI.WebControls.DropDownList 'DotNetNuke.Web.UI.WebControls.DnnComboBox
         Private cmdThreadAnswer As LinkButton
         Private txtForumSearch As TextBox
         Private cmdForumSearch As ImageButton
@@ -670,7 +670,7 @@ Namespace DotNetNuke.Modules.Forum
             ' display tracking option only if user authenticated
             If CurrentForumUser.UserID > 0 Then
                 ' Thread Status Dropdownlist
-                Me.ddlThreadStatus = New DotNetNuke.Web.UI.WebControls.DnnComboBox
+                Me.ddlThreadStatus = New System.Web.UI.WebControls.DropDownList 'DotNetNuke.Web.UI.WebControls.DnnComboBox
                 With ddlThreadStatus
                     .ID = "lstThreadStatus"
                     .Width = Unit.Parse("150")
@@ -691,16 +691,15 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             ' Forum view (newest to oldest/oldest to newest) dropdownlist
-            ddlViewDescending = New DotNetNuke.Web.UI.WebControls.DnnComboBox
-            With ddlViewDescending
-                .ID = "lstViewDescending"
-                .Width = Unit.Parse("150")
-                .AutoPostBack = True
-                'CP: NOTE: Telerik conversion
-                .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
-                .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
-                .ClearSelection()
-            End With
+            'ddlViewDescending = New DotNetNuke.Web.UI.WebControls.DnnComboBox
+            'With ddlViewDescending
+            '    .ID = "lstViewDescending"
+            '    .Width = Unit.Parse("150")
+            '    .AutoPostBack = True
+            '    .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
+            '    .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
+            '    .ClearSelection()
+            'End With
 
             txtForumSearch = New TextBox
             With txtForumSearch
@@ -754,9 +753,9 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             End If
 
-            If Not CurrentForumUser.UserID > 0 Then
-                ddlViewDescending.Visible = False
-            End If
+            'If Not CurrentForumUser.UserID > 0 Then
+            '    ddlViewDescending.Visible = False
+            'End If
 
             ' Tags
             Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
@@ -908,7 +907,7 @@ Namespace DotNetNuke.Modules.Forum
                     AddHandler cmdVote.Click, AddressOf cmdVote_Click
                 End If
 
-                AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
+                'AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
                 AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
             Catch exc As Exception
                 LogException(exc)
@@ -945,7 +944,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 Controls.Add(tagsControl)
-                Controls.Add(ddlViewDescending)
+                'Controls.Add(ddlViewDescending)
                 Controls.Add(txtForumSearch)
                 Controls.Add(cmdForumSearch)
             Catch exc As Exception
@@ -973,18 +972,22 @@ Namespace DotNetNuke.Modules.Forum
                         ddlThreadStatus.Items.Clear()
 
                         'CP: NOTE: Telerik conversion
-                        ddlThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
-                        ddlThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unresolved", objConfig.SharedResourceFile), "1"))
-                        ddlThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Resolved", objConfig.SharedResourceFile), "2"))
-                        ddlThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
+                        ddlThreadStatus.Items.Add(New ListItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
+                        ddlThreadStatus.Items.Add(New ListItem(Localization.GetString("Unresolved", objConfig.SharedResourceFile), "1"))
+                        ddlThreadStatus.Items.Add(New ListItem(Localization.GetString("Resolved", objConfig.SharedResourceFile), "2"))
+                        ddlThreadStatus.Items.Add(New ListItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
+                        'ddlThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
+                        'ddlThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unresolved", objConfig.SharedResourceFile), "1"))
+                        'ddlThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Resolved", objConfig.SharedResourceFile), "2"))
+                        'ddlThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
                     Else
                         ddlThreadStatus.Visible = False
                     End If
                     'polling changes
                     If CurrentThread.ThreadStatus = ThreadStatus.Poll Then
                         'CP: NOTE: Telerik conversion
-                        Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
-                        ddlThreadStatus.Items.Add(statusEntry)
+                        'Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
+                        ddlThreadStatus.Items.Add(New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString()))
                     End If
 
                     ddlThreadStatus.SelectedIndex = CType(CurrentThread.ThreadStatus, Integer)
@@ -1014,13 +1017,13 @@ Namespace DotNetNuke.Modules.Forum
                         End If
                     End If
 
-                    If (CurrentForumUser.ViewDescending) Then
-                        ForumControl.Descending = True
-                        ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("NewestToOldest")).Selected = True
-                    Else
-                        ForumControl.Descending = False
-                        ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("OldestToNewest")).Selected = True
-                    End If
+                    'If (CurrentForumUser.ViewDescending) Then
+                    '    ForumControl.Descending = True
+                    '    ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("NewestToOldest")).Selected = True
+                    'Else
+                    '    ForumControl.Descending = False
+                    '    ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("OldestToNewest")).Selected = True
+                    'End If
 
                     ' Handle Polls
                     If CurrentThread.PollID > 0 Then
@@ -1038,7 +1041,7 @@ Namespace DotNetNuke.Modules.Forum
                         End If
                     End If
                 Else
-                    ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
+                    'ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
                     'CP - COMEBACK: Add way to display rating but don't allow voting (for anonymous users)
                     trcRating.Enabled = False
                 End If
@@ -2167,7 +2170,7 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "", "", "100%", "right", "", "", "") ' <td>
 
             RenderCommands(wr, Post)
-          
+
             RenderCellEnd(wr) ' </td>
             RenderRowEnd(wr) ' </tr> 
 
@@ -2420,12 +2423,12 @@ Namespace DotNetNuke.Modules.Forum
 
         Private Sub RenderOrderPosts(ByVal wr As HtmlTextWriter)
             If PostCollection.Count > 0 Then
-                RenderRowBegin(wr) '<tr>
-                RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td> 
-                wr.Write(ForumControl.LocalizedText("OrderPostsFrom"))
-                ddlViewDescending.RenderControl(wr)
-                RenderCellEnd(wr) ' </td> 
-                RenderRowEnd(wr) ' </tr>
+                'RenderRowBegin(wr) '<tr>
+                'RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td> 
+                'wr.Write(ForumControl.LocalizedText("OrderPostsFrom"))
+                'ddlViewDescending.RenderControl(wr)
+                'RenderCellEnd(wr) ' </td> 
+                'RenderRowEnd(wr) ' </tr>
             End If
         End Sub
 
